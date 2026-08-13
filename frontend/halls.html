@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Halls | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modules.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="customers.html" class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+
+                <a href="halls.html" class="nav-item active">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+
+                <a href="events.html" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+
+                <a href="invoices.html" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⇥</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar">SA</div>
+
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                    <a href="login.html" class="logout-link">Logout</a>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <div class="main-area">
+
+            <header class="topbar">
+
+                <div class="hotel-name">
+                    Grand Horizon Hotel
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                    >
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="notification">
+                        ♧
+                        <span class="notification-count">3</span>
+                    </button>
+
+                    <div class="profile">
+
+                        <div class="profile-avatar">
+                            MG
+                        </div>
+
+                        <div class="profile-info">
+                            <strong>Miriam Gale</strong>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <main class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Halls</h1>
+                        <p>Manage event halls and availability.</p>
+                    </div>
+
+                    <div class="page-actions">
+                        <button type="button" class="primary-button" id="addHallButton">
+                            + Add Hall
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="module-toolbar">
+                    <input
+                        type="text"
+                        class="module-search"
+                        id="hallSearch"
+                        placeholder="Search by hall name or description..."
+                    >
+                    <select class="module-filter" id="hallAvailabilityFilter">
+                        <option value="all">All halls</option>
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+
+                <div class="dashboard-card">
+
+                    <div class="table-wrapper">
+
+                        <table class="reservation-table">
+                            <thead>
+                                <tr>
+                                    <th>Hall Name</th>
+                                    <th>Capacity</th>
+                                    <th>Price / Hour</th>
+                                    <th>Description</th>
+                                    <th>Availability</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hallTableBody">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-overlay" id="hallModal">
+        <div class="modal">
+
+            <div class="modal-header">
+                <h2 id="hallModalTitle">Add Hall</h2>
+                <button type="button" class="modal-close" id="closeHallModal">&times;</button>
+            </div>
+
+            <p class="form-error" id="hallFormError"></p>
+
+            <form id="hallForm">
+
+                <div class="form-group">
+                    <label for="hallName">Hall Name</label>
+                    <input type="text" id="hallName" name="hallName">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="capacity">Capacity</label>
+                        <input type="number" id="capacity" name="capacity" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bookingPricePerHour">Booking Price Per Hour (GH₵)</label>
+                        <input type="number" id="bookingPricePerHour" name="bookingPricePerHour" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="isAvailable">Availability</label>
+                    <select id="isAvailable" name="isAvailable">
+                        <option value="true">Available</option>
+                        <option value="false">Unavailable</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-button" id="cancelHallModal">Close</button>
+                    <button type="submit" class="primary-button">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="js/halls.js"></script>
+
+</body>
+</html>

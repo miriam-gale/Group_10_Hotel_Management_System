@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Events | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modules.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="customers.html" class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+
+                <a href="halls.html" class="nav-item">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+
+                <a href="events.html" class="nav-item active">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+
+                <a href="invoices.html" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⇥</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar">SA</div>
+
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                    <a href="login.html" class="logout-link">Logout</a>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <div class="main-area">
+
+            <header class="topbar">
+
+                <div class="hotel-name">
+                    Grand Horizon Hotel
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                    >
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="notification">
+                        ♧
+                        <span class="notification-count">3</span>
+                    </button>
+
+                    <div class="profile">
+
+                        <div class="profile-avatar">
+                            MG
+                        </div>
+
+                        <div class="profile-info">
+                            <strong>Miriam Gale</strong>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <main class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Events</h1>
+                        <p>Schedule and manage hotel events.</p>
+                    </div>
+
+                    <div class="page-actions">
+                        <button type="button" class="primary-button" id="addEventButton">
+                            + Add Event
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="module-toolbar">
+                    <input
+                        type="text"
+                        class="module-search"
+                        id="eventSearch"
+                        placeholder="Search by event type, customer, or hall..."
+                    >
+                    <select class="module-filter" id="eventStatusFilter">
+                        <option value="all">All statuses</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="dashboard-card">
+
+                    <div class="table-wrapper">
+
+                        <table class="reservation-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Type</th>
+                                    <th>Customer</th>
+                                    <th>Hall</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Attendees</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventTableBody">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-overlay" id="eventModal">
+        <div class="modal modal-wide">
+
+            <div class="modal-header">
+                <h2 id="eventModalTitle">Add Event</h2>
+                <button type="button" class="modal-close" id="closeEventModal">&times;</button>
+            </div>
+
+            <p class="form-error" id="eventFormError"></p>
+
+            <form id="eventForm">
+
+                <div class="form-group">
+                    <label for="eventType">Event Type</label>
+                    <input type="text" id="eventType" name="eventType">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerId">Customer</label>
+                        <select id="customerId" name="customerId"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hallId">Hall</label>
+                        <select id="hallId" name="hallId"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDate">Event Date</label>
+                    <input type="date" id="eventDate" name="eventDate">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime">Start Time</label>
+                        <input type="time" id="startTime" name="startTime">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endTime">End Time</label>
+                        <input type="time" id="endTime" name="endTime">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expectedAttendees">Expected Attendees</label>
+                        <input type="number" id="expectedAttendees" name="expectedAttendees" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventStatus">Status</label>
+                        <select id="eventStatus" name="eventStatus">
+                            <option value="Scheduled">Scheduled</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-button" id="cancelEventModal">Close</button>
+                    <button type="submit" class="primary-button">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="js/events.js"></script>
+
+</body>
+</html>

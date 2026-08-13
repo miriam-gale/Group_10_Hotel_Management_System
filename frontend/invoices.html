@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices | Grand Horizon Hotel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modules.css">
+</head>
+
+<body>
+
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="customers.html" class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+                <a href="halls.html" class="nav-item">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+                <a href="events.html" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+                <a href="invoices.html" class="nav-item active">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⇥</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-avatar">SA</div>
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                    <a href="login.html" class="logout-link">Logout</a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-area">
+            <header class="topbar">
+                <div class="hotel-name">
+                    Grand Horizon Hotel
+                </div>
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input type="text" placeholder="Search anything...">
+                </div>
+                <div class="topbar-right">
+                    <button class="notification">
+                        ♧
+                        <span class="notification-count">3</span>
+                    </button>
+                    <div class="profile">
+                        <div class="profile-avatar">
+                            MG
+                        </div>
+                        <div class="profile-info">
+                            <strong>Miriam Gale</strong>
+                            <span>Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="page-content">
+                <div class="page-heading">
+                    <div>
+                        <h1>Invoices</h1>
+                        <p>View invoices and update payment status.</p>
+                    </div>
+                </div>
+                <div class="module-toolbar">
+                    <input type="text" class="module-search" id="invoiceSearch"
+                        placeholder="Search by invoice, reservation, or event...">
+                    <select class="module-filter" id="paymentStatusFilter">
+                        <option value="all">All payment statuses</option>
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                </div>
+
+                <div class="dashboard-card">
+
+                    <div class="table-wrapper">
+
+                        <table class="reservation-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice</th>
+                                    <th>Reservation / Event</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Issued Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoiceTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="invoiceModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Invoice Details</h2>
+                <button type="button" class="modal-close" id="closeInvoiceModal">&times;</button>
+            </div>
+            <div class="detail-list" id="invoiceDetails">
+            </div>
+            <div class="form-group">
+                <label for="paymentStatus">Payment Status</label>
+                <select id="paymentStatus">
+                    <option value="Unpaid">Unpaid</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="secondary-button" id="cancelInvoiceModal">Close</button>
+                <button type="button" class="primary-button" id="savePaymentStatusButton">Update Status</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/invoices.js"></script>
+
+</body>
+
+</html>

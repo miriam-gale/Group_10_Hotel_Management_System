@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modules.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="customers.html" class="nav-item active">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+
+                <a href="halls.html" class="nav-item">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+
+                <a href="events.html" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+
+                <a href="invoices.html" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⇥</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar">SA</div>
+
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                    <a href="login.html" class="logout-link">Logout</a>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <div class="main-area">
+
+            <header class="topbar">
+
+                <div class="hotel-name">
+                    Grand Horizon Hotel
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                    >
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="notification">
+                        ♧
+                        <span class="notification-count">3</span>
+                    </button>
+
+                    <div class="profile">
+
+                        <div class="profile-avatar">
+                            MG
+                        </div>
+
+                        <div class="profile-info">
+                            <strong>Miriam Gale</strong>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <main class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Customers</h1>
+                        <p>View and manage hotel customers.</p>
+                    </div>
+
+                    <div class="page-actions">
+                        <button type="button" class="primary-button" id="addCustomerButton">
+                            + Add Customer
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="module-toolbar">
+                    <input
+                        type="text"
+                        class="module-search"
+                        id="customerSearch"
+                        placeholder="Search by name, email, or contact..."
+                    >
+                </div>
+
+                <div class="dashboard-card">
+
+                    <div class="table-wrapper">
+
+                        <table class="reservation-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Email</th>
+                                    <th>Registration Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerTableBody">
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-overlay" id="customerModal">
+        <div class="modal">
+
+            <div class="modal-header">
+                <h2 id="customerModalTitle">Add Customer</h2>
+                <button type="button" class="modal-close" id="closeCustomerModal">&times;</button>
+            </div>
+
+            <p class="form-error" id="customerFormError"></p>
+
+            <form id="customerForm">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="tel" id="contactNumber" name="contactNumber">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="registrationDate">Registration Date</label>
+                    <input type="date" id="registrationDate" name="registrationDate">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="secondary-button" id="cancelCustomerModal">Close</button>
+                    <button type="submit" class="primary-button" id="saveCustomerButton">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="js/customers.js"></script>
+
+</body>
+</html>

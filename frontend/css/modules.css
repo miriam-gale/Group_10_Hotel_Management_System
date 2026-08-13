@@ -1,0 +1,301 @@
+/* Extra styles for Login, Customers, Events, Halls, and Invoices. */
+
+/* ---------- LOGOUT LINK ---------- */
+
+.logout-link {
+    display: inline-block;
+    margin-top: 4px;
+    color: #aab1c4;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.logout-link:hover {
+    color: #ffffff;
+}
+
+/* ---------- LOGIN PAGE ---------- */
+
+.login-page {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 36px 32px 32px;
+}
+
+.login-card .brand {
+    padding-bottom: 24px;
+}
+
+.login-card h1 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    color: var(--text);
+}
+
+.login-card .login-subtitle {
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.login-card .primary-button {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.login-hint {
+    margin: 16px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+/* ---------- PAGE TOOLBAR ---------- */
+
+.module-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.module-search {
+    flex: 1;
+    min-width: 200px;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 13px;
+    font-size: 13px;
+    outline: none;
+    background: var(--white);
+}
+
+.module-filter {
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 13px;
+    background: var(--white);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+}
+
+/* ---------- TABLE ACTIONS ---------- */
+
+.action-button {
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 7px;
+    padding: 5px 9px;
+    font-size: 11px;
+    cursor: pointer;
+    margin-right: 4px;
+    color: var(--text);
+}
+
+.action-button:hover {
+    background: #fafaff;
+}
+
+.action-button.danger {
+    color: #d94b4b;
+}
+
+.empty-row td {
+    text-align: center;
+    color: var(--muted);
+    padding: 24px 8px;
+}
+
+/* ---------- EXTRA STATUS BADGES ---------- */
+
+.status-badge.scheduled,
+.status-badge.available {
+    background: #e4f7eb;
+    color: #21894d;
+}
+
+.status-badge.cancelled,
+.status-badge.unavailable,
+.status-badge.overdue {
+    background: #fdeaea;
+    color: #c23b3b;
+}
+
+.status-badge.completed,
+.status-badge.paid {
+    background: #e2f0fc;
+    color: #2674b8;
+}
+
+.status-badge.unpaid {
+    background: #fff3d7;
+    color: #c58a18;
+}
+
+/* ---------- MODAL ---------- */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 20, 48, 0.55);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal {
+    background: var(--white);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px 24px 24px;
+}
+
+.modal-wide {
+    max-width: 560px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.modal-close {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.secondary-button {
+    border-radius: 8px;
+    padding: 11px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: #444b5c;
+}
+
+/* ---------- FORMS ---------- */
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    background: var(--white);
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-group input:disabled {
+    background: #f5f6fa;
+    color: #454b5c;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-error {
+    color: #d94b4b;
+    font-size: 12px;
+    margin: 0 0 12px;
+}
+
+.form-error:empty {
+    display: none;
+}
+
+/* ---------- INVOICE DETAILS ---------- */
+
+.detail-list {
+    margin-bottom: 16px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f1f5;
+    font-size: 13px;
+}
+
+.detail-row span {
+    color: var(--muted);
+}
+
+.detail-row strong {
+    color: var(--text);
+}
+
+.detail-row.total {
+    border-bottom: none;
+    font-size: 14px;
+}
