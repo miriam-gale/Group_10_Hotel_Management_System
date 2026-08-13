@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⇥</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar">SA</div>
+
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+
+            <!-- TOP BAR -->
+            <header class="topbar">
+
+                <div class="hotel-name">
+                    Grand Horizon Hotel
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                    >
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="notification">
+                        ♧
+                        <span class="notification-count">3</span>
+                    </button>
+
+                    <div class="profile">
+
+                        <div class="profile-avatar">
+                            MG
+                        </div>
+
+                        <div class="profile-info">
+                            <strong>Miriam Gale</strong>
+                            <span>Admin</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- PAGE CONTENT -->
+            <main class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Dashboard</h1>
+
+                        <p>
+                            Welcome back! Here's what's happening today.
+                        </p>
+                    </div>
+
+                    <div class="page-actions">
+
+                        <button class="date-button">
+                            📅 13 August 2026
+                        </button>
+
+                        <button class="primary-button">
+                            + New Reservation
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- STATISTIC CARDS -->
+<section class="stats-grid">
+
+    <!-- Total Rooms -->
+    <div class="stat-card">
+
+        <div class="stat-icon rooms-icon">
+            🛏
+        </div>
+
+        <div class="stat-content">
+            <span class="stat-label">Total Rooms</span>
+
+            <strong class="stat-value">120</strong>
+
+            <span class="stat-change positive">
+                ↗ 8% <span>from last month</span>
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- Today's Bookings -->
+    <div class="stat-card">
+
+        <div class="stat-icon bookings-icon">
+            📅
+        </div>
+
+        <div class="stat-content">
+            <span class="stat-label">Today's Bookings</span>
+
+            <strong class="stat-value">18</strong>
+
+            <span class="stat-change positive">
+                ↗ 12% <span>from yesterday</span>
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- Checked In -->
+    <div class="stat-card">
+
+        <div class="stat-icon checked-icon">
+            👥
+        </div>
+
+        <div class="stat-content">
+            <span class="stat-label">Checked In</span>
+
+            <strong class="stat-value">32</strong>
+
+            <span class="stat-change positive">
+                ↗ 5% <span>from yesterday</span>
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- Today's Revenue -->
+    <div class="stat-card">
+
+        <div class="stat-icon revenue-icon">
+            $
+        </div>
+
+        <div class="stat-content">
+            <span class="stat-label">Today's Revenue</span>
+
+            <strong class="stat-value">GH₵ 8,450</strong>
+
+            <span class="stat-change positive">
+                ↗ 15% <span>from yesterday</span>
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- OCCUPANCY AND ROOM STATUS -->
+<section class="dashboard-grid">
+
+    <!-- ROOM OCCUPANCY -->
+    <div class="dashboard-card occupancy-card">
+
+        <div class="card-header">
+
+            <div>
+                <h2>Room Occupancy</h2>
+                <p>Weekly occupancy rate</p>
+            </div>
+
+            <select class="card-select">
+                <option>This Week</option>
+                <option>Last Week</option>
+                <option>This Month</option>
+            </select>
+
+        </div>
+
+        <div class="occupancy-chart">
+    <canvas id="occupancyChart"></canvas>
+</div>
+
+    </div>
+
+
+    <!-- ROOM STATUS -->
+    <div class="dashboard-card status-card">
+
+        <div class="card-header">
+
+            <div>
+                <h2>Room Status</h2>
+                <p>Current room availability</p>
+            </div>
+
+        </div>
+
+        <div class="room-status-content">
+
+            <div class="status-circle">
+                <strong>120</strong>
+                <span>Total Rooms</span>
+            </div>
+
+            <div class="status-list">
+
+                <div class="status-item">
+                    <span class="status-dot available"></span>
+                    <span>Available</span>
+                    <strong>45</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-dot occupied"></span>
+                    <span>Occupied</span>
+                    <strong>52</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-dot reserved"></span>
+                    <span>Reserved</span>
+                    <strong>18</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-dot maintenance"></span>
+                    <span>Maintenance</span>
+                    <strong>5</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- RECENT RESERVATIONS + UPCOMING EVENTS -->
+<section class="bottom-dashboard-grid">
+
+    <!-- RECENT RESERVATIONS -->
+    <div class="dashboard-card reservations-card">
+
+        <div class="card-header">
+
+            <div>
+                <h2>Recent Reservations</h2>
+                <p>Latest room bookings</p>
+            </div>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+        <div class="table-wrapper">
+
+            <table class="reservation-table">
+
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Room Type</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Kwame Mensah</td>
+                        <td>Deluxe Room</td>
+                        <td>13 Aug 2026</td>
+                        <td>15 Aug 2026</td>
+                        <td>
+                            <span class="status-badge confirmed">
+                                Confirmed
+                            </span>
+                        </td>
+                        <td>GH₵ 2,400</td>
+                    </tr>
+
+                    <tr>
+                        <td>Akosua Boateng</td>
+                        <td>Standard Room</td>
+                        <td>13 Aug 2026</td>
+                        <td>14 Aug 2026</td>
+                        <td>
+                            <span class="status-badge confirmed">
+                                Confirmed
+                            </span>
+                        </td>
+                        <td>GH₵ 1,200</td>
+                    </tr>
+
+                    <tr>
+                        <td>James Anderson</td>
+                        <td>Executive Suite</td>
+                        <td>13 Aug 2026</td>
+                        <td>16 Aug 2026</td>
+                        <td>
+                            <span class="status-badge confirmed">
+                                Confirmed
+                            </span>
+                        </td>
+                        <td>GH₵ 4,000</td>
+                    </tr>
+
+                    <tr>
+                        <td>Ama Serwaa</td>
+                        <td>Deluxe Room</td>
+                        <td>13 Aug 2026</td>
+                        <td>15 Aug 2026</td>
+                        <td>
+                            <span class="status-badge pending">
+                                Pending
+                            </span>
+                        </td>
+                        <td>GH₵ 2,400</td>
+                    </tr>
+
+                    <tr>
+                        <td>Michael Owusu</td>
+                        <td>Standard Room</td>
+                        <td>14 Aug 2026</td>
+                        <td>15 Aug 2026</td>
+                        <td>
+                            <span class="status-badge confirmed">
+                                Confirmed
+                            </span>
+                        </td>
+                        <td>GH₵ 1,200</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- UPCOMING EVENTS -->
+    <div class="dashboard-card events-card">
+
+        <div class="card-header">
+
+            <div>
+                <h2>Upcoming Events</h2>
+                <p>Scheduled hotel events</p>
+            </div>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="event-list">
+
+            <div class="event-item">
+
+                <div class="event-icon conference">
+                    📅
+                </div>
+
+                <div class="event-info">
+                    <strong>Corporate Conference</strong>
+                    <span>Conference Hall A</span>
+                </div>
+
+                <div class="event-date">
+                    <strong>15 Aug 2026</strong>
+                    <span>9:00 AM</span>
+                </div>
+
+            </div>
+
+
+            <div class="event-item">
+
+                <div class="event-icon wedding">
+                    💍
+                </div>
+
+                <div class="event-info">
+                    <strong>Wedding Ceremony</strong>
+                    <span>Grand Ballroom</span>
+                </div>
+
+                <div class="event-date">
+                    <strong>16 Aug 2026</strong>
+                    <span>2:00 PM</span>
+                </div>
+
+            </div>
+
+
+            <div class="event-item">
+
+                <div class="event-icon birthday">
+                    🎉
+                </div>
+
+                <div class="event-info">
+                    <strong>Birthday Party</strong>
+                    <span>Event Hall B</span>
+                </div>
+
+                <div class="event-date">
+                    <strong>17 Aug 2026</strong>
+                    <span>6:00 PM</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+                
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
