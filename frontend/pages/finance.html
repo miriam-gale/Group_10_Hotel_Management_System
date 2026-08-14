@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Finance & Billing | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/modules.css">
+    <link rel="stylesheet" href="../css/finance.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="finance.html" class="nav-item active">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#transactions" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Transactions</span>
+            </a>
+
+            <a href="#invoices" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Invoices</span>
+            </a>
+
+            <a href="#reports" class="nav-item">
+                <span class="nav-icon">▥</span>
+                <span>Financial Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">FB</div>
+
+            <div class="user-info">
+                <strong>Finance Staff</strong>
+                <span>Finance / Billing</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="globalFinanceSearch"
+                    placeholder="Search transactions..."
+                >
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">3</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        FB
+                    </div>
+
+                    <div class="profile-info">
+                        <strong>Finance Staff</strong>
+                        <span>Finance / Billing</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <!-- HEADING -->
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>Finance & Billing</h1>
+
+                    <p>
+                        Manage invoices, transactions and guest payments.
+                    </p>
+
+                </div>
+
+                <div class="page-actions">
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="generateInvoiceButton"
+                    >
+                        + Generate Invoice
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- FINANCIAL SUMMARY -->
+            <section class="finance-summary-grid">
+
+                <div class="dashboard-card finance-stat-card">
+
+                    <div class="finance-stat-icon">
+                        ◉
+                    </div>
+
+                    <div>
+
+                        <span class="finance-stat-label">
+                            Total Billed
+                        </span>
+
+                        <strong id="totalBilled">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card finance-stat-card">
+
+                    <div class="finance-stat-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span class="finance-stat-label">
+                            Total Paid
+                        </span>
+
+                        <strong id="totalPaid">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card finance-stat-card">
+
+                    <div class="finance-stat-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <span class="finance-stat-label">
+                            Outstanding
+                        </span>
+
+                        <strong id="totalOutstanding">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card finance-stat-card">
+
+                    <div class="finance-stat-icon">
+                        #
+                    </div>
+
+                    <div>
+
+                        <span class="finance-stat-label">
+                            Total Invoices
+                        </span>
+
+                        <strong id="totalInvoices">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- TRANSACTIONS -->
+            <section
+                id="transactions"
+                class="dashboard-card finance-section"
+            >
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Transaction History</h2>
+
+                        <p>
+                            View room, event and additional charges.
+                        </p>
+
+                    </div>
+
+                    <div class="finance-toolbar">
+
+                        <input
+                            type="text"
+                            id="invoiceSearch"
+                            placeholder="Search invoices..."
+                        >
+
+                        <select id="paymentStatusFilter">
+
+                            <option value="all">
+                                All statuses
+                            </option>
+
+                            <option value="Unpaid">
+                                Unpaid
+                            </option>
+
+                            <option value="Partially Paid">
+                                Partially Paid
+                            </option>
+
+                            <option value="Paid">
+                                Paid
+                            </option>
+
+                            <option value="Overdue">
+                                Overdue
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Invoice</th>
+
+                                <th>Source</th>
+
+                                <th>Customer</th>
+
+                                <th>Total</th>
+
+                                <th>Status</th>
+
+                                <th>Issued Date</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="invoiceTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- INVOICE BREAKDOWN -->
+            <section
+                id="invoices"
+                class="dashboard-card finance-section"
+            >
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Charge Breakdown</h2>
+
+                        <p>
+                            Summary of charges across hotel services.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="charge-breakdown-grid">
+
+                    <div class="charge-item">
+
+                        <span>
+                            Room Charges
+                        </span>
+
+                        <strong id="roomChargesTotal">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="charge-item">
+
+                        <span>
+                            Event Charges
+                        </span>
+
+                        <strong id="eventChargesTotal">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="charge-item">
+
+                        <span>
+                            Additional Charges
+                        </span>
+
+                        <strong id="additionalChargesTotal">
+                            GHS 0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FINANCIAL REPORTS -->
+            <section
+                id="reports"
+                class="dashboard-card finance-section"
+            >
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Financial Summary</h2>
+
+                        <p>
+                            Current payment and billing overview.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="financial-report-grid">
+
+                    <div>
+
+                        <span>
+                            Paid Invoices
+                        </span>
+
+                        <strong id="paidInvoiceCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Unpaid Invoices
+                        </span>
+
+                        <strong id="unpaidInvoiceCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Partially Paid
+                        </span>
+
+                        <strong id="partialInvoiceCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Overdue
+                        </span>
+
+                        <strong id="overdueInvoiceCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- INVOICE DETAILS MODAL -->
+<div
+    class="modal-overlay"
+    id="invoiceModal"
+>
+
+    <div class="modal modal-wide">
+
+        <div class="modal-header">
+
+            <h2>Invoice Details</h2>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeInvoiceModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <div
+            class="detail-list"
+            id="invoiceDetails"
+        >
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="paymentAmount">
+                Payment Amount
+            </label>
+
+            <input
+                type="number"
+                id="paymentAmount"
+                min="0"
+                step="0.01"
+                placeholder="Enter amount paid"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="paymentStatus">
+                Payment Status
+            </label>
+
+            <select id="paymentStatus">
+
+                <option value="Unpaid">
+                    Unpaid
+                </option>
+
+                <option value="Partially Paid">
+                    Partially Paid
+                </option>
+
+                <option value="Paid">
+                    Paid
+                </option>
+
+                <option value="Overdue">
+                    Overdue
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                class="secondary-button"
+                id="cancelInvoiceModal"
+            >
+                Close
+            </button>
+
+            <button
+                type="button"
+                class="primary-button"
+                id="savePaymentButton"
+            >
+                Record Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- GENERATE INVOICE MODAL -->
+<div class="modal-overlay" id="generateInvoiceModal">
+
+    <div class="modal generate-invoice-modal">
+
+        <!-- Header -->
+        <div class="generate-invoice-header">
+
+            <div>
+                <h2>Generate Invoice</h2>
+
+                <div class="generate-invoice-intro">
+                    <div class="generate-invoice-icon">
+                        ▤
+                    </div>
+
+                    <p>
+                        Create a new invoice by adding charges
+                        for the selected customer.
+                    </p>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeGenerateInvoiceModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <!-- Form -->
+        <form id="generateInvoiceForm">
+
+            <!-- Customer + Source -->
+            <div class="invoice-form-row">
+
+                <div class="invoice-form-group">
+
+                    <label for="invoiceCustomer">
+                        Customer
+                    </label>
+
+                    <div class="invoice-input-wrapper">
+
+                        <span class="invoice-input-icon">
+                            ♙
+                        </span>
+
+                        <select id="invoiceCustomer" required>
+
+                            <option value="">
+                                Select customer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="invoice-form-group">
+
+                    <label for="invoiceSource">
+                        Source
+                    </label>
+
+                    <div class="invoice-input-wrapper">
+
+                        <span class="invoice-input-icon">
+                            ▣
+                        </span>
+
+                        <select id="invoiceSource" required>
+
+                            <option value="Room Reservation">
+                                Room Reservation
+                            </option>
+
+                            <option value="Event Booking">
+                                Event Booking
+                            </option>
+
+                            <option value="Combined">
+                                Room + Event
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Reference -->
+            <div class="invoice-form-group">
+
+                <label for="reservationReference">
+                    Reservation / Booking Reference
+                </label>
+
+                <div class="invoice-input-wrapper">
+
+                    <span class="invoice-input-icon">
+                        ▤
+                    </span>
+
+                    <input
+                        type="text"
+                        id="reservationReference"
+                        placeholder="e.g. RES-1001 or EVT-1002"
+                    >
+
+                </div>
+
+                <small class="invoice-help-text">
+                    Enter the reservation or event booking reference.
+                </small>
+
+            </div>
+
+
+            <!-- Charges -->
+            <div class="invoice-form-group">
+
+                <label>Charges</label>
+
+                <div class="invoice-charge-row">
+
+                    <div class="invoice-charge-field">
+
+                        <span class="charge-label">
+                            Room Charges (GHS)
+                        </span>
+
+                        <div class="invoice-input-wrapper">
+
+                            <span class="invoice-input-icon">
+                                ▦
+                            </span>
+
+                            <input
+                                type="number"
+                                id="newRoomCharges"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="invoice-charge-field">
+
+                        <span class="charge-label">
+                            Event Charges (GHS)
+                        </span>
+
+                        <div class="invoice-input-wrapper">
+
+                            <span class="invoice-input-icon">
+                                □
+                            </span>
+
+                            <input
+                                type="number"
+                                id="newEventCharges"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="invoice-charge-field">
+
+                        <span class="charge-label">
+                            Additional Charges (GHS)
+                        </span>
+
+                        <div class="invoice-input-wrapper">
+
+                            <span class="invoice-input-icon">
+                                +
+                            </span>
+
+                            <input
+                                type="number"
+                                id="newAdditionalCharges"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <small class="invoice-help-text">
+                    Enter the charges for room, event and any additional services.
+                </small>
+
+            </div>
+
+
+            <!-- Error -->
+            <p
+                class="form-error invoice-form-error"
+                id="invoiceFormError"
+            ></p>
+
+
+            <!-- Total -->
+            <div class="invoice-total-preview">
+
+                <div>
+
+                    <strong>Invoice Total</strong>
+
+                    <span>
+                        This is the total amount before payment.
+                    </span>
+
+                </div>
+
+                <strong id="newInvoiceTotal">
+                    GHS 0.00
+                </strong>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="generate-invoice-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelGenerateInvoice"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Generate Invoice
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="../js/finance.js"></script>
+
+</body>
+
+</html>

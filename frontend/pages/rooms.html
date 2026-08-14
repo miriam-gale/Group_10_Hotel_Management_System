@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rooms | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">★</div>
+                <div class="brand-name">GRAND HORIZON</div>
+                <div class="brand-subtitle">HOTEL</div>
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <a href="../index.html" class="nav-item">
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="rooms.html" class="nav-item active">
+                    <span class="nav-icon">▣</span>
+                    <span>Rooms</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Reservations</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">♜</span>
+                    <span>Halls</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">□</span>
+                    <span>Events</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▤</span>
+                    <span>Invoices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">→|</span>
+                    <span>Check-in / Check-out</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▣</span>
+                    <span>Feedback</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">▥</span>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-user">
+
+                <div class="user-avatar">
+                    SA
+                </div>
+
+                <div class="user-info">
+                    <strong>System Admin</strong>
+                    <span>Administrator</span>
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN AREA -->
+        <div class="main-area">
+
+            <!-- TOP BAR -->
+            <header class="topbar">
+
+                <div class="topbar-brand">
+                    Grand Horizon Hotel
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input
+                        type="text"
+                        placeholder="Search anything..."
+                    >
+                </div>
+
+                <div class="topbar-user">
+
+                    <div class="notification">
+                        ♧
+                        <span>3</span>
+                    </div>
+
+                    <div class="topbar-divider"></div>
+
+                    <div class="profile-avatar">
+                        MG
+                    </div>
+
+                    <div class="profile-info">
+                        <strong>Miriam Gale</strong>
+                        <span>Admin</span>
+                    </div>
+
+                    <span class="profile-arrow">⌄</span>
+
+                </div>
+
+            </header>
+
+
+            <!-- PAGE CONTENT -->
+            <main class="page-content">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Rooms</h1>
+
+                        <p>
+                            Manage and monitor all hotel rooms.
+                        </p>
+                    </div>
+
+                    <div class="page-actions">
+
+                        <button class="primary-button" id="openRoomModal">
+                        + Add Room
+                    </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ROOM FILTERS -->
+<div class="room-toolbar">
+
+    <div class="room-filters">
+
+        <button class="room-filter active" data-status="all">
+            All Rooms
+        </button>
+
+        <button class="room-filter" data-status="Available">
+            Available
+        </button>
+
+        <button class="room-filter" data-status="Reserved">
+            Reserved
+        </button>
+
+        <button class="room-filter" data-status="Occupied">
+            Occupied
+        </button>
+
+        <button class="room-filter" data-status="Under Maintenance">
+            Maintenance
+        </button>
+
+    </div>
+
+    <div class="room-search">
+        <span>⌕</span>
+        <input
+            type="text"
+            id="roomSearch"
+            placeholder="Search rooms..."
+        >
+    </div>
+
+</div>
+
+
+<!-- ROOMS TABLE -->
+<div class="dashboard-card rooms-table-card">
+
+    <div class="card-header">
+
+        <div>
+            <h2>All Rooms</h2>
+            <p>Current room information and availability</p>
+        </div>
+
+        <span class="room-count" id="roomCount">
+            0 rooms
+        </span>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table class="reservation-table rooms-table">
+
+            <thead>
+                <tr>
+                    <th>Room Number</th>
+                    <th>Category</th>
+                    <th>Floor</th>
+                    <th>Max Occupants</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="roomsTableBody">
+
+                <!-- Room rows will be added with JavaScript -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- ADD ROOM MODAL -->
+<div class="modal-overlay" id="roomModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <div>
+                <h2>Add New Room</h2>
+                <p>Enter the details for the new room.</p>
+            </div>
+
+            <button class="modal-close" id="closeRoomModal">
+                ×
+            </button>
+        </div>
+
+
+        <form id="addRoomForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="roomNumber">
+                        Room Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="roomNumber"
+                        placeholder="e.g. 304"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="roomCategory">
+                        Room Category
+                    </label>
+
+                    <select id="roomCategory" required>
+                        <option value="">Select category</option>
+                        <option value="Standard Room">
+                            Standard Room
+                        </option>
+                        <option value="Deluxe Room">
+                            Deluxe Room
+                        </option>
+                        <option value="Executive Suite">
+                            Executive Suite
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="roomFloor">
+                        Floor
+                    </label>
+
+                    <input
+                        type="number"
+                        id="roomFloor"
+                        min="1"
+                        placeholder="e.g. 3"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="maxOccupants">
+                        Maximum Occupants
+                    </label>
+
+                    <input
+                        type="number"
+                        id="maxOccupants"
+                        min="1"
+                        placeholder="e.g. 2"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group full-width">
+                    <label for="roomStatus">
+                        Status
+                    </label>
+
+                    <select id="roomStatus" required>
+
+                        <option value="Available">
+                            Available
+                        </option>
+
+                        <option value="Reserved">
+                            Reserved
+                        </option>
+
+                        <option value="Occupied">
+                            Occupied
+                        </option>
+
+                        <option value="Under Maintenance">
+                            Under Maintenance
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelRoomModal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Add Room
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+    <script src="../js/rooms.js"></script>
+
+</body>
+
+</html>

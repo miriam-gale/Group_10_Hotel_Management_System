@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reservations | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">★</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="reservations.html" class="nav-item active">
+                <span class="nav-icon">▣</span>
+                <span>Reservations</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Halls</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>Events</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Invoices</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">→|</span>
+                <span>Check-in / Check-out</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Feedback</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▥</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                MG
+            </div>
+
+            <div class="user-info">
+                <strong>Miriam Gale</strong>
+                <span>Admin</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-brand">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+                <span>⌕</span>
+                <input
+                    type="text"
+                    placeholder="Search anything..."
+                >
+            </div>
+
+            <div class="topbar-user">
+
+                <div class="notification">
+                    ♧
+                    <span>3</span>
+                </div>
+
+                <div class="topbar-divider"></div>
+
+                <div class="profile-avatar">
+                    MG
+                </div>
+
+                <div class="profile-info">
+                    <strong>Miriam Gale</strong>
+                    <span>Admin</span>
+                </div>
+
+                <span class="profile-arrow">⌄</span>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <div class="page-heading">
+
+                <div>
+                    <h1>Reservations</h1>
+
+                    <p>
+                        View and manage your hotel reservations.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- RESERVATION FILTERS -->
+            <div class="room-toolbar">
+
+                <div class="room-filters">
+
+                    <button
+                        class="room-filter active"
+                        data-status="all"
+                    >
+                        All Reservations
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Confirmed"
+                    >
+                        Confirmed
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Checked-In"
+                    >
+                        Checked-In
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Checked-Out"
+                    >
+                        Checked-Out
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Cancelled"
+                    >
+                        Cancelled
+                    </button>
+
+                </div>
+
+                <div class="room-search">
+
+                    <span>⌕</span>
+
+                    <input
+                        type="text"
+                        id="reservationSearch"
+                        placeholder="Search reservations..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- RESERVATIONS TABLE -->
+            <div class="dashboard-card rooms-table-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>My Reservations</h2>
+
+                        <p>
+                            Your current and past hotel reservations
+                        </p>
+                    </div>
+
+                    <span
+                        class="room-count"
+                        id="reservationCount"
+                    >
+                        0 reservations
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="reservationMessage"
+                    class="reservation-message"
+                ></div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Reference</th>
+                                <th>Room</th>
+                                <th>Category</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Guests</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="reservationsTableBody">
+
+                            <!-- Reservation rows inserted by JavaScript -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/reservations.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rooms | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customer.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item active">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Billing & Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+            <div class="user-avatar">MG</div>
+
+            <div class="user-info">
+                <strong id="sidebarCustomerName">Miriam Gale</strong>
+                <span>Customer</span>
+                <a href="login.html" class="logout-link">Logout</a>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+                <span>⌕</span>
+                <input
+                    type="text"
+                    id="roomSearch"
+                    placeholder="Search rooms..."
+                >
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">2</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar">MG</div>
+
+                    <div class="profile-info">
+                        <strong id="topCustomerName">
+                            Miriam Gale
+                        </strong>
+                        <span>Customer</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="page-content">
+
+            <!-- PAGE HEADER -->
+            <div class="page-heading">
+
+                <div>
+                    <h1>Available Rooms</h1>
+
+                    <p>
+                        Find a room that suits your stay.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH / FILTER -->
+            <div class="customer-room-toolbar">
+
+                <input
+                    type="text"
+                    id="roomSearchInput"
+                    placeholder="Search by room number or category..."
+                >
+
+                <select id="roomCategoryFilter">
+
+                    <option value="all">
+                        All room types
+                    </option>
+
+                    <option value="Standard">
+                        Standard
+                    </option>
+
+                    <option value="Deluxe">
+                        Deluxe
+                    </option>
+
+                    <option value="Executive">
+                        Executive
+                    </option>
+
+                    <option value="Suite">
+                        Suite
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ROOMS -->
+            <div
+                class="customer-room-grid"
+                id="customerRoomGrid"
+            >
+
+                <!-- Populated by customer-rooms.js -->
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- ROOM DETAILS / BOOKING MODAL -->
+
+<div class="modal-overlay" id="roomBookingModal">
+
+    <div class="modal modal-wide">
+
+        <div class="modal-header">
+
+            <div>
+                <h2 id="bookingModalTitle">
+                    Book Room
+                </h2>
+
+                <p id="bookingModalSubtitle">
+                    Select your stay dates.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeRoomBookingModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <form id="roomBookingForm">
+
+            <input
+                type="hidden"
+                id="selectedRoomId"
+            >
+
+
+            <div class="booking-room-summary">
+
+                <div class="booking-room-icon">
+                    🛏
+                </div>
+
+                <div>
+                    <strong id="selectedRoomName">
+                        Deluxe Room
+                    </strong>
+
+                    <span id="selectedRoomDetails">
+                        Room 204
+                    </span>
+                </div>
+
+                <strong id="selectedRoomPrice">
+                    GHS 800 / night
+                </strong>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="checkInDate">
+                        Check-in Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="checkInDate"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="checkOutDate">
+                        Check-out Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="checkOutDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="numberOfGuests">
+                        Number of Guests
+                    </label>
+
+                    <input
+                        type="number"
+                        id="numberOfGuests"
+                        min="1"
+                        value="1"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Estimated Total
+                    </label>
+
+                    <div
+                        class="booking-total-display"
+                        id="bookingTotal"
+                    >
+                        GHS 0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <p
+                class="form-error"
+                id="roomBookingError"
+            ></p>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelRoomBooking"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Request Reservation
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../js/customer-rooms.js"></script>
+
+</body>
+</html>

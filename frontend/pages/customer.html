@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customer.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item active">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Billing & Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar" id="customerAvatar">
+                MG
+            </div>
+
+            <div class="user-info">
+
+                <strong id="sidebarCustomerName">
+                    Miriam Gale
+                </strong>
+
+                <span>
+                    Customer
+                </span>
+
+                <a href="login.html" class="logout-link">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">2</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar" id="customerProfileAvatar">
+                        MG
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="topCustomerName">
+                            Miriam Gale
+                        </strong>
+
+                        <span>
+                            Customer
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <main class="page-content">
+
+            <!-- WELCOME -->
+            <section class="customer-welcome">
+
+                <div>
+
+                    <p class="customer-eyebrow">
+                        GRAND HORIZON HOTEL
+                    </p>
+
+                    <h1>
+                        Welcome back,
+                        <span id="welcomeCustomerName">
+                            Miriam
+                        </span>!
+                    </h1>
+
+                    <p>
+                        Manage your stays, event bookings,
+                        invoices and payments all in one place.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK ACTIONS -->
+            <section class="customer-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>
+                            What would you like to do?
+                        </h2>
+
+                        <p>
+                            Book a room or plan your next event.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="customer-action-grid">
+
+                    <!-- ROOMS -->
+                    <div class="customer-action-card">
+
+                        
+
+                        <div>
+
+                            <h3>
+                                Book a Room
+                            </h3>
+
+                            <p>
+                                Browse available rooms,
+                                check prices and make a reservation.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="customer-rooms.html"
+                            class="primary-button"
+                        >
+                            Explore Rooms
+                        </a>
+
+                    </div>
+
+
+                    <!-- EVENT HALLS -->
+                    <div class="customer-action-card">
+
+                      
+
+                        <div>
+
+                            <h3>
+                                Book an Event Hall
+                            </h3>
+
+                            <p>
+                                Find the right hall for your event
+                                and submit a booking request.
+                            </p>
+
+                        </div>
+
+                        <a
+                            href="customer-halls.html"
+                            class="primary-button"
+                        >
+                            Explore Halls
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+            <section class="customer-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Your Overview
+                        </h2>
+
+                        <p>
+                            A quick look at your current activity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="customer-summary-grid">
+
+                    <div class="customer-stat-card">
+
+                        
+
+                        <div>
+
+                            <span>
+                                Active Bookings
+                            </span>
+
+                            <strong id="activeBookings">
+                                2
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="customer-stat-card">
+
+                        
+
+                        <div>
+
+                            <span>
+                                Upcoming Events
+                            </span>
+
+                            <strong id="upcomingEvents">
+                                1
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="customer-stat-card">
+
+                       
+
+                        <div>
+
+                            <span>
+                                Outstanding Balance
+                            </span>
+
+                            <strong id="outstandingBalance">
+                                GHS 3,500
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="customer-stat-card">
+
+                        <div class="customer-stat-icon">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Paid Invoices
+                            </span>
+
+                            <strong id="paidInvoices">
+                                3
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- UPCOMING BOOKINGS -->
+            <section class="customer-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Upcoming Bookings
+                        </h2>
+
+                        <p>
+                            Your next room and event bookings.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="customer-bookings.html"
+                        class="text-link"
+                    >
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="customer-bookings-card"
+                    id="upcomingBookings"
+                >
+
+                    <div class="customer-booking">
+
+                        
+
+                        <div class="booking-details">
+
+                            <strong>
+                                Deluxe Room
+                            </strong>
+
+                            <span>
+                                Room 204 · 20 Aug – 23 Aug 2026
+                            </span>
+
+                        </div>
+
+                        <div class="booking-status confirmed">
+                            Confirmed
+                        </div>
+
+                        <strong class="booking-amount">
+                            GHS 2,400
+                        </strong>
+
+                    </div>
+
+
+                    <div class="customer-booking">
+
+
+                        <div class="booking-details">
+
+                            <strong>
+                                Grand Ballroom
+                            </strong>
+
+                            <span>
+                                Wedding Reception · 28 Aug 2026
+                            </span>
+
+                        </div>
+
+                        <div class="booking-status pending">
+                            Pending
+                        </div>
+
+                        <strong class="booking-amount">
+                            GHS 3,500
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK BILLING -->
+            <section class="customer-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Billing
+                        </h2>
+
+                        <p>
+                            Review your latest invoices and payments.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="customer-billing.html"
+                        class="text-link"
+                    >
+                        View billing
+                    </a>
+
+                </div>
+
+
+                <div class="customer-billing-card">
+
+                    <div>
+
+                        <span>
+                            Outstanding Balance
+                        </span>
+
+                        <strong>
+                            GHS 3,500.00
+                        </strong>
+
+                    </div>
+
+                    <a
+                        href="customer-billing.html"
+                        class="primary-button"
+                    >
+                        View & Pay
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script src="../js/customer.js"></script>
+
+</body>
+</html>

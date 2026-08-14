@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Check-in / Check-out | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">★</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="../index.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Customers</span>
+            </a>
+
+            <a href="rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="reservations.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Reservations</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Halls</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>Events</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Invoices</span>
+            </a>
+
+            <a href="checkin.html" class="nav-item active">
+                <span class="nav-icon">→|</span>
+                <span>Check-in / Check-out</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Feedback</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▥</span>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                MG
+            </div>
+
+            <div class="user-info">
+                <strong>Miriam Gale</strong>
+                <span>Admin</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-brand">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search anything..."
+                >
+            </div>
+
+            <div class="topbar-user">
+
+                <div class="notification">
+                    ♧
+                    <span>3</span>
+                </div>
+
+                <div class="topbar-divider"></div>
+
+                <div class="profile-avatar">
+                    MG
+                </div>
+
+                <div class="profile-info">
+                    <strong>Miriam Gale</strong>
+                    <span>Admin</span>
+                </div>
+
+                <span class="profile-arrow">⌄</span>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <div class="page-heading">
+
+                <div>
+                    <h1>Check-in / Check-out</h1>
+
+                    <p>
+                        Manage guest arrivals and departures.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH / FILTERS -->
+            <div class="room-toolbar">
+
+                <div class="room-filters">
+
+                    <button
+                        class="room-filter active"
+                        data-status="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Confirmed"
+                    >
+                        Ready for Check-in
+                    </button>
+
+                    <button
+                        class="room-filter"
+                        data-status="Checked-In"
+                    >
+                        Checked-In
+                    </button>
+
+                </div>
+
+                <div class="room-search">
+
+                    <span>⌕</span>
+
+                    <input
+                        type="text"
+                        id="checkinSearch"
+                        placeholder="Search guest, room or booking..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- CHECK-IN / CHECK-OUT TABLE -->
+            <div class="dashboard-card rooms-table-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Guest Arrivals & Departures</h2>
+
+                        <p>
+                            Manage current hotel stays and reservations.
+                        </p>
+                    </div>
+
+                    <span
+                        class="room-count"
+                        id="reservationCount"
+                    >
+                        0 reservations
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="checkinMessage"
+                    class="reservation-message"
+                ></div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Guest</th>
+                                <th>Reference</th>
+                                <th>Room</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Guests</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="checkinTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/checkin.js"></script>
+
+</body>
+
+</html>

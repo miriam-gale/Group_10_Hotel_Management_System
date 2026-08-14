@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Event Staff | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/modules.css">
+<link rel="stylesheet" href="../css/event-staff.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="event-staff.html" class="nav-item active">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#hallAvailability" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Hall Availability</span>
+            </a>
+
+            <a href="#eventBookings" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>Event Bookings</span>
+            </a>
+
+            <a href="#logistics" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Event Logistics</span>
+            </a>
+
+            <a href="#resources" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Facility Resources</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">ES</div>
+
+            <div class="user-info">
+                <strong>Event Staff</strong>
+                <span>Event Staff</span>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="globalSearch"
+                    placeholder="Search events..."
+                >
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">3</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        ES
+                    </div>
+
+                    <div class="profile-info">
+                        <strong>Event Staff</strong>
+                        <span>Event Staff</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <!-- PAGE HEADING -->
+            <div class="page-heading">
+
+                <div>
+                    <h1>Event Staff Dashboard</h1>
+
+                    <p>
+                        Manage event bookings, hall availability,
+                        logistics and facility resources.
+                    </p>
+                </div>
+
+                <div class="page-actions">
+
+                    <button
+                        type="button"
+                        class="primary-button"
+                        id="newEventButton"
+                    >
+                        + New Event Booking
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUMMARY CARDS -->
+            <section class="event-summary-grid">
+
+                <div class="dashboard-card event-stat-card">
+
+                    <div class="event-stat-icon">□</div>
+
+                    <div>
+                        <span class="event-stat-label">
+                            Upcoming Events
+                        </span>
+
+                        <strong id="upcomingEventsCount">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card event-stat-card">
+
+                    <div class="event-stat-icon">♜</div>
+
+                    <div>
+                        <span class="event-stat-label">
+                            Available Halls
+                        </span>
+
+                        <strong id="availableHallsCount">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card event-stat-card">
+
+                    <div class="event-stat-icon">⚙</div>
+
+                    <div>
+                        <span class="event-stat-label">
+                            Events In Progress
+                        </span>
+
+                        <strong id="activeEventsCount">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card event-stat-card">
+
+                    <div class="event-stat-icon">▣</div>
+
+                    <div>
+                        <span class="event-stat-label">
+                            Resources Assigned
+                        </span>
+
+                        <strong id="assignedResourcesCount">
+                            0
+                        </strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- HALL AVAILABILITY -->
+            <section id="hallAvailability" class="dashboard-card event-section">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Hall Availability</h2>
+
+                        <p>
+                            View the current availability schedule
+                            for event halls.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Hall</th>
+                                <th>Capacity</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="hallAvailabilityBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- EVENT BOOKINGS -->
+            <section id="eventBookings" class="dashboard-card event-section">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Event Bookings</h2>
+
+                        <p>
+                            View and manage upcoming event bookings.
+                        </p>
+                    </div>
+
+                    <div class="event-toolbar">
+
+                        <input
+                            type="text"
+                            id="eventSearch"
+                            placeholder="Search events..."
+                        >
+
+                        <select id="eventStatusFilter">
+
+                            <option value="all">
+                                All statuses
+                            </option>
+
+                            <option value="Scheduled">
+                                Scheduled
+                            </option>
+
+                            <option value="In Progress">
+                                In Progress
+                            </option>
+
+                            <option value="Completed">
+                                Completed
+                            </option>
+
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Event</th>
+                                <th>Customer</th>
+                                <th>Hall</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Guests</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="eventBookingsBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- EVENT LOGISTICS -->
+            <section id="logistics" class="dashboard-card event-section">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Event Logistics</h2>
+
+                        <p>
+                            Coordinate operational requirements
+                            for upcoming events.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="logistics-grid"
+                    id="logisticsGrid"
+                >
+                </div>
+
+            </section>
+
+
+            <!-- FACILITY RESOURCES -->
+            <section id="resources" class="dashboard-card event-section">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Facility Resources</h2>
+
+                        <p>
+                            Assign and track resources required
+                            for each event.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="reservation-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Event</th>
+                                <th>Resource</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="resourcesBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- NEW EVENT MODAL -->
+<div
+    class="modal-overlay"
+    id="eventModal"
+>
+
+    <div class="modal modal-wide">
+
+        <div class="modal-header">
+
+            <h2>New Event Booking</h2>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeEventModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <p
+            class="form-error"
+            id="eventFormError"
+        ></p>
+
+
+        <form id="eventForm">
+
+            <div class="form-group">
+
+                <label for="eventType">
+                    Event Type
+                </label>
+
+                <input
+                    type="text"
+                    id="eventType"
+                    placeholder="e.g. Wedding Ceremony"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="customerName">
+                        Customer
+                    </label>
+
+                    <select id="customerName" required>
+
+                        <option value="">
+                            Select customer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="hallName">
+                        Hall
+                    </label>
+
+                    <select id="hallName" required>
+
+                        <option value="">
+                            Select hall
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="eventDate">
+                    Event Date
+                </label>
+
+                <input
+                    type="date"
+                    id="eventDate"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="startTime">
+                        Start Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="startTime"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="endTime">
+                        End Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="endTime"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="attendees">
+                    Expected Attendees
+                </label>
+
+                <input
+                    type="number"
+                    id="attendees"
+                    min="1"
+                    placeholder="Number of guests"
+                    required
+                >
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelEventModal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Booking
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../js/event-staff.js"></script>
+
+</body>
+</html>

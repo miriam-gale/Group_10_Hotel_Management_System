@@ -1,0 +1,684 @@
+/* =========================================
+   CUSTOMER DASHBOARD
+========================================= */
+
+.customer-welcome {
+    padding: 32px;
+    margin-bottom: 28px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f5f0ff, #ffffff);
+    border: 1px solid #e7defa;
+}
+
+.customer-eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #5831bd;
+}
+
+.customer-welcome h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.customer-welcome h1 span {
+    color: #5831bd;
+}
+
+.customer-welcome > div > p:last-child {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* =========================================
+   SECTIONS
+========================================= */
+
+.customer-section {
+    margin-bottom: 30px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.text-link {
+    color: #5831bd;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   QUICK ACTION CARDS
+========================================= */
+
+.customer-action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.customer-action-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.customer-action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.customer-action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: #f3edff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+.customer-action-card h3 {
+    margin: 0 0 7px;
+    font-size: 18px;
+}
+
+.customer-action-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.customer-action-card .primary-button {
+    align-self: flex-start;
+    text-decoration: none;
+}
+
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
+
+.customer-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.customer-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.customer-stat-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.customer-stat-card span {
+    display: block;
+    margin-bottom: 5px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.customer-stat-card strong {
+    display: block;
+    font-size: 20px;
+}
+
+
+/* =========================================
+   UPCOMING BOOKINGS
+========================================= */
+
+.customer-bookings-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.customer-booking {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.customer-booking:last-child {
+    border-bottom: none;
+}
+
+.booking-type {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.booking-type.room {
+    background: #f3edff;
+}
+
+.booking-type.event {
+    background: #fff4df;
+}
+
+.booking-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.booking-details strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.booking-details span {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.booking-status {
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.booking-status.confirmed {
+    background: #e8f7ee;
+    color: #16834b;
+}
+
+.booking-status.pending {
+    background: #fff4df;
+    color: #a56800;
+}
+
+.booking-amount {
+    min-width: 105px;
+    text-align: right;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   BILLING
+========================================= */
+
+.customer-billing-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+.customer-billing-card span {
+    display: block;
+    margin-bottom: 5px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.customer-billing-card strong {
+    font-size: 24px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .customer-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+
+    .customer-action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-booking {
+        flex-wrap: wrap;
+    }
+
+    .booking-amount {
+        margin-left: 60px;
+        text-align: left;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .customer-welcome {
+        padding: 24px;
+    }
+
+    .customer-welcome h1 {
+        font-size: 26px;
+    }
+
+    .customer-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-billing-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .customer-billing-card .primary-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* =========================================
+   CUSTOMER ROOMS
+========================================= */
+
+.customer-room-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.customer-room-toolbar input,
+.customer-room-toolbar select {
+    height: 44px;
+    border: 1px solid #d9dce1;
+    border-radius: 9px;
+    padding: 0 14px;
+    background: #fff;
+    font: inherit;
+}
+
+.customer-room-toolbar input {
+    flex: 1;
+}
+
+.customer-room-toolbar select {
+    min-width: 180px;
+}
+
+
+/* =========================================
+   ROOM CARDS
+========================================= */
+
+.customer-room-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.customer-room-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.customer-room-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.customer-room-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #f3f0fa;
+}
+
+.customer-room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.customer-room-card:hover .customer-room-image img {
+    transform: scale(1.04);
+}
+
+.customer-room-content {
+    padding: 20px;
+}
+
+.customer-room-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.customer-room-top h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.room-available {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #e8f7ee;
+    color: #16834b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.customer-room-number {
+    display: block;
+    margin-bottom: 15px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.customer-room-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 18px;
+    color: #5f6672;
+    font-size: 12px;
+}
+
+.customer-room-price {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eeeeee;
+}
+
+.customer-room-price strong {
+    display: block;
+    font-size: 18px;
+}
+
+.customer-room-price span {
+    color: #6b7280;
+    font-size: 11px;
+}
+
+.customer-room-price .primary-button {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   BOOKING MODAL
+========================================= */
+
+.booking-room-summary {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f7f5fb;
+}
+
+.booking-room-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #eee7ff;
+    font-size: 21px;
+}
+
+.booking-room-summary > div:nth-child(2) {
+    flex: 1;
+}
+
+.booking-room-summary strong {
+    display: block;
+}
+
+.booking-room-summary span {
+    display: block;
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.booking-room-summary > strong:last-child {
+    color: #5831bd;
+    white-space: nowrap;
+}
+
+.booking-total-display {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    border: 1px solid #d9dce1;
+    border-radius: 9px;
+    background: #f7f7f8;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   EMPTY ROOMS
+========================================= */
+
+.customer-room-empty {
+    grid-column: 1 / -1;
+    padding: 50px 20px;
+    text-align: center;
+    color: #6b7280;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .customer-room-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .customer-room-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-room-toolbar {
+        flex-direction: column;
+    }
+
+    .customer-room-toolbar select {
+        width: 100%;
+    }
+
+    .booking-room-summary {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+/* =========================================
+   CUSTOMER EVENT HALLS
+========================================= */
+
+.customer-hall-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.customer-hall-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.customer-hall-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.customer-hall-image {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f3edff, #faf8ff);
+    font-size: 55px;
+}
+
+.customer-hall-content {
+    padding: 20px;
+}
+
+.customer-hall-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.customer-hall-top h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.customer-hall-location {
+    display: block;
+    margin-top: 7px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.customer-hall-info {
+    margin-top: 18px;
+    color: #5f6672;
+    font-size: 13px;
+}
+
+.customer-hall-purpose {
+    min-height: 38px;
+    margin: 12px 0 18px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+
+    .customer-hall-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .customer-hall-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   EVENT HALL VISUAL
+========================================= */
+
+.hall-card-image {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    background: #f3f0fa;
+}
+
+.hall-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+.hall-card:hover .hall-card-image img {
+    transform: scale(1.04);
+}

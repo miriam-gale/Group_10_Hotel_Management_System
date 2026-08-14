@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Event Halls | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customer.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item active">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Billing & Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">MG</div>
+
+            <div class="user-info">
+                <strong id="sidebarCustomerName">
+                    Miriam Gale
+                </strong>
+
+                <span>Customer</span>
+
+                <a href="login.html" class="logout-link">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="hallSearch"
+                    placeholder="Search event halls..."
+                >
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">2</span>
+                </button>
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        MG
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="topCustomerName">
+                            Miriam Gale
+                        </strong>
+
+                        <span>Customer</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <main class="page-content">
+
+            <!-- PAGE HEADER -->
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>Event Halls</h1>
+
+                    <p>
+                        Find the perfect space for your next event.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH / FILTER -->
+            <div class="customer-room-toolbar">
+
+                <input
+                    type="text"
+                    id="hallSearchInput"
+                    placeholder="Search by hall name or event type..."
+                >
+
+                <select id="hallCapacityFilter">
+
+                    <option value="all">
+                        All capacities
+                    </option>
+
+                    <option value="100">
+                        Up to 100 guests
+                    </option>
+
+                    <option value="250">
+                        Up to 250 guests
+                    </option>
+
+                    <option value="500">
+                        Up to 500 guests
+                    </option>
+
+                    <option value="1000">
+                        500+ guests
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- HALL CARDS -->
+            <div
+                class="customer-hall-grid"
+                id="customerHallGrid"
+            >
+
+                <!-- Populated by customer-halls.js -->
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- BOOKING MODAL -->
+
+<div
+    class="modal-overlay"
+    id="hallBookingModal"
+>
+
+    <div class="modal modal-wide">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="hallBookingTitle">
+                    Book Event Hall
+                </h2>
+
+                <p>
+                    Enter the details for your event.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeHallBookingModal"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <form id="hallBookingForm">
+
+            <input
+                type="hidden"
+                id="selectedHallId"
+            >
+
+
+            <!-- SELECTED HALL -->
+
+            <div class="booking-room-summary">
+
+            
+
+                <div>
+
+                    <strong id="selectedHallName">
+                        Grand Ballroom
+                    </strong>
+
+                    <span id="selectedHallDetails">
+                        Capacity: 500 guests
+                    </span>
+
+                </div>
+
+                <strong id="selectedHallPrice">
+                    GHS 3,500
+                </strong>
+
+            </div>
+
+
+            <!-- EVENT TYPE -->
+
+            <div class="form-group">
+
+                <label for="eventType">
+                    Event Type
+                </label>
+
+                <select
+                    id="eventType"
+                    required
+                >
+
+                    <option value="">
+                        Select event type
+                    </option>
+
+                    <option value="Wedding">
+                        Wedding
+                    </option>
+
+                    <option value="Conference">
+                        Conference
+                    </option>
+
+                    <option value="Birthday">
+                        Birthday
+                    </option>
+
+                    <option value="Corporate Event">
+                        Corporate Event
+                    </option>
+
+                    <option value="Meeting">
+                        Meeting
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DATE -->
+
+            <div class="form-group">
+
+                <label for="eventDate">
+                    Event Date
+                </label>
+
+                <input
+                    type="date"
+                    id="eventDate"
+                    required
+                >
+
+            </div>
+
+
+            <!-- TIME -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="eventStartTime">
+                        Start Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="eventStartTime"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="eventEndTime">
+                        End Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="eventEndTime"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ATTENDEES -->
+
+            <div class="form-group">
+
+                <label for="expectedAttendees">
+                    Expected Attendees
+                </label>
+
+                <input
+                    type="number"
+                    id="expectedAttendees"
+                    min="1"
+                    required
+                    placeholder="e.g. 150"
+                >
+
+            </div>
+
+
+            <!-- NOTES -->
+
+            <div class="form-group">
+
+                <label for="eventNotes">
+                    Additional Notes
+                </label>
+
+                <textarea
+                    id="eventNotes"
+                    rows="3"
+                    placeholder="Tell us anything important about your event..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="booking-total-display">
+
+                <span>
+                    Estimated Hall Charge
+                </span>
+
+                <strong id="hallBookingTotal">
+                    GHS 0.00
+                </strong>
+
+            </div>
+
+
+            <p
+                class="form-error"
+                id="hallBookingError"
+            ></p>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancelHallBooking"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Submit Booking Request
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../js/customer-halls.js"></script>
+
+</body>
+</html>

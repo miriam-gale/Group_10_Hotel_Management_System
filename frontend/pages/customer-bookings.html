@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        .bookings-page {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .booking-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .booking-tab {
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #374151;
+            padding: 11px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 600;
+        }
+
+        .booking-tab.active {
+            background: #512bb5;
+            color: #fff;
+            border-color: #512bb5;
+        }
+
+        .booking-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .booking-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .booking-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .booking-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .booking-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #f1eaff;
+            color: #512bb5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .booking-title h3 {
+            margin: 0 0 5px;
+            font-size: 19px;
+        }
+
+        .booking-reference {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .booking-status {
+            display: inline-flex;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .booking-status.confirmed {
+            background: #e8f7ee;
+            color: #16834b;
+        }
+
+        .booking-status.pending {
+            background: #fff4df;
+            color: #a56800;
+        }
+
+        .booking-status.cancelled {
+            background: #fdecec;
+            color: #c53b3b;
+        }
+
+        .booking-status.completed {
+            background: #eef4ff;
+            color: #315fbe;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+        }
+
+        .booking-detail span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .booking-detail strong {
+            color: #172033;
+            font-size: 14px;
+        }
+
+        .booking-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+        }
+
+        .booking-amount span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .booking-amount strong {
+            font-size: 20px;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .booking-button {
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 8px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 600;
+        }
+
+        .booking-button.primary {
+            background: #512bb5;
+            border-color: #512bb5;
+            color: #fff;
+        }
+
+        .empty-bookings {
+            text-align: center;
+            padding: 70px 20px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+        }
+
+        .empty-bookings-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .empty-bookings h3 {
+            margin-bottom: 8px;
+        }
+
+        .empty-bookings p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 50px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 900px) {
+            .booking-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .booking-card-header,
+            .booking-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-tabs {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item active">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Billing & Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar" id="sidebarAvatar">
+                MG
+            </div>
+
+            <div class="user-info">
+
+                <strong id="sidebarName">
+                    Miriam Gale
+                </strong>
+
+                <span>
+                    Customer
+                </span>
+
+                <a href="login.html" class="logout-link" id="logoutButton">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">3</span>
+                </button>
+
+
+                <div class="profile">
+
+                    <div class="profile-avatar" id="profileAvatar">
+                        MG
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="profileName">
+                            Miriam Gale
+                        </strong>
+
+                        <span>
+                            Customer
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+
+        <main class="page-content">
+
+            <div class="bookings-page">
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <h1>
+                            My Bookings
+                        </h1>
+
+                        <p>
+                            View and manage your room reservations and event bookings.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TABS -->
+
+                <div class="booking-tabs">
+
+                    <button
+                        type="button"
+                        class="booking-tab active"
+                        data-type="all"
+                    >
+                        All Bookings
+                    </button>
+
+                    <button
+                        type="button"
+                        class="booking-tab"
+                        data-type="room"
+                    >
+                        Room Reservations
+                    </button>
+
+                    <button
+                        type="button"
+                        class="booking-tab"
+                        data-type="event"
+                    >
+                        Event Bookings
+                    </button>
+
+                </div>
+
+
+                <!-- BOOKINGS -->
+
+                <div
+                    id="bookingList"
+                    class="booking-list"
+                >
+
+                    <div class="loading-state">
+                        Loading your bookings...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/customer-bookings.js"></script>
+
+</body>
+
+</html>
