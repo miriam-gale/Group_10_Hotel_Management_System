@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customer.css">
+
+    <style>
+        /* --------------PROFILE PAGE--------- */
+
+        .profile-page {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .profile-heading {
+            margin-bottom: 28px;
+        }
+
+        .profile-heading h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+            color: #10203f;
+        }
+
+        .profile-heading p {
+            margin: 0;
+            color: #718096;
+            font-size: 16px;
+        }
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+
+        /* PROFILE SUMMARY */
+
+        .profile-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e5e7eb;
+            height: fit-content;
+            text-align: center;
+        }
+
+        .large-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e8ddff;
+            color: #5429b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .profile-summary h2 {
+            margin: 0 0 6px;
+            color: #10203f;
+            font-size: 21px;
+        }
+
+        .profile-summary p {
+            margin: 0;
+            color: #718096;
+        }
+
+        .customer-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #f0eaff;
+            color: #5429b8;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* PROFILE CARD */
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .profile-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 26px;
+        }
+
+        .profile-card-header h2 {
+            margin: 0;
+            font-size: 21px;
+            color: #10203f;
+        }
+
+        .profile-card-header p {
+            margin: 5px 0 0;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #d8dee8;
+            border-radius: 9px;
+            font-size: 15px;
+            color: #1e293b;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #5429b8;
+            box-shadow: 0 0 0 3px rgba(84, 41, 184, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #f8fafc;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .form-note {
+            margin-top: 7px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* BUTTONS */
+
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .profile-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .profile-btn.secondary {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .profile-btn.secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .profile-btn.primary {
+            background: #5429b8;
+            color: white;
+        }
+
+        .profile-btn.primary:hover {
+            background: #45209d;
+        }
+
+        /* PASSWORD SECTION */
+
+        .password-section {
+            margin-top: 24px;
+        }
+
+        /* MESSAGE */
+
+        .profile-message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .profile-message.success {
+            display: block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .profile-message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-summary {
+                text-align: left;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .large-avatar {
+                margin: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .profile-card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .profile-btn {
+                width: 100%;
+            }
+
+            .profile-summary {
+                display: block;
+                text-align: center;
+            }
+
+            .large-avatar {
+                margin: 0 auto 18px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- ----SIDEBAR------------- -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Billing & Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item active">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div
+                class="user-avatar"
+                id="sidebarAvatar"
+            >
+                MG
+            </div>
+
+            <div class="user-info">
+
+                <strong id="sidebarName">
+                    Customer
+                </strong>
+
+                <span>
+                    Customer
+                </span>
+
+                <a
+                    href="login.html"
+                    class="logout-link"
+                    id="logoutButton"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- --------------MAIN AREA------------- -->
+
+    <div class="main-area">
+
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search..."
+                >
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">
+                        3
+                    </span>
+                </button>
+
+
+                <div class="profile">
+
+                    <div
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        MG
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="profileName">
+                            Customer
+                        </strong>
+
+                        <span>
+                            Customer
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ---------PAGE CONTENT------------------>
+
+        <main class="page-content">
+
+            <div class="profile-page">
+
+                <div class="profile-heading">
+
+                    <h1>
+                        My Profile
+                    </h1>
+
+                    <p>
+                        Manage your personal information and account details.
+                    </p>
+
+                </div>
+
+
+                <div class="profile-layout">
+
+
+                    <!-- PROFILE SUMMARY -->
+
+                    <div class="profile-summary">
+
+                        <div
+                            class="large-avatar"
+                            id="largeAvatar"
+                        >
+                            MG
+                        </div>
+
+                        <div>
+
+                            <h2 id="summaryName">
+                                Customer
+                            </h2>
+
+                            <p>
+                                Grand Horizon Hotel
+                            </p>
+
+                            <span class="customer-badge">
+                                Customer
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROFILE INFORMATION -->
+
+                    <div>
+
+                        <div class="profile-card">
+
+                            <div class="profile-card-header">
+
+                                <div>
+
+                                    <h2>
+                                        Personal Information
+                                    </h2>
+
+                                    <p>
+                                        Update the information associated with your account.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="profileMessage"
+                                class="profile-message"
+                            ></div>
+
+
+                            <form id="profileForm">
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+
+                                        <label for="firstName">
+                                            First Name
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="firstName"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="lastName">
+                                            Last Name
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="lastName"
+                                            required
+                                        >
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="email">
+                                            Email Address
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            disabled
+                                        >
+
+                                        <span class="form-note">
+                                            Email address cannot be changed here.
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="phone">
+                                            Contact Number
+                                        </label>
+
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            placeholder="024 XXX XXXX"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-actions">
+
+                                    <button
+                                        type="button"
+                                        class="profile-btn secondary"
+                                        id="cancelButton"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        class="profile-btn primary"
+                                    >
+                                        Save Changes
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="profile-card password-section">
+
+                            <div class="profile-card-header">
+
+                                <div>
+
+                                    <h2>
+                                        Password & Security
+                                    </h2>
+
+                                    <p>
+                                        Keep your account secure.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label for="currentPassword">
+                                        Current Password
+                                    </label>
+
+                                    <input
+                                        type="password"
+                                        id="currentPassword"
+                                        placeholder="Enter current password"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="newPassword">
+                                        New Password
+                                    </label>
+
+                                    <input
+                                        type="password"
+                                        id="newPassword"
+                                        placeholder="Enter new password"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="profile-actions">
+
+                                <button
+                                    type="button"
+                                    class="profile-btn primary"
+                                    id="passwordButton"
+                                >
+                                    Change Password
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="../js/customer-profile.js"></script>
+
+</body>
+
+</html>

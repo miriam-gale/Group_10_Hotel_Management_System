@@ -8,7 +8,7 @@
     <title>Finance & Billing | Grand Horizon Hotel</title>
 
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/modules.css">
+   
     <link rel="stylesheet" href="../css/finance.css">
 </head>
 
@@ -47,18 +47,34 @@
                 <span>Financial Reports</span>
             </a>
 
+            <a href="staff-feedback.html" class="nav-item">
+    <span class="nav-icon">★</span>
+    <span>Feedback</span>
+</a>
+
         </nav>
 
         <div class="sidebar-user">
 
-            <div class="user-avatar">FB</div>
+    <div class="user-avatar">FB</div>
 
-            <div class="user-info">
-                <strong>Finance Staff</strong>
-                <span>Finance / Billing</span>
-            </div>
+    <div class="user-info">
 
-        </div>
+        <strong>Finance Staff</strong>
+
+        <span>Finance / Billing</span>
+
+        <a
+            href="login.html"
+            id="logoutButton"
+            class="logout-link"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</div>
 
     </aside>
 
@@ -127,15 +143,6 @@
                 </div>
 
                 <div class="page-actions">
-
-                    <button
-                        type="button"
-                        class="primary-button"
-                        id="generateInvoiceButton"
-                    >
-                        + Generate Invoice
-                    </button>
-
                 </div>
 
             </div>
@@ -272,10 +279,6 @@
 
                             <option value="Paid">
                                 Paid
-                            </option>
-
-                            <option value="Overdue">
-                                Overdue
                             </option>
 
                         </select>
@@ -539,10 +542,6 @@
                     Paid
                 </option>
 
-                <option value="Overdue">
-                    Overdue
-                </option>
-
             </select>
 
         </div>
@@ -573,278 +572,8 @@
 </div>
 
 
-<!-- GENERATE INVOICE MODAL -->
-<div class="modal-overlay" id="generateInvoiceModal">
-
-    <div class="modal generate-invoice-modal">
-
-        <!-- Header -->
-        <div class="generate-invoice-header">
-
-            <div>
-                <h2>Generate Invoice</h2>
-
-                <div class="generate-invoice-intro">
-                    <div class="generate-invoice-icon">
-                        ▤
-                    </div>
-
-                    <p>
-                        Create a new invoice by adding charges
-                        for the selected customer.
-                    </p>
-                </div>
-            </div>
-
-            <button
-                type="button"
-                class="modal-close"
-                id="closeGenerateInvoiceModal"
-            >
-                &times;
-            </button>
-
-        </div>
-
-
-        <!-- Form -->
-        <form id="generateInvoiceForm">
-
-            <!-- Customer + Source -->
-            <div class="invoice-form-row">
-
-                <div class="invoice-form-group">
-
-                    <label for="invoiceCustomer">
-                        Customer
-                    </label>
-
-                    <div class="invoice-input-wrapper">
-
-                        <span class="invoice-input-icon">
-                            ♙
-                        </span>
-
-                        <select id="invoiceCustomer" required>
-
-                            <option value="">
-                                Select customer
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <div class="invoice-form-group">
-
-                    <label for="invoiceSource">
-                        Source
-                    </label>
-
-                    <div class="invoice-input-wrapper">
-
-                        <span class="invoice-input-icon">
-                            ▣
-                        </span>
-
-                        <select id="invoiceSource" required>
-
-                            <option value="Room Reservation">
-                                Room Reservation
-                            </option>
-
-                            <option value="Event Booking">
-                                Event Booking
-                            </option>
-
-                            <option value="Combined">
-                                Room + Event
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Reference -->
-            <div class="invoice-form-group">
-
-                <label for="reservationReference">
-                    Reservation / Booking Reference
-                </label>
-
-                <div class="invoice-input-wrapper">
-
-                    <span class="invoice-input-icon">
-                        ▤
-                    </span>
-
-                    <input
-                        type="text"
-                        id="reservationReference"
-                        placeholder="e.g. RES-1001 or EVT-1002"
-                    >
-
-                </div>
-
-                <small class="invoice-help-text">
-                    Enter the reservation or event booking reference.
-                </small>
-
-            </div>
-
-
-            <!-- Charges -->
-            <div class="invoice-form-group">
-
-                <label>Charges</label>
-
-                <div class="invoice-charge-row">
-
-                    <div class="invoice-charge-field">
-
-                        <span class="charge-label">
-                            Room Charges (GHS)
-                        </span>
-
-                        <div class="invoice-input-wrapper">
-
-                            <span class="invoice-input-icon">
-                                ▦
-                            </span>
-
-                            <input
-                                type="number"
-                                id="newRoomCharges"
-                                min="0"
-                                step="0.01"
-                                value="0"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="invoice-charge-field">
-
-                        <span class="charge-label">
-                            Event Charges (GHS)
-                        </span>
-
-                        <div class="invoice-input-wrapper">
-
-                            <span class="invoice-input-icon">
-                                □
-                            </span>
-
-                            <input
-                                type="number"
-                                id="newEventCharges"
-                                min="0"
-                                step="0.01"
-                                value="0"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="invoice-charge-field">
-
-                        <span class="charge-label">
-                            Additional Charges (GHS)
-                        </span>
-
-                        <div class="invoice-input-wrapper">
-
-                            <span class="invoice-input-icon">
-                                +
-                            </span>
-
-                            <input
-                                type="number"
-                                id="newAdditionalCharges"
-                                min="0"
-                                step="0.01"
-                                value="0"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <small class="invoice-help-text">
-                    Enter the charges for room, event and any additional services.
-                </small>
-
-            </div>
-
-
-            <!-- Error -->
-            <p
-                class="form-error invoice-form-error"
-                id="invoiceFormError"
-            ></p>
-
-
-            <!-- Total -->
-            <div class="invoice-total-preview">
-
-                <div>
-
-                    <strong>Invoice Total</strong>
-
-                    <span>
-                        This is the total amount before payment.
-                    </span>
-
-                </div>
-
-                <strong id="newInvoiceTotal">
-                    GHS 0.00
-                </strong>
-
-            </div>
-
-
-            <!-- Actions -->
-            <div class="generate-invoice-actions">
-
-                <button
-                    type="button"
-                    class="secondary-button"
-                    id="cancelGenerateInvoice"
-                >
-                    Cancel
-                </button>
-
-                <button
-                    type="submit"
-                    class="primary-button"
-                >
-                    Generate Invoice
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
 <script src="../js/finance.js"></script>
+<script src="../js/logout.js"></script>
 
 </body>
 

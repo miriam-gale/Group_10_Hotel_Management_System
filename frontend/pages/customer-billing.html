@@ -314,6 +314,65 @@
             border-bottom: 1px solid #eee;
         }
 
+        .payment-amount-box {
+    margin-bottom: 24px;
+}
+
+.payment-amount-box label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.payment-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9dce1;
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
+    height: 52px;
+}
+
+.payment-input-wrapper span {
+    padding-left: 15px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.payment-input-wrapper input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 15px 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #172033;
+    background: transparent;
+}
+
+.payment-input-wrapper:focus-within {
+    border-color: #512bb5;
+    box-shadow: 0 0 0 3px rgba(81, 43, 181, 0.1);
+}
+
+.payment-amount-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.payment-amount-info strong {
+    color: #512bb5;
+    font-size: 13px;
+}
+
         .invoice-detail-row span {
             color: #6b7280;
         }
@@ -781,6 +840,7 @@
 
 
 <script src="../js/customer-billing.js"></script>
+<script src="../js/customer.js"></script>
 
 </body>
 

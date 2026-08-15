@@ -525,3 +525,141 @@
     background: #c8c8c8;
     border-radius: 10px;
 }
+
+/* ============================================================
+   INVOICE DETAILS MODAL
+   ============================================================ */
+
+#invoiceModal .modal {
+    max-width: 720px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#invoiceModal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+#invoiceModal .modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#invoiceModal .detail-list {
+    padding: 24px 32px;
+}
+
+#invoiceModal .detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 15px;
+}
+
+#invoiceModal .detail-row span {
+    color: #667085;
+}
+
+#invoiceModal .detail-row strong {
+    color: #182230;
+    font-weight: 600;
+    text-align: right;
+}
+
+#invoiceModal .detail-row.total {
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 2px solid #e5e7eb;
+    border-bottom: none;
+}
+
+#invoiceModal .detail-row.total span,
+#invoiceModal .detail-row.total strong {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+#invoiceModal .form-group {
+    padding: 0 32px 18px;
+}
+
+#invoiceModal .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #344054;
+}
+
+#invoiceModal .form-group input,
+#invoiceModal .form-group select {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    background: #fff;
+    color: #182230;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+#invoiceModal .form-group input:focus,
+#invoiceModal .form-group select:focus {
+    outline: none;
+    border-color: #5732b3;
+    box-shadow: 0 0 0 3px rgba(87, 50, 179, 0.12);
+}
+
+#invoiceModal .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 32px 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+#invoiceModal .secondary-button,
+#invoiceModal .primary-button {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#invoiceModal .secondary-button {
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    color: #344054;
+}
+
+#invoiceModal .primary-button {
+    background: #5732b3;
+    border: 1px solid #5732b3;
+    color: #fff;
+}
+
+#invoiceModal .primary-button:hover {
+    opacity: 0.92;
+}
+
+#invoiceModal .modal-close {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #667085;
+    cursor: pointer;
+}

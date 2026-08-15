@@ -7,7 +7,6 @@
     <title>Event Staff | Grand Horizon Hotel</title>
 
     <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/modules.css">
 <link rel="stylesheet" href="../css/event-staff.css">
 </head>
 
@@ -41,28 +40,39 @@
                 <span>Event Bookings</span>
             </a>
 
-            <a href="#logistics" class="nav-item">
-                <span class="nav-icon">⚙</span>
-                <span>Event Logistics</span>
-            </a>
+            <a href="staff-feedback.html" class="nav-item">
+    
+    <span>Feedback</span>
+</a>
+            
 
-            <a href="#resources" class="nav-item">
-                <span class="nav-icon">▣</span>
-                <span>Facility Resources</span>
-            </a>
+          
+
+            
 
         </nav>
 
         <div class="sidebar-user">
 
-            <div class="user-avatar">ES</div>
+    <div class="user-avatar">ES</div>
 
-            <div class="user-info">
-                <strong>Event Staff</strong>
-                <span>Event Staff</span>
-            </div>
+    <div class="user-info">
 
-        </div>
+        <strong>Event Staff</strong>
+
+        <span>Event Staff</span>
+
+        <a
+            href="login.html"
+            id="logoutButton"
+            class="logout-link"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</div>
 
     </aside>
 
@@ -122,8 +132,7 @@
                     <h1>Event Staff Dashboard</h1>
 
                     <p>
-                        Manage event bookings, hall availability,
-                        logistics and facility resources.
+                       Manage event bookings and hall availability.
                     </p>
                 </div>
 
@@ -201,13 +210,7 @@
                     <div class="event-stat-icon">▣</div>
 
                     <div>
-                        <span class="event-stat-label">
-                            Resources Assigned
-                        </span>
-
-                        <strong id="assignedResourcesCount">
-                            0
-                        </strong>
+                        
                     </div>
 
                 </div>
@@ -337,73 +340,10 @@
             </section>
 
 
-            <!-- EVENT LOGISTICS -->
-            <section id="logistics" class="dashboard-card event-section">
-
-                <div class="card-header">
-
-                    <div>
-                        <h2>Event Logistics</h2>
-
-                        <p>
-                            Coordinate operational requirements
-                            for upcoming events.
-                        </p>
-                    </div>
-
-                </div>
+            
 
 
-                <div
-                    class="logistics-grid"
-                    id="logisticsGrid"
-                >
-                </div>
-
-            </section>
-
-
-            <!-- FACILITY RESOURCES -->
-            <section id="resources" class="dashboard-card event-section">
-
-                <div class="card-header">
-
-                    <div>
-                        <h2>Facility Resources</h2>
-
-                        <p>
-                            Assign and track resources required
-                            for each event.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                <div class="table-wrapper">
-
-                    <table class="reservation-table">
-
-                        <thead>
-
-                            <tr>
-                                <th>Event</th>
-                                <th>Resource</th>
-                                <th>Quantity</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="resourcesBody">
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
+            
 
         </main>
 
@@ -590,6 +530,8 @@
 
 
 <script src="../js/event-staff.js"></script>
+<script src="../js/logout.js"></script>
 
 </body>
 </html>
+

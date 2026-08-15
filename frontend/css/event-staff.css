@@ -237,3 +237,83 @@
         width: auto;
     }
 }
+
+/* ============================================================
+   EVENT STATUS DROPDOWN
+   ============================================================ */
+
+.event-status-select {
+    width: 120px;
+    min-width: 120px;
+    height: 38px;
+
+    padding: 0 28px 0 12px;
+
+    border: 1px solid #d9dce8;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+    color: #172554;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    outline: none;
+
+    appearance: none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, #4f2dbd 50%),
+        linear-gradient(135deg, #4f2dbd 50%, transparent 50%);
+
+    background-position:
+        calc(100% - 13px) 16px,
+        calc(100% - 8px) 16px;
+
+    background-size:
+        5px 5px,
+        5px 5px;
+
+    background-repeat: no-repeat;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.event-status-select:hover {
+    border-color: #4f2dbd;
+}
+
+.event-status-select:focus {
+    border-color: #4f2dbd;
+    box-shadow: 0 0 0 3px rgba(79, 45, 189, 0.12);
+}
+/* ============================================================
+   STATUS OPTIONS
+   ============================================================ */
+
+.event-status-select option {
+    background: #ffffff;
+    color: #172554;
+    font-size: 14px;
+    padding: 10px;
+}
+
+
+/* ============================================================
+   ACTION AREA
+   ============================================================ */
+
+.event-bookings-table td:last-child {
+    min-width: 260px;
+}
+
+.event-bookings-table td:last-child > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}

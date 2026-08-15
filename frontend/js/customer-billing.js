@@ -526,9 +526,6 @@ function createInvoiceCard(invoice) {
 }
 
 
-/* =========================================
-   OPEN INVOICE MODAL
-========================================= */
 
 async function openInvoiceModal(
     invoiceId,
@@ -760,62 +757,121 @@ async function openInvoiceModal(
             </div>
 
 
-            ${
-                !isPaid && allowPayment
-                    ? `
-                        <div class="payment-method-section">
+           
 
-                            <h3>
-                                Payment Method
-                            </h3>
+                           ${
+    !isPaid && allowPayment
+        ? `
+            <div class="payment-method-section">
 
-                            <div class="payment-methods">
+                <h3>
+                    Payment Amount
+                </h3>
 
-                                <label class="payment-method">
+                <div class="payment-amount-box">
 
-                                    <input
-                                        type="radio"
-                                        name="paymentMethod"
-                                        value="momo"
-                                        checked
-                                    >
+                    <label for="paymentAmount">
+                        Enter amount to pay
+                    </label>
 
-                                    <span>
-                                        Mobile Money
-                                    </span>
+                    <div class="payment-input-wrapper">
+                        <span>GHS</span>
 
-                                </label>
+                        <input
+                            type="number"
+                            id="paymentAmount"
+                            min="0.01"
+                            max="${Math.max(
+                                Number(invoice.TotalAmount || 0) -
+                                Number(invoice.AmountPaid || 0),
+                                0
+                            )}"
+                            step="0.01"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                    <div class="payment-amount-info">
+
+                        <span>
+                            Total:
+                            ${formatMoney(invoice.TotalAmount)}
+                        </span>
+
+                        <span>
+                            Already Paid:
+                            ${formatMoney(invoice.AmountPaid || 0)}
+                        </span>
+
+                        <strong>
+                            Outstanding:
+                            ${formatMoney(
+                                Math.max(
+                                    Number(invoice.TotalAmount || 0) -
+                                    Number(invoice.AmountPaid || 0),
+                                    0
+                                )
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
 
 
-                                <label class="payment-method">
+                <h3>
+                    Payment Method
+                </h3>
 
-                                    <input
-                                        type="radio"
-                                        name="paymentMethod"
-                                        value="card"
-                                    >
+                <div class="payment-methods">
 
-                                    <span>
-                                        Card
-                                    </span>
+                    <label class="payment-method">
 
-                                </label>
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="momo"
+                            checked
+                        >
 
-                            </div>
+                        <span>
+                            Mobile Money
+                        </span>
+
+                    </label>
 
 
-                            <div class="payment-note">
+                    <label class="payment-method">
 
-                                Payment processing will be connected
-                                once the customer payment endpoint
-                                is provided by the backend team.
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="card"
+                        >
 
-                            </div>
+                        <span>
+                            Card
+                        </span>
 
-                        </div>
-                    `
-                    : ""
-            }
+                    </label>
+
+                </div>
+
+
+                <div class="payment-note">
+
+                    Payment processing is currently
+                    simulated for this project.
+
+                </div>
+
+            </div>
+        `
+        : ""
+}
+
+
 
         `;
 
@@ -995,37 +1051,130 @@ document
    PAY BUTTON
 ========================================= */
 
+
 document
-    .getElementById(
-        "payInvoiceButton"
-    )
-    .addEventListener(
-        "click",
-        function () {
+    .getElementById("payInvoiceButton")
+    .addEventListener("click", async function () {
 
-            if (!selectedInvoice) {
-                return;
-            }
-
-
-            /*
-             * PAYMENT BACKEND PENDING
-             *
-             * The current backend payment route
-             * requires manager authorization.
-             *
-             * We will connect this button to the
-             * customer payment endpoint once the
-             * backend team provides it.
-             */
-
-            alert(
-                "Payment processing will be available once the customer payment service is connected."
-            );
-
+        if (!selectedInvoice) {
+            return;
         }
+
+        const payButton =
+            document.getElementById("payInvoiceButton");
+
+        const invoiceId =
+            selectedInvoice.InvoiceID;
+
+        const paymentAmountInput =
+    document.getElementById("paymentAmount");
+
+const amount =
+    Number(
+        paymentAmountInput
+            ? paymentAmountInput.value
+            : 0
     );
 
+const totalAmount =
+    Number(selectedInvoice.TotalAmount || 0);
+
+const alreadyPaid =
+    Number(selectedInvoice.AmountPaid || 0);
+
+const outstanding =
+    Math.max(
+        totalAmount - alreadyPaid,
+        0
+    );
+
+        if (!invoiceId) {
+            alert("Invalid invoice.");
+            return;
+        }
+
+        if (!amount || amount <= 0) {
+    alert("Please enter a valid payment amount.");
+    return;
+}
+
+if (amount > outstanding) {
+    alert(
+        `Payment cannot exceed the outstanding amount of ${formatMoney(outstanding)}.`
+    );
+    return;
+}
+
+        payButton.disabled = true;
+        payButton.textContent = "Processing...";
+
+        try {
+
+            const response = await fetch(
+                `${API_BASE}/invoices/${invoiceId}/customer-pay`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Authorization":
+                            `Bearer ${getToken()}`,
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        AmountPaid: amount
+                    })
+                }
+            );
+
+            let data = {};
+
+            try {
+                data = await response.json();
+            } catch {
+                // Empty response
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    `Payment failed (${response.status})`
+                );
+            }
+
+            alert(
+                data.message ||
+                "Payment recorded successfully."
+            );
+
+            closeInvoiceModal();
+
+            // Refresh invoices and summary
+            await loadInvoices();
+
+        } catch (error) {
+
+            console.error(
+                "Customer payment error:",
+                error
+            );
+
+            alert(
+                "Payment failed: " +
+                error.message
+            );
+
+        } finally {
+
+            payButton.disabled = false;
+            payButton.textContent = "Pay Now";
+
+        }
+
+    });
 
 /* =========================================
    LOGOUT
@@ -1058,55 +1207,42 @@ document
 ========================================= */
 
 function loadUserInfo() {
-
-    const firstName =
-        localStorage.getItem(
-            "FirstName"
-        );
-
+    const firstName = localStorage.getItem("FirstName");
 
     if (!firstName) {
         return;
     }
 
+    const name = firstName;
 
-    const initials =
-        firstName
-            .split(" ")
-            .map(
-                word =>
-                    word.charAt(0)
-            )
-            .join("")
-            .substring(0, 2)
-            .toUpperCase();
+    const initials = name
+        .split(" ")
+        .map(word => word.charAt(0))
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
 
+    const sidebarName = document.getElementById("sidebarName");
+    const profileName = document.getElementById("profileName");
+    const sidebarAvatar = document.getElementById("sidebarAvatar");
+    const profileAvatar = document.getElementById("profileAvatar");
 
-    document.getElementById(
-        "sidebarName"
-    ).textContent =
-        firstName;
+    if (sidebarName) {
+        sidebarName.textContent = name;
+    }
 
+    if (profileName) {
+        profileName.textContent = name;
+    }
 
-    document.getElementById(
-        "profileName"
-    ).textContent =
-        firstName;
+    if (sidebarAvatar) {
+        sidebarAvatar.textContent = initials;
+    }
 
-
-    document.getElementById(
-        "sidebarAvatar"
-    ).textContent =
-        initials;
-
-
-    document.getElementById(
-        "profileAvatar"
-    ).textContent =
-        initials;
-
+    if (profileAvatar) {
+        profileAvatar.textContent = initials;
+    }
 }
-
 
 /* =========================================
    INITIALIZE

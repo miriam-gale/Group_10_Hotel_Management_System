@@ -1,168 +1,26 @@
-/* =========================================
-   EVENT STAFF — MOCK DATA
-   Temporary frontend data until backend
-   role-specific endpoints are completed.
-========================================= */
+/* ============================================================
+   GRAND HORIZON HOTEL
+   EVENT STAFF DASHBOARD
+   ============================================================ */
 
-const customers = [
-    { id: 1, name: "Kwame Mensah" },
-    { id: 2, name: "Akosua Boateng" },
-    { id: 3, name: "James Anderson" },
-    { id: 4, name: "Ama Serwaa" },
-    { id: 5, name: "Michael Owusu" }
-];
+const API = "http://localhost:3000/api";
 
-const halls = [
-    {
-        id: 1,
-        name: "Conference Hall A",
-        capacity: 100
-    },
-    {
-        id: 2,
-        name: "Grand Ballroom",
-        capacity: 300
-    },
-    {
-        id: 3,
-        name: "Event Hall B",
-        capacity: 150
-    },
-    {
-        id: 4,
-        name: "Garden Pavilion",
-        capacity: 200
-    }
-];
+/* ============================================================
+   STATE
+   ============================================================ */
+
+let customers = [];
+let halls = [];
+let events = [];
 
 
-let events = [
-    {
-        id: 1,
-        customerId: 1,
-        hallId: 1,
-        eventType: "Corporate Conference",
-        eventDate: "2026-08-15",
-        startTime: "09:00",
-        endTime: "17:00",
-        attendees: 90,
-        status: "Scheduled"
-    },
-    {
-        id: 2,
-        customerId: 2,
-        hallId: 2,
-        eventType: "Wedding Ceremony",
-        eventDate: "2026-08-16",
-        startTime: "14:00",
-        endTime: "22:00",
-        attendees: 250,
-        status: "Scheduled"
-    },
-    {
-        id: 3,
-        customerId: 4,
-        hallId: 3,
-        eventType: "Birthday Party",
-        eventDate: "2026-08-17",
-        startTime: "18:00",
-        endTime: "22:00",
-        attendees: 40,
-        status: "In Progress"
-    },
-    {
-        id: 4,
-        customerId: 3,
-        hallId: 4,
-        eventType: "Product Launch",
-        eventDate: "2026-08-18",
-        startTime: "10:00",
-        endTime: "14:00",
-        attendees: 70,
-        status: "Scheduled"
-    }
-];
+
+let nextEventId = 1000;
 
 
-let resources = [
-    {
-        id: 1,
-        eventId: 1,
-        resource: "Projector",
-        quantity: 1,
-        status: "Assigned"
-    },
-    {
-        id: 2,
-        eventId: 1,
-        resource: "Chairs",
-        quantity: 90,
-        status: "Assigned"
-    },
-    {
-        id: 3,
-        eventId: 2,
-        resource: "Tables",
-        quantity: 30,
-        status: "Pending"
-    },
-    {
-        id: 4,
-        eventId: 2,
-        resource: "Sound System",
-        quantity: 1,
-        status: "Assigned"
-    },
-    {
-        id: 5,
-        eventId: 3,
-        resource: "Microphones",
-        quantity: 4,
-        status: "Assigned"
-    }
-];
-
-
-let logistics = [
-    {
-        eventId: 1,
-        tasks: {
-            "Hall assigned": true,
-            "Seating arranged": true,
-            "Catering confirmed": false,
-            "Audio/Visual equipment": true,
-            "Decorations": false
-        }
-    },
-    {
-        eventId: 2,
-        tasks: {
-            "Hall assigned": true,
-            "Seating arranged": false,
-            "Catering confirmed": true,
-            "Audio/Visual equipment": true,
-            "Decorations": false
-        }
-    },
-    {
-        eventId: 3,
-        tasks: {
-            "Hall assigned": true,
-            "Seating arranged": true,
-            "Catering confirmed": true,
-            "Audio/Visual equipment": true,
-            "Decorations": true
-        }
-    }
-];
-
-
-let nextEventId = 5;
-
-
-/* =========================================
+/* ============================================================
    DOM ELEMENTS
-========================================= */
+   ============================================================ */
 
 const upcomingEventsCount =
     document.getElementById("upcomingEventsCount");
@@ -173,8 +31,6 @@ const availableHallsCount =
 const activeEventsCount =
     document.getElementById("activeEventsCount");
 
-const assignedResourcesCount =
-    document.getElementById("assignedResourcesCount");
 
 const hallAvailabilityBody =
     document.getElementById("hallAvailabilityBody");
@@ -182,11 +38,9 @@ const hallAvailabilityBody =
 const eventBookingsBody =
     document.getElementById("eventBookingsBody");
 
-const logisticsGrid =
-    document.getElementById("logisticsGrid");
 
-const resourcesBody =
-    document.getElementById("resourcesBody");
+
+
 
 const eventSearch =
     document.getElementById("eventSearch");
@@ -203,46 +57,149 @@ const eventForm =
 const eventFormError =
     document.getElementById("eventFormError");
 
+const newEventButton =
+    document.getElementById("newEventButton");
 
-/* =========================================
-   HELPER FUNCTIONS
-========================================= */
+const closeEventModalButton =
+    document.getElementById("closeEventModal");
 
-function getCustomerName(customerId) {
+const cancelEventModalButton =
+    document.getElementById("cancelEventModal");
 
-    const customer = customers.find(
-        customer => customer.id === customerId
+const logoutButton =
+    document.getElementById("logoutButton");
+
+
+/* ============================================================
+   AUTHENTICATION
+   ============================================================ */
+
+function getStaffToken() {
+    return (
+        sessionStorage.getItem("mgr_token") ||
+        localStorage.getItem("token") ||
+        localStorage.getItem("customerToken")
+    );
+}
+
+
+function requireAuthentication() {
+    const token = getStaffToken();
+
+    if (!token) {
+        window.location.href = "login.html";
+        return false;
+    }
+
+    return true;
+}
+
+
+/* ============================================================
+   API HELPER
+   ============================================================ */
+
+async function apiFetch(endpoint, options = {}) {
+
+    const token = getStaffToken();
+
+    if (!token) {
+        window.location.href = "login.html";
+        return null;
+    }
+
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+        "Authorization": `Bearer ${token}`
+    };
+
+    const response = await fetch(
+        `${API}${endpoint}`,
+        {
+            ...options,
+            headers
+        }
     );
 
-    return customer
-        ? customer.name
-        : "Unknown Customer";
+    let data = {};
+
+    try {
+        data = await response.json();
+    } catch {
+        data = {};
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            data.error ||
+            data.message ||
+            `Request failed (${response.status})`
+        );
+    }
+
+    return data;
 }
 
 
-function getHall(hallId) {
+/* ============================================================
+   HELPERS
+   ============================================================ */
 
-    return halls.find(
-        hall => hall.id === hallId
-    );
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-function getHallName(hallId) {
+function formatDate(dateValue) {
 
-    const hall = getHall(hallId);
+    if (!dateValue) {
+        return "—";
+    }
 
-    return hall
-        ? hall.name
-        : "Unknown Hall";
-}
+    const value = String(dateValue).split("T")[0];
 
+    const parts = value.split("-");
 
-function formatDate(dateString) {
+    if (parts.length !== 3) {
+        return "—";
+    }
+
+    const year = Number(parts[0]);
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+
+    if (
+        !year ||
+        !month ||
+        !day ||
+        month < 1 ||
+        month > 12 ||
+        day < 1 ||
+        day > 31
+    ) {
+        return "—";
+    }
 
     const date = new Date(
-        dateString + "T00:00:00"
+        year,
+        month - 1,
+        day
     );
+
+    if (Number.isNaN(date.getTime())) {
+        return "—";
+    }
 
     return date.toLocaleDateString(
         "en-GB",
@@ -257,21 +214,137 @@ function formatDate(dateString) {
 
 function getStatusClass(status) {
 
-    return status
+    if (!status) {
+        return "";
+    }
+
+    return String(status)
         .toLowerCase()
         .replace(/\s+/g, "-");
 }
 
 
-/* =========================================
+function getCustomerName(customerId) {
+
+    const customer =
+        customers.find(
+            customer =>
+                Number(customer.id) === Number(customerId)
+        );
+
+    if (customer) {
+        return customer.name;
+    }
+
+    const event =
+        events.find(
+            item =>
+                Number(item.customerId) === Number(customerId)
+        );
+
+    return event?.customerName || "Unknown Customer";
+}
+
+
+function getHall(hallId) {
+
+    return halls.find(
+        hall =>
+            Number(hall.id) === Number(hallId)
+    );
+}
+
+
+function getHallName(hallId) {
+
+    const hall = getHall(hallId);
+
+    if (hall) {
+        return hall.name;
+    }
+
+    const event =
+        events.find(
+            item =>
+                Number(item.hallId) === Number(hallId)
+        );
+
+    return event?.hallName || "Unknown Hall";
+}
+
+
+/* ============================================================
+   SIDEBAR NAVIGATION
+   ============================================================ */
+
+function setupSidebarNavigation() {
+
+    const navItems =
+        document.querySelectorAll(
+            ".sidebar-nav .nav-item"
+        );
+
+    navItems.forEach(link => {
+
+        link.addEventListener(
+            "click",
+            event => {
+
+                const href =
+                    link.getAttribute("href");
+
+                if (
+                    !href ||
+                    !href.startsWith("#")
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                const target =
+                    document.querySelector(href);
+
+                if (!target) {
+                    console.warn(
+                        "Navigation target not found:",
+                        href
+                    );
+                    return;
+                }
+
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                link.classList.add("active");
+            }
+        );
+    });
+}
+
+
+/* ============================================================
    DASHBOARD SUMMARY
-========================================= */
+   ============================================================ */
 
 function renderSummary() {
 
+    if (!upcomingEventsCount) {
+        return;
+    }
+
     const upcoming =
         events.filter(event =>
-            event.status === "Scheduled"
+            [
+                "Scheduled",
+                "Confirmed"
+            ].includes(event.status)
         );
 
     const active =
@@ -279,10 +352,7 @@ function renderSummary() {
             event.status === "In Progress"
         );
 
-    const assigned =
-        resources.filter(resource =>
-            resource.status === "Assigned"
-        );
+    
 
     upcomingEventsCount.textContent =
         upcoming.length;
@@ -290,24 +360,27 @@ function renderSummary() {
     activeEventsCount.textContent =
         active.length;
 
-    assignedResourcesCount.textContent =
-        assigned.length;
-
-
-    /*
-       Mock availability:
-       A hall is considered available if it
-       isn't assigned to an upcoming event.
-    */
+  
 
     const bookedHallIds =
-        upcoming.map(event =>
-            event.hallId
-        );
+        events
+            .filter(event =>
+                [
+                    "Scheduled",
+                    "Confirmed",
+                    "In Progress"
+                ].includes(event.status)
+            )
+            .map(event =>
+                Number(event.hallId)
+            );
 
     const available =
-        halls.filter(hall =>
-            !bookedHallIds.includes(hall.id)
+        halls.filter(
+            hall =>
+                !bookedHallIds.includes(
+                    Number(hall.id)
+                )
         );
 
     availableHallsCount.textContent =
@@ -315,55 +388,78 @@ function renderSummary() {
 }
 
 
-/* =========================================
+/* ============================================================
    HALL AVAILABILITY
-========================================= */
+   ============================================================ */
 
 function renderHallAvailability() {
 
+    if (!hallAvailabilityBody) {
+        return;
+    }
+
     hallAvailabilityBody.innerHTML = "";
+
+    if (!halls.length) {
+
+        hallAvailabilityBody.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty-row">
+                    No halls available.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
 
     halls.forEach(hall => {
 
         const bookedEvent =
             events.find(event =>
-                event.hallId === hall.id &&
-                (
-                    event.status === "Scheduled" ||
-                    event.status === "In Progress"
-                )
+                Number(event.hallId) ===
+                    Number(hall.id) &&
+                [
+                    "Scheduled",
+                    "Confirmed",
+                    "In Progress"
+                ].includes(event.status)
             );
-
 
         const row =
             document.createElement("tr");
-
 
         if (bookedEvent) {
 
             row.innerHTML = `
                 <td>
                     <strong>
-                        ${hall.name}
+                        ${escapeHTML(hall.name)}
                     </strong>
                 </td>
 
                 <td>
-                    ${hall.capacity}
+                    ${escapeHTML(hall.capacity)}
                 </td>
 
                 <td>
-                    ${formatDate(bookedEvent.eventDate)}
+                    ${formatDate(
+                        bookedEvent.eventDate
+                    )}
                 </td>
 
                 <td>
-                    ${bookedEvent.startTime}
+                    ${escapeHTML(
+                        bookedEvent.startTime || "—"
+                    )}
                     -
-                    ${bookedEvent.endTime}
+                    ${escapeHTML(
+                        bookedEvent.endTime || "—"
+                    )}
                 </td>
 
                 <td>
-                    <span class="status-badge ${getStatusClass(bookedEvent.status)}">
+                    <span class="status-badge booked">
                         Booked
                     </span>
                 </td>
@@ -374,21 +470,17 @@ function renderHallAvailability() {
             row.innerHTML = `
                 <td>
                     <strong>
-                        ${hall.name}
+                        ${escapeHTML(hall.name)}
                     </strong>
                 </td>
 
                 <td>
-                    ${hall.capacity}
+                    ${escapeHTML(hall.capacity)}
                 </td>
 
-                <td>
-                    —
-                </td>
+                <td>—</td>
 
-                <td>
-                    —
-                </td>
+                <td>—</td>
 
                 <td>
                     <span class="status-badge available">
@@ -398,26 +490,28 @@ function renderHallAvailability() {
             `;
         }
 
-
         hallAvailabilityBody.appendChild(row);
     });
 }
 
 
-/* =========================================
-   EVENT BOOKINGS
-========================================= */
+/* ============================================================
+   EVENT FILTERING
+   ============================================================ */
 
 function getFilteredEvents() {
 
     const search =
-        eventSearch.value
-            .trim()
-            .toLowerCase();
+        eventSearch
+            ? eventSearch.value
+                .trim()
+                .toLowerCase()
+            : "";
 
     const status =
-        eventStatusFilter.value;
-
+        eventStatusFilter
+            ? eventStatusFilter.value
+            : "all";
 
     return events.filter(event => {
 
@@ -425,36 +519,52 @@ function getFilteredEvents() {
             status === "all" ||
             event.status === status;
 
+        const eventType =
+            String(event.eventType || "")
+                .toLowerCase();
+
+        const customer =
+            getCustomerName(
+                event.customerId
+            ).toLowerCase();
+
+        const hall =
+            getHallName(
+                event.hallId
+            ).toLowerCase();
 
         const matchesSearch =
-            event.eventType
-                .toLowerCase()
-                .includes(search) ||
+            eventType.includes(search) ||
+            customer.includes(search) ||
+            hall.includes(search);
 
-            getCustomerName(event.customerId)
-                .toLowerCase()
-                .includes(search) ||
-
-            getHallName(event.hallId)
-                .toLowerCase()
-                .includes(search);
-
-
-        return matchesStatus &&
-               matchesSearch;
+        return (
+            matchesStatus &&
+            matchesSearch
+        );
     });
 }
 
 
+/* ============================================================
+   EVENT BOOKINGS
+   ============================================================ */
+
+/* ============================================================
+   EVENT BOOKINGS
+   ============================================================ */
+
 function renderEvents() {
+
+    if (!eventBookingsBody) {
+        return;
+    }
 
     eventBookingsBody.innerHTML = "";
 
-    const filtered =
-        getFilteredEvents();
+    const filtered = getFilteredEvents();
 
-
-    if (filtered.length === 0) {
+    if (!filtered.length) {
 
         eventBookingsBody.innerHTML = `
             <tr>
@@ -470,424 +580,399 @@ function renderEvents() {
         return;
     }
 
-
     filtered.forEach(event => {
 
-        const row =
-            document.createElement("tr");
+        const row = document.createElement("tr");
 
+        const currentStatus =
+            event.status || "Confirmed";
 
         row.innerHTML = `
-
             <td>
                 <strong>
-                    ${event.eventType}
+                    ${escapeHTML(
+                        event.eventType || "Event"
+                    )}
                 </strong>
             </td>
 
             <td>
-                ${getCustomerName(event.customerId)}
+                ${escapeHTML(
+                    getCustomerName(
+                        event.customerId
+                    )
+                )}
             </td>
 
             <td>
-                ${getHallName(event.hallId)}
+                ${escapeHTML(
+                    getHallName(
+                        event.hallId
+                    )
+                )}
             </td>
 
             <td>
-                ${formatDate(event.eventDate)}
+                ${formatDate(
+                    event.eventDate
+                )}
             </td>
 
             <td>
-                ${event.startTime}
+                ${escapeHTML(
+                    event.startTime || "—"
+                )}
                 -
-                ${event.endTime}
+                ${escapeHTML(
+                    event.endTime || "—"
+                )}
             </td>
 
             <td>
-                ${event.attendees}
+                ${escapeHTML(
+                    event.attendees || 0
+                )}
             </td>
 
             <td>
                 <span
-                    class="status-badge ${getStatusClass(event.status)}"
+                    class="status-badge ${getStatusClass(
+                        currentStatus
+                    )}"
                 >
-                    ${event.status}
+                    ${escapeHTML(
+                        currentStatus
+                    )}
                 </span>
             </td>
 
             <td>
-                <button
-                    type="button"
-                    class="action-button"
-                    data-action="logistics"
-                    data-id="${event.id}"
+
+                <div
+                    style="
+                        display:flex;
+                        gap:8px;
+                        align-items:center;
+                        flex-wrap:wrap;
+                    "
                 >
-                    Logistics
-                </button>
+
+                    
+
+                    <select
+                        class="event-status-select"
+                        data-action="status"
+                        data-id="${event.id}"
+                        aria-label="Update event status"
+                    >
+
+                        <option value="">
+                            Update Status
+                        </option>
+
+                        <option
+                            value="Confirmed"
+                            ${currentStatus === "Confirmed"
+                                ? "selected"
+                                : ""}
+                        >
+                            Confirmed
+                        </option>
+
+                        <option
+                            value="In Progress"
+                            ${currentStatus === "In Progress"
+                                ? "selected"
+                                : ""}
+                        >
+                            In Progress
+                        </option>
+
+                        <option
+                            value="Completed"
+                            ${currentStatus === "Completed"
+                                ? "selected"
+                                : ""}
+                        >
+                            Completed
+                        </option>
+
+                        <option
+                            value="Cancelled"
+                            ${currentStatus === "Cancelled"
+                                ? "selected"
+                                : ""}
+                        >
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
             </td>
         `;
-
 
         eventBookingsBody.appendChild(row);
     });
 }
 
 
-/* =========================================
-   LOGISTICS
-========================================= */
-
-function renderLogistics() {
-
-    logisticsGrid.innerHTML = "";
 
 
-    logistics.forEach(item => {
-
-        const event =
-            events.find(
-                event => event.id === item.eventId
-            );
-
-
-        if (!event) return;
-
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "logistics-card";
-
-
-        const taskEntries =
-            Object.entries(item.tasks);
-
-
-        card.innerHTML = `
-
-            <div class="logistics-card-header">
-
-                <div>
-                    <h3>
-                        ${event.eventType}
-                    </h3>
-
-                    <p>
-                        ${getHallName(event.hallId)}
-                        ·
-                        ${formatDate(event.eventDate)}
-                    </p>
-                </div>
-
-                <span
-                    class="status-badge ${getStatusClass(event.status)}"
-                >
-                    ${event.status}
-                </span>
-
-            </div>
-
-
-            <div class="logistics-tasks">
-
-                ${taskEntries.map(
-                    ([task, complete]) => `
-                        <label class="logistics-task">
-
-                            <input
-                                type="checkbox"
-                                data-event-id="${event.id}"
-                                data-task="${task}"
-                                ${complete ? "checked" : ""}
-                            >
-
-                            <span>
-                                ${task}
-                            </span>
-
-                        </label>
-                    `
-                ).join("")}
-
-            </div>
-        `;
-
-
-        logisticsGrid.appendChild(card);
-    });
-}
-
-
-/* =========================================
-   FACILITY RESOURCES
-========================================= */
-
-function renderResources() {
-
-    resourcesBody.innerHTML = "";
-
-
-    resources.forEach(resource => {
-
-        const event =
-            events.find(
-                event => event.id === resource.eventId
-            );
-
-
-        if (!event) return;
-
-
-        const row =
-            document.createElement("tr");
-
-
-        row.innerHTML = `
-
-            <td>
-                ${event.eventType}
-            </td>
-
-            <td>
-                ${resource.resource}
-            </td>
-
-            <td>
-                ${resource.quantity}
-            </td>
-
-            <td>
-                <span
-                    class="status-badge ${getStatusClass(resource.status)}"
-                >
-                    ${resource.status}
-                </span>
-            </td>
-
-            <td>
-
-                <button
-                    type="button"
-                    class="action-button"
-                    data-resource-id="${resource.id}"
-                >
-                    ${
-                        resource.status === "Assigned"
-                            ? "Unassign"
-                            : "Assign"
-                    }
-                </button>
-
-            </td>
-        `;
-
-
-        resourcesBody.appendChild(row);
-    });
-}
-
-
-/* =========================================
-   POPULATE FORM
-========================================= */
+/* ============================================================
+   FORM OPTIONS
+   ============================================================ */
 
 function populateFormOptions() {
 
     const customerSelect =
-        document.getElementById("customerName");
+        document.getElementById(
+            "customerName"
+        );
 
     const hallSelect =
-        document.getElementById("hallName");
+        document.getElementById(
+            "hallName"
+        );
 
+    if (customerSelect) {
 
-    customers.forEach(customer => {
+        customerSelect.innerHTML = `
+            <option value="">
+                Select customer
+            </option>
+        `;
 
-        const option =
-            document.createElement("option");
+        customers.forEach(customer => {
 
-        option.value =
-            customer.id;
+            const option =
+                document.createElement("option");
 
-        option.textContent =
-            customer.name;
+            option.value =
+                customer.id;
 
-        customerSelect.appendChild(option);
-    });
+            option.textContent =
+                customer.name;
 
+            customerSelect.appendChild(option);
+        });
+    }
 
-    halls.forEach(hall => {
+    if (hallSelect) {
 
-        const option =
-            document.createElement("option");
+        hallSelect.innerHTML = `
+            <option value="">
+                Select hall
+            </option>
+        `;
 
-        option.value =
-            hall.id;
+        halls.forEach(hall => {
 
-        option.textContent =
-            `${hall.name} (${hall.capacity} guests)`;
+            const option =
+                document.createElement("option");
 
-        hallSelect.appendChild(option);
-    });
+            option.value =
+                hall.id;
+
+            option.textContent =
+                `${hall.name} (${hall.capacity} guests)`;
+
+            hallSelect.appendChild(option);
+        });
+    }
 }
 
 
-/* =========================================
-   OPEN / CLOSE MODAL
-========================================= */
+/* ============================================================
+   EVENT MODAL
+   ============================================================ */
 
 function openEventModal() {
 
-    eventForm.reset();
+    if (!eventModal) {
+        return;
+    }
 
-    eventFormError.textContent = "";
+    if (eventForm) {
+        eventForm.reset();
+    }
+
+    if (eventFormError) {
+        eventFormError.textContent = "";
+    }
 
     eventModal.classList.add("open");
+
+    eventModal.style.display =
+        "flex";
 }
 
 
 function closeEventModal() {
 
+    if (!eventModal) {
+        return;
+    }
+
     eventModal.classList.remove("open");
+
+    eventModal.style.display =
+        "none";
 }
 
 
-/* =========================================
+/* ============================================================
    CREATE EVENT
-========================================= */
+   ============================================================ */
 
-function createEvent() {
+async function createEvent() {
 
     const eventType =
         document
             .getElementById("eventType")
-            .value
+            ?.value
             .trim();
 
     const customerId =
         Number(
             document
                 .getElementById("customerName")
-                .value
+                ?.value
         );
 
     const hallId =
         Number(
             document
                 .getElementById("hallName")
-                .value
+                ?.value
         );
 
     const eventDate =
         document
             .getElementById("eventDate")
-            .value;
+            ?.value;
 
     const startTime =
         document
             .getElementById("startTime")
-            .value;
+            ?.value;
 
     const endTime =
         document
             .getElementById("endTime")
-            .value;
+            ?.value;
 
     const attendees =
         Number(
             document
                 .getElementById("attendees")
-                .value
+                ?.value
         );
 
+    if (!eventFormError) {
+        return;
+    }
+
+    eventFormError.textContent = "";
+
+
+    /* =========================
+       VALIDATION
+       ========================= */
 
     if (!eventType) {
-
         eventFormError.textContent =
             "Event type is required.";
-
         return;
     }
-
 
     if (!customerId) {
-
         eventFormError.textContent =
             "Please select a customer.";
-
         return;
     }
-
 
     if (!hallId) {
-
         eventFormError.textContent =
             "Please select a hall.";
-
         return;
     }
-
 
     if (!eventDate) {
-
         eventFormError.textContent =
             "Event date is required.";
-
         return;
     }
-
 
     if (!startTime || !endTime) {
-
         eventFormError.textContent =
             "Start and end times are required.";
-
         return;
     }
-
 
     if (endTime <= startTime) {
-
         eventFormError.textContent =
             "End time must be later than start time.";
-
         return;
     }
-
 
     if (!attendees || attendees <= 0) {
-
         eventFormError.textContent =
             "Expected attendees must be greater than 0.";
-
         return;
     }
 
 
-    const hall =
-        getHall(hallId);
+    /* =========================
+       HALL VALIDATION
+       ========================= */
 
+    const hall = getHall(hallId);
 
-    if (attendees > hall.capacity) {
+    if (!hall) {
+        eventFormError.textContent =
+            "Selected hall could not be found.";
+        return;
+    }
 
+    if (
+        Number(attendees) >
+        Number(hall.capacity)
+    ) {
         eventFormError.textContent =
             `This hall can only accommodate ${hall.capacity} guests.`;
-
         return;
     }
 
+
+    /* =========================
+       FRONTEND CONFLICT CHECK
+       ========================= */
 
     const conflict =
         events.some(event => {
 
             if (
-                event.hallId !== hallId ||
-                event.eventDate !== eventDate ||
-                event.status === "Cancelled"
+                Number(event.hallId) !==
+                Number(hallId)
             ) {
                 return false;
             }
 
+            if (
+                String(event.eventDate)
+                    .split("T")[0] !==
+                String(eventDate)
+            ) {
+                return false;
+            }
+
+            if (
+                event.status === "Cancelled"
+            ) {
+                return false;
+            }
 
             return (
                 startTime < event.endTime &&
@@ -897,193 +982,343 @@ function createEvent() {
 
 
     if (conflict) {
-
         eventFormError.textContent =
             "This hall is already booked during the selected time.";
-
         return;
     }
 
 
-    events.push({
+    /* =========================
+       SAVE TO DATABASE
+       ========================= */
 
-        id: nextEventId++,
+    try {
 
-        customerId,
+        const token =
+            sessionStorage.getItem("mgr_token") ||
+            localStorage.getItem("token");
 
-        hallId,
-
-        eventType,
-
-        eventDate,
-
-        startTime,
-
-        endTime,
-
-        attendees,
-
-        status: "Scheduled"
-    });
-
-
-    closeEventModal();
-
-    renderAll();
-}
-
-
-/* =========================================
-   EVENT ACTIONS
-========================================= */
-
-eventBookingsBody.addEventListener(
-    "click",
-    event => {
-
-        const button =
-            event.target.closest("button");
-
-        if (!button) return;
-
-
-        const eventId =
-            Number(
-                button.dataset.id
-            );
-
-
-        if (
-            button.dataset.action ===
-            "logistics"
-        ) {
-
-            document
-                .getElementById("logistics")
-                .scrollIntoView({
-                    behavior: "smooth"
-                });
-        }
-    }
-);
-
-
-/* =========================================
-   RESOURCE ASSIGNMENT
-========================================= */
-
-resourcesBody.addEventListener(
-    "click",
-    event => {
-
-        const button =
-            event.target.closest("button");
-
-        if (!button) return;
-
-
-        const resourceId =
-            Number(
-                button.dataset.resourceId
-            );
-
-
-        const resource =
-            resources.find(
-                item => item.id === resourceId
-            );
-
-
-        if (!resource) return;
-
-
-        resource.status =
-            resource.status === "Assigned"
-                ? "Pending"
-                : "Assigned";
-
-
-        renderAll();
-    }
-);
-
-
-/* =========================================
-   LOGISTICS CHECKBOXES
-========================================= */
-
-logisticsGrid.addEventListener(
-    "change",
-    event => {
-
-        if (
-            event.target.type !==
-            "checkbox"
-        ) {
+        if (!token) {
+            window.location.href = "login.html";
             return;
         }
 
 
-        const eventId =
-            Number(
-                event.target.dataset.eventId
+        const response =
+            await fetch(
+                `${API}/events`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            `Bearer ${token}`
+                    },
+
+                    body: JSON.stringify({
+                        CustomerID: customerId,
+                        HallID: hallId,
+                        EventType: eventType,
+                        EventDate: eventDate,
+                        StartTime: startTime,
+                        EndTime: endTime,
+                        ExpectedAttendees: attendees
+                    })
+                }
             );
 
-        const task =
-            event.target.dataset.task;
+
+        const data =
+            await response.json();
 
 
-        const logisticsItem =
-            logistics.find(
-                item =>
-                    item.eventId === eventId
+        if (!response.ok) {
+            throw new Error(
+                data.error ||
+                "Unable to create event booking."
             );
+        }
 
 
-        if (!logisticsItem) return;
+        /* =========================
+           SUCCESS
+           ========================= */
+
+        console.log(
+            "Event booking created:",
+            data
+        );
+
+        closeEventModal();
+
+        /*
+         * Reload from the DATABASE.
+         * This proves the booking was
+         * actually persisted.
+         */
+        await loadEventsFromAPI();
+
+        renderAll();
+
+        document
+            .getElementById("eventBookings")
+            ?.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
 
-        logisticsItem.tasks[task] =
-            event.target.checked;
+    } catch (error) {
+
+        console.error(
+            "Create event error:",
+            error
+        );
+
+        eventFormError.textContent =
+            error.message ||
+            "Unable to create event booking.";
     }
-);
+}
 
 
-/* =========================================
-   EVENT LISTENERS
-========================================= */
+/* ============================================================
+   EVENT ACTIONS
+   ============================================================ */
 
-document
-    .getElementById("newEventButton")
-    .addEventListener(
+
+if (eventBookingsBody) {
+
+    eventBookingsBody.addEventListener(
         "click",
-        openEventModal
+        event => {
+
+            const button =
+                event.target.closest("button");
+
+            if (!button) {
+                return;
+            }
+
+            const eventId =
+                Number(button.dataset.id);
+
+           
+
+        }
     );
 
 
-document
-    .getElementById("closeEventModal")
-    .addEventListener(
-        "click",
-        closeEventModal
+    eventBookingsBody.addEventListener(
+        "change",
+        async event => {
+
+            const select =
+                event.target.closest(
+                    ".event-status-select"
+                );
+
+            if (!select) {
+                return;
+            }
+
+            const eventId =
+                Number(select.dataset.id);
+
+            const newStatus =
+                select.value;
+
+            if (!eventId || !newStatus) {
+                return;
+            }
+
+            const eventRecord =
+                events.find(
+                    item =>
+                        Number(item.id) ===
+                        eventId
+                );
+
+            if (!eventRecord) {
+
+                alert(
+                    "Event could not be found."
+                );
+
+                return;
+            }
+
+
+            // Confirm cancellation
+            if (
+                newStatus === "Cancelled"
+            ) {
+
+                const confirmed =
+                    window.confirm(
+                        "Are you sure you want to cancel this event?"
+                    );
+
+                if (!confirmed) {
+
+                    renderEvents();
+
+                    return;
+                }
+
+            }
+
+
+            // Prevent unnecessary API request
+            if (
+                eventRecord.status ===
+                newStatus
+            ) {
+
+                return;
+            }
+
+
+            try {
+
+                select.disabled = true;
+
+                const originalText =
+                    select.options[
+                        select.selectedIndex
+                    ].text;
+
+                select.dataset.originalText =
+                    originalText;
+
+
+                await apiFetch(
+                    `/events/${eventId}/status`,
+                    {
+                        method: "PUT",
+
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
+                    }
+                );
+
+
+                // Reload events from database
+                await loadEventsFromAPI();
+
+
+                // Refresh dashboard and tables
+                renderAll();
+
+
+                console.log(
+                    `Event ${eventId} updated to ${newStatus}.`
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to update event status:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to update event status."
+                );
+
+
+                // Restore original database state
+                renderEvents();
+
+            }
+
+        }
     );
 
+}
+            
 
-document
-    .getElementById("cancelEventModal")
-    .addEventListener(
+
+/* ============================================================
+   MODAL EVENT LISTENERS
+   ============================================================ */
+
+if (newEventButton) {
+
+    newEventButton.addEventListener(
         "click",
-        closeEventModal
+        event => {
+
+            event.preventDefault();
+
+            openEventModal();
+        }
     );
+}
 
 
-eventModal.addEventListener(
-    "click",
+if (closeEventModalButton) {
+
+    closeEventModalButton.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            closeEventModal();
+        }
+    );
+}
+
+
+if (cancelEventModalButton) {
+
+    cancelEventModalButton.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            closeEventModal();
+        }
+    );
+}
+
+
+if (eventModal) {
+
+    eventModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                eventModal
+            ) {
+                closeEventModal();
+            }
+        }
+    );
+}
+
+
+/* ============================================================
+   ESCAPE KEY
+   ============================================================ */
+
+document.addEventListener(
+    "keydown",
     event => {
 
         if (
-            event.target ===
-            eventModal
+            event.key ===
+            "Escape"
         ) {
             closeEventModal();
         }
@@ -1091,32 +1326,352 @@ eventModal.addEventListener(
 );
 
 
-eventSearch.addEventListener(
-    "input",
-    renderEvents
-);
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+if (eventSearch) {
+
+    eventSearch.addEventListener(
+        "input",
+        renderEvents
+    );
+}
 
 
-eventStatusFilter.addEventListener(
-    "change",
-    renderEvents
-);
+if (eventStatusFilter) {
+
+    eventStatusFilter.addEventListener(
+        "change",
+        renderEvents
+    );
+}
 
 
-eventForm.addEventListener(
-    "submit",
-    event => {
+/* ============================================================
+   EVENT FORM SUBMISSION
+   ============================================================ */
 
-        event.preventDefault();
+if (eventForm) {
 
-        createEvent();
+    eventForm.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+            createEvent();
+        }
+    );
+}
+
+
+/* ============================================================
+   LOGOUT
+   ============================================================ */
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+
+            sessionStorage.removeItem(
+                "mgr_token"
+            );
+
+            sessionStorage.removeItem(
+                "mgr_role"
+            );
+
+            sessionStorage.removeItem(
+                "mgr_name"
+            );
+
+            localStorage.removeItem(
+                "token"
+            );
+
+            localStorage.removeItem(
+                "customerToken"
+            );
+
+            localStorage.removeItem(
+                "role"
+            );
+
+            localStorage.removeItem(
+                "userType"
+            );
+
+            localStorage.removeItem(
+                "customerId"
+            );
+
+            localStorage.removeItem(
+                "CustomerID"
+            );
+
+            localStorage.removeItem(
+                "FirstName"
+            );
+
+            localStorage.removeItem(
+                "LastName"
+            );
+
+            localStorage.removeItem(
+                "customerName"
+            );
+
+            window.location.href =
+                "login.html";
+        }
+    );
+}
+
+
+/* ============================================================
+   LOAD REAL EVENTS
+   ============================================================ */
+
+async function loadEventsFromAPI() {
+
+    try {
+
+        const data =
+            await apiFetch(
+                "/events"
+            );
+
+        if (!Array.isArray(data)) {
+
+            throw new Error(
+                "Invalid event data received from server."
+            );
+        }
+
+
+        events =
+            data.map(event => ({
+
+                id:
+                    event.EventID,
+
+                customerId:
+                    event.CustomerID,
+
+                customerName:
+                    event.CustomerName,
+
+                customerEmail:
+                    event.Email,
+
+                customerPhone:
+                    event.ContactNumber,
+
+                hallId:
+                    event.HallID,
+
+                hallName:
+                    event.HallName,
+
+                capacity:
+                    Number(
+                        event.Capacity || 0
+                    ),
+
+                eventType:
+                    event.EventType,
+
+                eventDate:
+                    event.EventDate,
+
+                startTime:
+                    event.StartTime,
+
+                endTime:
+                    event.EndTime,
+
+                attendees:
+                    Number(
+                        event.ExpectedAttendees ??
+                        event.Attendees ??
+                        event.ExpectedAttendees ??
+                        0
+                    ),
+
+                status:
+                    event.Status
+            }));
+
+
+        /*
+         * Build unique customers from
+         * real event data.
+         */
+
+        const customerMap =
+            new Map();
+
+        data.forEach(event => {
+
+            if (
+                event.CustomerID &&
+                event.CustomerName
+            ) {
+
+                customerMap.set(
+                    event.CustomerID,
+                    {
+                        id:
+                            event.CustomerID,
+
+                        name:
+                            event.CustomerName
+                    }
+                );
+            }
+        });
+
+        customers =
+            Array.from(
+                customerMap.values()
+            );
+
+
+        /*
+         * Load actual halls from
+         * /events/halls.
+         *
+         * This is important because
+         * /events only returns halls
+         * attached to existing events.
+         */
+
+        try {
+
+            const hallData =
+                await fetch(
+                    `${API}/events/halls`
+                );
+
+            if (hallData.ok) {
+
+                const hallRows =
+                    await hallData.json();
+
+                if (
+                    Array.isArray(
+                        hallRows
+                    )
+                ) {
+
+                    halls =
+                        hallRows.map(
+                            hall => ({
+
+                                id:
+                                    hall.HallID,
+
+                                name:
+                                    hall.HallName,
+
+                                capacity:
+                                    Number(
+                                        hall.Capacity || 0
+                                    )
+                            })
+                        );
+                }
+            }
+
+        } catch (hallError) {
+
+            console.warn(
+                "Could not load halls:",
+                hallError
+            );
+        }
+
+
+        /*
+         * If the hall endpoint did not
+         * return data, build halls from
+         * the events as a fallback.
+         */
+
+        if (!halls.length) {
+
+            const hallMap =
+                new Map();
+
+            data.forEach(event => {
+
+                if (
+                    event.HallID &&
+                    event.HallName
+                ) {
+
+                    hallMap.set(
+                        event.HallID,
+                        {
+                            id:
+                                event.HallID,
+
+                            name:
+                                event.HallName,
+
+                            capacity:
+                                Number(
+                                    event.Capacity || 0
+                                )
+                        }
+                    );
+                }
+            });
+
+            halls =
+                Array.from(
+                    hallMap.values()
+                );
+        }
+  
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load events:",
+            error
+        );
+
+        if (eventBookingsBody) {
+
+            eventBookingsBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="8"
+                        class="empty-row"
+                    >
+                        Unable to load event bookings.
+                        Please refresh the page.
+                    </td>
+                </tr>
+            `;
+        }
+
+        return false;
     }
-);
+}
 
 
-/* =========================================
+/* ============================================================
    RENDER EVERYTHING
-========================================= */
+   ============================================================ */
 
 function renderAll() {
 
@@ -1125,17 +1680,38 @@ function renderAll() {
     renderHallAvailability();
 
     renderEvents();
-
-    renderLogistics();
-
-    renderResources();
 }
 
 
-/* =========================================
+/* ============================================================
    INITIALIZE
-========================================= */
+   ============================================================ */
 
-populateFormOptions();
+async function initializeEventStaff() {
 
-renderAll();
+    if (
+        !requireAuthentication()
+    ) {
+        return;
+    }
+
+
+    setupSidebarNavigation();
+
+
+    const loaded =
+        await loadEventsFromAPI();
+
+
+    if (!loaded) {
+        return;
+    }
+
+
+    populateFormOptions();
+
+    renderAll();
+}
+
+
+initializeEventStaff();

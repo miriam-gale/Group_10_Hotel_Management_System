@@ -1,6 +1,6 @@
 async function loadRoomsFromAPI() {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -180,7 +180,7 @@ roomSearch.addEventListener("input", filterRooms);
 
 async function viewRoom(roomNumber) {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -231,7 +231,7 @@ async function viewRoom(roomNumber) {
 
 async function editRoom(roomNumber) {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -331,7 +331,7 @@ async function editRoom(roomNumber) {
 
 async function deleteRoom(roomNumber) {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -400,7 +400,7 @@ async function deleteRoom(roomNumber) {
 
 async function loadRoomCategories() {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -511,7 +511,7 @@ addRoomForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";
@@ -609,3 +609,4 @@ renderRooms(rooms);
     }
 
 });
+

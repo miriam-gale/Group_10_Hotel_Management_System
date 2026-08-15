@@ -24,7 +24,7 @@ let reservations = [];
 
 function getToken() {
 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("mgr_token") || localStorage.getItem("token");
 
     if (!token) {
         window.location.href = "login.html";

@@ -1,33 +1,59 @@
 /* =========================================
-   CUSTOMER DASHBOARD
+   CUSTOMER NAME / PROFILE DISPLAY
 ========================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const firstName =
+        localStorage.getItem("FirstName") || "";
+
+    const lastName =
+        localStorage.getItem("LastName") || "";
+
+    const storedName =
+        localStorage.getItem("customerName") || "";
+
     const customerName =
-        localStorage.getItem("customerName") || "Miriam Gale";
+        storedName ||
+        `${firstName} ${lastName}`.trim() ||
+        "Customer";
 
-    const firstName = customerName.split(" ")[0];
+    const displayFirstName =
+        firstName ||
+        customerName.split(" ")[0];
 
-    const welcomeName =
-        document.getElementById("welcomeCustomerName");
+    // Pages using sidebarCustomerName
+    document
+        .querySelectorAll("#sidebarCustomerName")
+        .forEach(element => {
+            element.textContent = customerName;
+        });
 
-    const sidebarName =
-        document.getElementById("sidebarCustomerName");
+    // Pages using topCustomerName
+    document
+        .querySelectorAll("#topCustomerName")
+        .forEach(element => {
+            element.textContent = customerName;
+        });
 
-    const topName =
-        document.getElementById("topCustomerName");
+    // Bookings / Billing pages
+    document
+        .querySelectorAll("#sidebarName")
+        .forEach(element => {
+            element.textContent = customerName;
+        });
 
-    if (welcomeName) {
-        welcomeName.textContent = firstName;
-    }
+    document
+        .querySelectorAll("#profileName")
+        .forEach(element => {
+            element.textContent = customerName;
+        });
 
-    if (sidebarName) {
-        sidebarName.textContent = customerName;
-    }
-
-    if (topName) {
-        topName.textContent = customerName;
-    }
+    // Customer dashboard welcome message
+    document
+        .querySelectorAll("#welcomeCustomerName")
+        .forEach(element => {
+            element.textContent = displayFirstName;
+        });
 
 });

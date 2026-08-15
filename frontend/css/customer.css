@@ -284,6 +284,8 @@
 }
 
 
+
+
 /* =========================================
    RESPONSIVE
 ========================================= */
@@ -477,59 +479,454 @@
    BOOKING MODAL
 ========================================= */
 
-.booking-room-summary {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 24px;
-    padding: 16px;
-    border-radius: 12px;
-    background: #f7f5fb;
+/* =========================================
+   EVENT HALL BOOKING MODAL
+========================================= */
+
+/* Dark background behind the modal */
+#hallBookingModal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 40px 24px;
+    overflow-y: auto;
+
+    background: rgba(15, 23, 42, 0.62);
+    backdrop-filter: blur(4px);
 }
 
-.booking-room-icon {
-    width: 48px;
-    height: 48px;
+/* When JavaScript opens the modal */
+#hallBookingModal.show,
+#hallBookingModal.active {
+    display: flex;
+}
+
+/* Main modal card */
+#hallBookingModal .modal {
+    width: min(760px, 100%);
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    background: #ffffff;
+    border-radius: 18px;
+
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, 0.22),
+        0 8px 24px rgba(15, 23, 42, 0.12);
+
+    overflow: hidden;
+
+    animation: hallModalIn 0.2s ease-out;
+}
+
+/* Modal animation */
+@keyframes hallModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   MODAL HEADER
+========================================= */
+
+#hallBookingModal .modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 24px 28px;
+
+    border-bottom: 1px solid #eeeeee;
+    background: #ffffff;
+}
+
+#hallBookingModal .modal-header h2 {
+    margin: 0 0 6px;
+
+    color: #102a43;
+
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#hallBookingModal .modal-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Close button */
+
+#hallBookingModal .modal-close {
+    width: 38px;
+    height: 38px;
+
     flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 11px;
-    background: #eee7ff;
-    font-size: 21px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f3f4f6;
+
+    color: #4b5563;
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
 }
 
-.booking-room-summary > div:nth-child(2) {
+#hallBookingModal .modal-close:hover {
+    background: #eee7ff;
+    color: #5831bd;
+}
+
+
+/* =========================================
+   FORM AREA
+========================================= */
+
+#hallBookingModal #hallBookingForm {
+    padding: 24px 28px 28px;
+}
+
+
+/* =========================================
+   SELECTED HALL SUMMARY
+========================================= */
+
+#hallBookingModal .booking-room-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+    padding: 18px 20px;
+
+    border: 1px solid #e6def8;
+    border-radius: 13px;
+
+    background: #f7f5fb;
+}
+
+#hallBookingModal .booking-room-summary > div {
+    min-width: 0;
     flex: 1;
 }
 
-.booking-room-summary strong {
+#hallBookingModal .booking-room-summary strong {
     display: block;
-}
 
-.booking-room-summary span {
-    display: block;
-    margin-top: 4px;
-    color: #6b7280;
-    font-size: 12px;
-}
+    color: #102a43;
 
-.booking-room-summary > strong:last-child {
-    color: #5831bd;
-    white-space: nowrap;
-}
-
-.booking-total-display {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    padding: 0 14px;
-    border: 1px solid #d9dce1;
-    border-radius: 9px;
-    background: #f7f7f8;
+    font-size: 17px;
     font-weight: 700;
 }
 
+#hallBookingModal .booking-room-summary span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #6b7280;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#hallBookingModal .booking-room-summary > strong:last-child {
+    flex-shrink: 0;
+
+    color: #5831bd;
+
+    font-size: 18px;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   FORM GROUPS
+========================================= */
+
+#hallBookingModal .form-group {
+    margin-bottom: 18px;
+}
+
+#hallBookingModal .form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #1f2937;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#hallBookingModal .form-group input,
+#hallBookingModal .form-group select,
+#hallBookingModal .form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d9dce1;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #1f2937;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#hallBookingModal .form-group input,
+#hallBookingModal .form-group select {
+    height: 48px;
+    padding: 0 14px;
+}
+
+#hallBookingModal .form-group textarea {
+    min-height: 100px;
+
+    padding: 12px 14px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+#hallBookingModal .form-group input:focus,
+#hallBookingModal .form-group select:focus,
+#hallBookingModal .form-group textarea:focus {
+    border-color: #5831bd;
+
+    box-shadow: 0 0 0 3px rgba(88, 49, 189, 0.10);
+}
+
+
+/* =========================================
+   DATE / TIME ROW
+========================================= */
+
+#hallBookingModal .form-row {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* =========================================
+   TOTAL
+========================================= */
+
+#hallBookingModal .booking-total-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    min-height: 58px;
+
+    margin-top: 4px;
+    margin-bottom: 14px;
+
+    padding: 0 18px;
+
+    border: 1px solid #e2d9f7;
+    border-radius: 11px;
+
+    background: #f7f5fb;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#hallBookingModal .booking-total-display strong {
+    color: #5831bd;
+
+    font-size: 19px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+#hallBookingModal .form-error {
+    min-height: 0;
+
+    margin: 0 0 10px;
+
+    color: #dc2626;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+#hallBookingModal .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 12px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+#hallBookingModal .modal-actions button {
+    min-height: 46px;
+
+    padding: 0 20px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+#hallBookingModal .modal-actions button:hover {
+    transform: translateY(-1px);
+}
+
+#hallBookingModal .secondary-button {
+    border: 1px solid #d9dce1;
+
+    background: #f3f4f6;
+
+    color: #374151;
+}
+
+#hallBookingModal .secondary-button:hover {
+    background: #e5e7eb;
+}
+
+#hallBookingModal .primary-button {
+    border: 1px solid #5831bd;
+
+    background: #5831bd;
+
+    color: #ffffff;
+
+    box-shadow: 0 4px 12px rgba(88, 49, 189, 0.18);
+}
+
+#hallBookingModal .primary-button:hover {
+    background: #4c29a8;
+}
+
+
+/* =========================================
+   MOBILE MODAL
+========================================= */
+
+@media (max-width: 700px) {
+
+    #hallBookingModal {
+        padding: 20px 12px;
+    }
+
+    #hallBookingModal .modal {
+        width: 100%;
+        border-radius: 14px;
+    }
+
+    #hallBookingModal .modal-header {
+        padding: 20px;
+    }
+
+    #hallBookingModal .modal-header h2 {
+        font-size: 20px;
+    }
+
+    #hallBookingModal #hallBookingForm {
+        padding: 20px;
+    }
+
+    #hallBookingModal .booking-room-summary {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    #hallBookingModal .booking-room-summary > strong:last-child {
+        align-self: flex-start;
+    }
+
+    #hallBookingModal .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    #hallBookingModal .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    #hallBookingModal .modal-actions button {
+        width: 100%;
+    }
+}
 
 /* =========================================
    EMPTY ROOMS

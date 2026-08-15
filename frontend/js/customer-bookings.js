@@ -1,6 +1,4 @@
-/* =========================================
-   CUSTOMER BOOKINGS
-========================================= */
+/* -------CUSTOMER BOOKINGS-----*/
 
 const API_BASE = "http://localhost:3000/api";
 
@@ -8,9 +6,7 @@ let allBookings = [];
 let currentFilter = "all";
 
 
-/* =========================================
-   GET TOKEN
-========================================= */
+/* --------------GET TOKEN---------- */
 
 function getToken() {
 
@@ -19,9 +15,7 @@ function getToken() {
 }
 
 
-/* =========================================
-   AUTH CHECK
-========================================= */
+/* ---AUTH CHECK----------- */
 
 function checkAuthentication() {
 
@@ -40,9 +34,7 @@ function checkAuthentication() {
 }
 
 
-/* =========================================
-   FORMAT MONEY
-========================================= */
+/* ---------FORMAT MONEY-------- */
 
 function formatMoney(amount) {
 
@@ -57,9 +49,7 @@ function formatMoney(amount) {
 }
 
 
-/* =========================================
-   FORMAT DATE
-========================================= */
+/* =------------FORMAT DATE------------ */
 
 function formatDate(dateValue) {
 
@@ -85,9 +75,7 @@ function formatDate(dateValue) {
 }
 
 
-/* =========================================
-   STATUS CLASS
-========================================= */
+/* =------STATUS CLASS-------- */
 
 function getStatusClass(status) {
 
@@ -128,9 +116,7 @@ function getStatusClass(status) {
 }
 
 
-/* =========================================
-   FETCH HELPER
-========================================= */
+/* =-------------FETCH HELPER---------- */
 
 async function fetchAPI(endpoint) {
 
@@ -177,9 +163,7 @@ async function fetchAPI(endpoint) {
 }
 
 
-/* =========================================
-   LOAD ROOM BOOKINGS
-========================================= */
+/* ---------LOAD ROOM BOOKINGS---------*/
 
 async function loadRoomBookings() {
 
@@ -277,9 +261,7 @@ async function loadRoomBookings() {
 }
 
 
-/* =========================================
-   LOAD EVENT BOOKINGS
-========================================= */
+/* ----------LOAD EVENT BOOKINGS------ */
 
 async function loadEventBookings() {
 
@@ -376,9 +358,7 @@ async function loadEventBookings() {
 }
 
 
-/* =========================================
-   LOAD ALL BOOKINGS
-========================================= */
+/* =------ LOAD ALL BOOKINGS------- */
 
 async function loadBookings() {
 
@@ -459,9 +439,7 @@ async function loadBookings() {
 }
 
 
-/* =========================================
-   RENDER BOOKINGS
-========================================= */
+/* ----RENDER BOOKINGS---------- */
 
 function renderBookings() {
 
@@ -699,9 +677,7 @@ function renderBookings() {
 }
 
 
-/* =========================================
-   FILTER TABS
-========================================= */
+/* --------------FILTER TABS---------= */
 
 document.querySelectorAll(
     ".booking-tab"
@@ -739,50 +715,45 @@ document.querySelectorAll(
 });
 
 
-/* =========================================
-   VIEW BOOKING
-========================================= */
-
-async function viewBooking(
-    type,
-    id
-) {
-
-    try {
-
-        const endpoint =
-            type === "room"
-                ? `/reservations/${id}`
-                : `/events/${id}`;
+/* --------- VIEW BOOKING--------- */
 
 
-        const booking =
-            await fetchAPI(endpoint);
+function viewBooking(type, id) {
 
-
-        alert(
-            JSON.stringify(
-                booking,
-                null,
-                2
-            )
+    const booking = allBookings.find(function (item) {
+        return (
+            item.type === type &&
+            String(item.id) === String(id)
         );
+    });
 
-    } catch (error) {
-
-        alert(
-            "Unable to load booking details: " +
-            error.message
-        );
-
+    if (!booking) {
+        alert("Unable to find booking details.");
+        return;
     }
 
+    const details = booking.details || {};
+
+    const message = `
+${booking.title}
+${booking.reference}
+
+Status: ${booking.status}
+
+${details.first || "Details"}: ${details.firstValue || "—"}
+${details.second || "Details"}: ${details.secondValue || "—"}
+${details.third || "Details"}: ${details.thirdValue || "—"}
+${details.fourth || "Details"}: ${details.fourthValue || "—"}
+
+Total: ${formatMoney(booking.amount)}
+    `.trim();
+
+    alert(message);
 }
+        
 
 
-/* =========================================
-   CANCEL BOOKING
-========================================= */
+/* ------------CANCEL BOOKING------------- */
 
 async function cancelBooking(
     type,
@@ -862,9 +833,7 @@ async function cancelBooking(
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+/* --------------LOGOUT--------- */
 
 document
     .getElementById("logoutButton")
@@ -886,9 +855,7 @@ document
     );
 
 
-/* =========================================
-   LOAD USER INFO
-========================================= */
+/* -------------LOAD USER INFO-------------- */
 
 function loadUserInfo() {
 
@@ -944,9 +911,7 @@ function loadUserInfo() {
 }
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+/* --------------INITIALISE----------*/
 
 if (checkAuthentication()) {
 

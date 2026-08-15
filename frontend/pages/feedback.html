@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Feedback | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+
+   <style>
+    /* =========================================
+   CUSTOMER FEEDBACK PAGE
+========================================= */
+
+.feedback-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 30px 50px;
+    box-sizing: border-box;
+}
+
+/* Page heading */
+.feedback-page-header {
+    margin-bottom: 24px;
+}
+
+.feedback-page-header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.feedback-page-header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FEEDBACK FORM CARD
+========================================= */
+
+.feedback-card {
+    width: 100%;
+    max-width: 850px;
+
+    margin: 0 auto 28px;
+
+    padding: 30px 34px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+}
+
+.feedback-card h2 {
+    margin: 0 0 6px;
+
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.feedback-card > p {
+    margin: 0 0 28px;
+
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM GROUPS
+========================================= */
+
+.feedback-form-group {
+    margin-bottom: 24px;
+}
+
+.feedback-form-group label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.feedback-card select {
+    width: 100%;
+    height: 50px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d9deea;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.feedback-card select:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(104, 65, 199, 0.10);
+}
+
+
+
+
+/* =========================================
+   RATING
+========================================= */
+
+.feedback-rating-wrapper {
+    margin-top: 4px;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.rating-star {
+    border: none;
+    background: transparent;
+
+    padding: 0;
+
+    font-size: 34px;
+    line-height: 1;
+
+    color: #d7dce5;
+
+    cursor: pointer;
+
+    transition:
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.rating-star:hover {
+    color: #f59e0b;
+    transform: scale(1.08);
+}
+
+.rating-star.active {
+    color: #f59e0b;
+}
+
+.rating-label {
+    margin-top: 9px;
+
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.feedback-rating button,
+.feedback-rating .star {
+    border: none;
+    background: transparent;
+
+    padding: 0;
+
+    font-size: 34px;
+    line-height: 1;
+
+    color: #d7dce5;
+
+    cursor: pointer;
+
+    transition:
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.feedback-rating button:hover,
+.feedback-rating .star:hover {
+    color: #f59e0b;
+    transform: scale(1.08);
+}
+
+.feedback-rating button.active,
+.feedback-rating .star.active {
+    color: #f59e0b;
+}
+
+.rating-label {
+    margin-top: 9px;
+
+    font-size: 13px;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   COMMENTS
+========================================= */
+
+.feedback-card textarea {
+    width: 100%;
+    min-height: 150px;
+
+    padding: 15px 16px;
+
+    border: 1px solid #d9deea;
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+
+    resize: vertical;
+
+    outline: none;
+    transition: all 0.2s ease;
+
+    box-sizing: border-box;
+}
+
+.feedback-card textarea::placeholder {
+    color: #8b95a7;
+}
+
+.feedback-card textarea:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(104, 65, 199, 0.10);
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.feedback-submit-row {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 26px;
+}
+
+.feedback-submit-button {
+    min-width: 180px;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 13px 24px;
+
+    background: var(--purple);
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.feedback-submit-button:hover {
+    opacity: 1;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 14px rgba(104, 65, 199, 0.20);
+}
+
+.feedback-submit-button:active {
+    transform: translateY(0);
+}
+
+.feedback-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* =========================================
+   MY FEEDBACK
+========================================= */
+
+.feedback-list-card {
+    width: 100%;
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    padding: 30px 34px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.feedback-item {
+    padding: 18px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.feedback-item:hover {
+    border-color: #d2c6f4;
+
+    box-shadow:
+        0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.feedback-item-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 10px;
+}
+
+.feedback-reference {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.feedback-type {
+    margin-top: 3px;
+
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.feedback-rating {
+    color: #f59e0b;
+    font-size: 18px;
+    white-space: nowrap;
+}
+
+.feedback-comment {
+    margin: 10px 0;
+
+    color: #4b5563;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.feedback-date {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.feedback-empty {
+    padding: 30px;
+
+    text-align: center;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .feedback-container {
+    padding: 24px 16px 40px;
+}
+
+    .feedback-page-header h1 {
+        font-size: 28px;
+    }
+
+    .feedback-card,
+    .feedback-list-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+
+    .feedback-submit-row {
+        justify-content: stretch;
+    }
+
+    .feedback-submit-button {
+        width: 100%;
+    }
+
+    .feedback-item-top {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+   </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">✦</div>
+            <div class="brand-name">GRAND HORIZON</div>
+            <div class="brand-subtitle">HOTEL</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="customer.html" class="nav-item">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="customer-rooms.html" class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Rooms</span>
+            </a>
+
+            <a href="customer-halls.html" class="nav-item">
+                <span class="nav-icon">♜</span>
+                <span>Event Halls</span>
+            </a>
+
+            <a href="customer-bookings.html" class="nav-item">
+                <span class="nav-icon">□</span>
+                <span>My Bookings</span>
+            </a>
+
+            <a href="customer-billing.html" class="nav-item">
+                <span class="nav-icon">¤</span>
+                <span>Billing &amp; Payments</span>
+            </a>
+
+            <a href="customer-profile.html" class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>My Profile</span>
+            </a>
+
+            <a href="feedback.html" class="nav-item active">
+    <span class="nav-icon">★</span>
+    <span>Feedback</span>
+</a>
+
+        </nav>
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar" id="customerAvatar">
+                MG
+            </div>
+
+            <div class="user-info">
+
+                <strong id="sidebarCustomerName">
+                    Customer
+                </strong>
+
+                <span>
+                    Customer
+                </span>
+
+                <a href="login.html" class="logout-link" id="logoutButton">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Feedback</h1>
+                <p>Share your experience with Grand Horizon Hotel.</p>
+            </div>
+
+        </header>
+
+
+        <div class="feedback-container">
+
+            <!-- SUBMIT FEEDBACK -->
+            <section class="feedback-card">
+
+                <h2>Give Feedback</h2>
+
+                <p>
+                    Tell us about your completed stay or event.
+                </p>
+
+                <form id="feedbackForm">
+
+                    <div class="feedback-form-group">
+
+                        <label for="feedbackBooking">
+                            Completed Stay or Event
+                        </label>
+
+                        <select id="feedbackBooking" required>
+                            <option value="">
+                                Select a completed booking
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="feedback-form-group">
+
+                        <label>
+                            Rating
+                        </label>
+
+                        <div
+                            class="rating-container"
+                            id="ratingContainer"
+                            aria-label="Rating"
+                        >
+
+                            <button
+                                type="button"
+                                class="rating-star"
+                                data-rating="1"
+                                aria-label="1 star"
+                            >★</button>
+
+                            <button
+                                type="button"
+                                class="rating-star"
+                                data-rating="2"
+                                aria-label="2 stars"
+                            >★</button>
+
+                            <button
+                                type="button"
+                                class="rating-star"
+                                data-rating="3"
+                                aria-label="3 stars"
+                            >★</button>
+
+                            <button
+                                type="button"
+                                class="rating-star"
+                                data-rating="4"
+                                aria-label="4 stars"
+                            >★</button>
+
+                            <button
+                                type="button"
+                                class="rating-star"
+                                data-rating="5"
+                                aria-label="5 stars"
+                            >★</button>
+
+                        </div>
+
+                        <div
+                            class="rating-label"
+                            id="ratingLabel"
+                        >
+                            Select a rating
+                        </div>
+
+                    </div>
+
+
+                    <div class="feedback-form-group">
+
+                        <label for="feedbackComments">
+                            Comments
+                        </label>
+
+                        <textarea
+                            id="feedbackComments"
+                            placeholder="Tell us about your experience..."
+                            maxlength="1000"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="feedback-submit-row">
+
+                        <button
+                            type="submit"
+                            class="feedback-submit-button"
+                            id="submitFeedbackButton"
+                        >
+                            Submit Feedback
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- PREVIOUS FEEDBACK -->
+            <section class="feedback-card">
+
+                <h2>My Feedback</h2>
+
+                <p>
+                    Feedback you have previously submitted.
+                </p>
+
+                <div
+                    id="feedbackList"
+                    class="feedback-list"
+                >
+
+                    <div class="feedback-empty">
+                        Loading feedback...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="../js/feedback.js"></script>
+
+</body>
+</html>

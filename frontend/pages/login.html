@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Manager Login | Grand Horizon Hotel</title>
+    <title>Login | Grand Horizon Hotel</title>
 
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -16,6 +16,7 @@
 
         <section class="login-card">
 
+            <!-- BRAND -->
             <div class="login-brand">
                 <div class="login-brand-icon">★</div>
 
@@ -25,35 +26,68 @@
             </div>
 
 
+            <!-- HEADING -->
             <div class="login-heading">
-
-                <h2>Manager Login</h2>
+                <h2>Welcome Back</h2>
 
                 <p>
-                    Sign in to access the hotel management system.
+                    Sign in to access your Grand Horizon account.
                 </p>
+            </div>
+
+
+            <!-- ACCOUNT TYPE -->
+            <div class="form-group">
+
+                <label for="userType">
+                    Sign in as
+                </label>
+
+                <select id="userType">
+
+                    <option value="customer">
+                        Customer
+                    </option>
+
+                    <option value="event-staff">
+                        Event Staff
+                    </option>
+
+                    <option value="administrator">
+                        Administrator
+                    </option>
+
+                    <option value="finance">
+                        Finance/Billing Staff
+                    </option>
+
+                </select>
 
             </div>
 
 
-            <form id="managerLoginForm">
+            <!-- LOGIN FORM -->
+            <form id="loginForm">
 
+                <!-- EMAIL -->
                 <div class="form-group">
 
-                    <label for="username">
-                        Username
+                    <label for="email">
+                        Email
                     </label>
 
                     <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter your username"
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
                         required
                     >
 
                 </div>
 
 
+                <!-- PASSWORD -->
                 <div class="form-group">
 
                     <label for="password">
@@ -64,21 +98,26 @@
                         type="password"
                         id="password"
                         placeholder="Enter your password"
+                        autocomplete="current-password"
                         required
                     >
 
                 </div>
 
 
+                <!-- LOGIN ERROR -->
                 <p
                     id="loginError"
                     class="login-error"
+                    aria-live="polite"
                 ></p>
 
 
+                <!-- SIGN IN BUTTON -->
                 <button
                     type="submit"
                     class="primary-button login-button"
+                    id="loginButton"
                 >
                     Sign In
                 </button>
@@ -86,8 +125,18 @@
             </form>
 
 
-            <p class="login-note">
-                Manager access only
+            <!-- CUSTOMER REGISTRATION -->
+            <p
+                id="customerRegister"
+                class="login-note"
+            >
+                Don't have an account?
+                <a
+                    href="#"
+                    id="registerLink"
+                >
+                    Create an account
+                </a>
             </p>
 
         </section>
@@ -95,6 +144,7 @@
     </main>
 
 
+    <!-- LOGIN JAVASCRIPT -->
     <script src="../js/login.js"></script>
 
 </body>

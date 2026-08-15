@@ -1,87 +1,11 @@
 /* =========================================
    CUSTOMER ROOMS
-   Room data for customer frontend
+   Real database data
 ========================================= */
 
-const customerRooms = [
-    {
-        id: 201,
-        number: "201",
-        category: "Standard",
-        floor: 2,
-        capacity: 2,
-        price: 500,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=85"
-    },
+const API = "http://localhost:3000/api";
 
-    {
-        id: 204,
-        number: "204",
-        category: "Deluxe",
-        floor: 2,
-        capacity: 2,
-        price: 800,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=85"
-    },
-
-    {
-        id: 301,
-        number: "301",
-        category: "Executive",
-        floor: 3,
-        capacity: 3,
-        price: 1200,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=85"
-    },
-
-    {
-        id: 305,
-        number: "305",
-        category: "Suite",
-        floor: 3,
-        capacity: 4,
-        price: 1800,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=85"
-    },
-
-    {
-        id: 401,
-        number: "401",
-        category: "Deluxe",
-        floor: 4,
-        capacity: 2,
-        price: 850,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=900&q=85"
-    },
-
-    {
-        id: 405,
-        number: "405",
-        category: "Suite",
-        floor: 4,
-        capacity: 4,
-        price: 2000,
-        status: "Available",
-        image:
-            "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=85"
-    }
-];
-
-
-/* =========================================
-   STATE
-========================================= */
-
+let customerRooms = [];
 let selectedRoom = null;
 
 
@@ -116,6 +40,33 @@ const numberOfGuests =
 const bookingTotal =
     document.getElementById("bookingTotal");
 
+const roomBookingError =
+    document.getElementById("roomBookingError");
+
+
+/* =========================================
+   ROOM IMAGES
+   One image per ROOM CATEGORY
+========================================= */
+
+const categoryImages = {
+
+    Standard:
+        "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=85",
+
+    Deluxe:
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=85",
+
+    "Family Room":
+        "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=900&q=85",
+
+    Suite:
+        "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=900&q=85",
+
+    Executive:
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=85"
+};
+
 
 /* =========================================
    FORMAT MONEY
@@ -124,7 +75,7 @@ const bookingTotal =
 function formatMoney(amount) {
 
     return "GHS " +
-        Number(amount).toLocaleString(
+        Number(amount || 0).toLocaleString(
             "en-GH",
             {
                 minimumFractionDigits: 2,
@@ -135,40 +86,390 @@ function formatMoney(amount) {
 
 
 /* =========================================
+   NORMALIZE ROOM DATA
+   Converts database fields into
+   consistent frontend fields.
+========================================= */
+
+function normalizeRoom(room) {
+
+    return {
+
+        id:
+            room.RoomID ||
+            room.roomId ||
+            room.id ||
+            room.RoomNumber,
+
+        number:
+            String(
+                room.RoomNumber ||
+                room.roomNumber ||
+                room.number ||
+                ""
+            ),
+
+        category:
+            room.CategoryName ||
+            room.categoryName ||
+            room.category ||
+            "Room",
+
+        floor:
+            Number(
+                room.Floor ||
+                room.floor ||
+                0
+            ),
+
+        capacity:
+            Number(
+                room.MaxOccupants ||
+                room.maxOccupants ||
+                room.capacity ||
+                1
+            ),
+
+        price:
+            Number(
+                room.PricePerNight ||
+                room.pricePerNight ||
+                room.price ||
+                0
+            ),
+
+        status:
+            room.Status ||
+            room.status ||
+            "Available"
+    };
+}
+
+
+/* =========================================
+   LOAD ROOMS FROM DATABASE
+========================================= */
+
+async function loadCustomerRooms() {
+
+    try {
+
+        roomGrid.innerHTML = `
+            <div class="customer-room-empty">
+                <h3>Loading rooms...</h3>
+                <p>Please wait.</p>
+            </div>
+        `;
+
+
+        const response =
+            await fetch(`${API}/rooms`);
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Unable to load rooms."
+            );
+        }
+
+
+        /*
+         * The API may return either:
+         *
+         * [
+         *   {...},
+         *   {...}
+         * ]
+         *
+         * or
+         *
+         * {
+         *   rooms: [...]
+         * }
+         */
+
+        const roomsData =
+            Array.isArray(data)
+                ? data
+                : Array.isArray(data.rooms)
+                    ? data.rooms
+                    : [];
+
+
+        customerRooms =
+            roomsData.map(normalizeRoom);
+
+
+        console.log(
+            "Customer rooms loaded:",
+            customerRooms
+        );
+
+
+        populateCategoryFilter();
+
+        renderRooms();
+
+
+    } catch (error) {
+
+        console.error(
+            "Customer room loading error:",
+            error
+        );
+
+
+        roomGrid.innerHTML = `
+            <div class="customer-room-empty">
+                <h3>Unable to load rooms</h3>
+                <p>
+                    Please refresh the page and try again.
+                </p>
+            </div>
+        `;
+    }
+}
+
+
+/* =========================================
+   POPULATE CATEGORY FILTER
+========================================= */
+
+function populateCategoryFilter() {
+
+    if (!roomCategoryFilter) {
+        return;
+    }
+
+
+    const currentValue =
+        roomCategoryFilter.value || "all";
+
+
+    const categories =
+        [
+            ...new Set(
+                customerRooms.map(
+                    room => room.category
+                )
+            )
+        ]
+        .sort();
+
+
+    roomCategoryFilter.innerHTML = `
+        <option value="all">
+            All room types
+        </option>
+    `;
+
+
+    categories.forEach(category => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = category;
+
+        option.textContent = category;
+
+        roomCategoryFilter.appendChild(option);
+
+    });
+
+
+    /*
+     * Keep previous selection if it
+     * still exists.
+     */
+
+    if (
+        categories.includes(currentValue)
+    ) {
+
+        roomCategoryFilter.value =
+            currentValue;
+
+    } else {
+
+        roomCategoryFilter.value = "all";
+    }
+}
+
+
+/* =========================================
+   GROUP ROOMS BY CATEGORY
+========================================= */
+
+function groupRoomsByCategory(rooms) {
+
+    const groups = {};
+
+
+    rooms.forEach(room => {
+
+        const key =
+            room.category.trim();
+
+
+        if (!groups[key]) {
+
+            groups[key] = [];
+
+        }
+
+
+        groups[key].push(room);
+
+    });
+
+
+    return Object.values(groups);
+}
+
+
+/* =========================================
+   ROOM TITLE
+   Prevents "Family Room Room"
+========================================= */
+
+function getRoomTitle(category) {
+
+    const cleanCategory =
+        String(category || "Room").trim();
+
+
+    if (
+        cleanCategory
+            .toLowerCase()
+            .endsWith("room")
+    ) {
+
+        return cleanCategory;
+
+    }
+
+
+    return `${cleanCategory} Room`;
+}
+
+
+/* =========================================
+   GET CATEGORY IMAGE
+========================================= */
+
+function getCategoryImage(category) {
+
+    if (
+        categoryImages[category]
+    ) {
+
+        return categoryImages[category];
+
+    }
+
+
+    /*
+     * Case-insensitive fallback.
+     */
+
+    const matchingKey =
+        Object.keys(categoryImages)
+            .find(
+                key =>
+                    key.toLowerCase() ===
+                    String(category)
+                        .toLowerCase()
+            );
+
+
+    return (
+        categoryImages[matchingKey] ||
+        categoryImages.Standard
+    );
+}
+
+
+/* =========================================
    RENDER ROOMS
 ========================================= */
 
 function renderRooms() {
 
+    if (!roomGrid) {
+        return;
+    }
+
+
     const search =
-        roomSearchInput.value
-            .trim()
-            .toLowerCase();
+        roomSearchInput
+            ? roomSearchInput.value
+                .trim()
+                .toLowerCase()
+            : "";
 
-    const category =
-        roomCategoryFilter.value;
 
+    const selectedCategory =
+        roomCategoryFilter
+            ? roomCategoryFilter.value
+            : "all";
+
+
+    /*
+     * First filter the real database rooms.
+     */
 
     const filteredRooms =
-        customerRooms.filter(function (room) {
+        customerRooms.filter(room => {
 
             const matchesSearch =
+
+                !search ||
+
                 room.number
                     .toLowerCase()
                     .includes(search)
+
                 ||
+
                 room.category
                     .toLowerCase()
                     .includes(search);
 
-            const matchesCategory =
-                category === "all"
-                ||
-                room.category === category;
 
-            return matchesSearch && matchesCategory;
+            const matchesCategory =
+
+                selectedCategory === "all"
+
+                ||
+
+                room.category ===
+                    selectedCategory;
+
+
+            return (
+                matchesSearch &&
+                matchesCategory
+            );
 
         });
+
+
+    /*
+     * Group the rooms so the customer
+     * sees one card per room type.
+     */
+
+    const groups =
+        groupRoomsByCategory(
+            filteredRooms
+        );
 
 
     roomGrid.innerHTML = "";
@@ -178,13 +479,14 @@ function renderRooms() {
        EMPTY STATE
     ========================================= */
 
-    if (filteredRooms.length === 0) {
+    if (groups.length === 0) {
 
         roomGrid.innerHTML = `
             <div class="customer-room-empty">
                 <h3>No rooms found</h3>
                 <p>
-                    Try changing your search or room type.
+                    Try changing your search
+                    or room type.
                 </p>
             </div>
         `;
@@ -194,13 +496,58 @@ function renderRooms() {
 
 
     /* =========================================
-       ROOM CARDS
+       CATEGORY CARDS
     ========================================= */
 
-    filteredRooms.forEach(function (room) {
+    groups.forEach(group => {
+
+        const category =
+            group[0].category;
+
+
+        const availableRooms =
+            group.filter(
+                room =>
+                    String(room.status)
+                        .toLowerCase() ===
+                    "available"
+            );
+
+
+        /*
+         * Use the lowest price for the
+         * category. Normally all rooms
+         * in the same category have the
+         * same price.
+         */
+
+        const price =
+            Math.min(
+                ...group.map(
+                    room => room.price
+                )
+            );
+
+
+        const maxCapacity =
+            Math.max(
+                ...group.map(
+                    room => room.capacity
+                )
+            );
+
+
+        const image =
+            getCategoryImage(category);
+
+
+        const title =
+            getRoomTitle(category);
+
 
         const card =
             document.createElement("div");
+
 
         card.className =
             "customer-room-card";
@@ -211,10 +558,12 @@ function renderRooms() {
             <div class="customer-room-image">
 
                 <img
-                    src="${room.image}"
-                    alt="${room.category} Room ${room.number}"
+                    src="${image}"
+                    alt="${title}"
                     loading="lazy"
-                    onerror="this.style.display='none';"
+                    onerror="
+                        this.style.display='none';
+                    "
                 >
 
             </div>
@@ -222,32 +571,50 @@ function renderRooms() {
 
             <div class="customer-room-content">
 
+
                 <div class="customer-room-top">
 
                     <h3>
-                        ${room.category} Room
+                        ${title}
                     </h3>
 
                     <span class="room-available">
-                        ${room.status}
+
+                        ${
+                            availableRooms.length > 0
+                                ? "Available"
+                                : "Unavailable"
+                        }
+
                     </span>
 
                 </div>
 
 
                 <span class="customer-room-number">
-                    Room ${room.number} · Floor ${room.floor}
+
+                    ${
+                        group.length === 1
+                            ? "1 room available"
+                            : `${group.length} rooms available`
+                    }
+
                 </span>
 
 
                 <div class="customer-room-info">
 
                     <span>
-                        👤 ${room.capacity} Guests
+                        👤 Up to ${maxCapacity} Guests
                     </span>
 
                     <span>
-                        ✓ Available
+
+                        ${
+                            availableRooms.length
+                        }
+                        available
+
                     </span>
 
                 </div>
@@ -258,7 +625,7 @@ function renderRooms() {
                     <div>
 
                         <strong>
-                            ${formatMoney(room.price)}
+                            ${formatMoney(price)}
                         </strong>
 
                         <span>
@@ -271,9 +638,18 @@ function renderRooms() {
                     <button
                         type="button"
                         class="primary-button"
-                        data-room-id="${room.id}"
+                        data-category="${category}"
+                        ${
+                            availableRooms.length === 0
+                                ? "disabled"
+                                : ""
+                        }
                     >
-                        Book Room
+                        ${
+                            availableRooms.length > 0
+                                ? "Book Room"
+                                : "Unavailable"
+                        }
                     </button>
 
                 </div>
@@ -285,7 +661,6 @@ function renderRooms() {
         roomGrid.appendChild(card);
 
     });
-
 }
 
 
@@ -293,54 +668,75 @@ function renderRooms() {
    OPEN BOOKING MODAL
 ========================================= */
 
-function openBookingModal(roomId) {
+function openBookingModal(category) {
+
+    /*
+     * Find an AVAILABLE room in this category.
+     */
 
     selectedRoom =
-        customerRooms.find(function (room) {
-            return room.id === roomId;
-        });
+        customerRooms.find(room =>
+
+            room.category === category &&
+
+            String(room.status)
+                .toLowerCase() ===
+                "available"
+
+        );
 
 
     if (!selectedRoom) {
+
+        alert(
+            "There are no available rooms in this category."
+        );
+
         return;
     }
 
 
     document.getElementById(
         "selectedRoomId"
-    ).value = selectedRoom.id;
+    ).value =
+        selectedRoom.id;
 
 
     document.getElementById(
         "selectedRoomName"
     ).textContent =
-        selectedRoom.category + " Room";
+        getRoomTitle(
+            selectedRoom.category
+        );
 
 
     document.getElementById(
         "selectedRoomDetails"
     ).textContent =
-        "Room " +
-        selectedRoom.number +
-        " · Up to " +
-        selectedRoom.capacity +
-        " guests";
+
+        `Room ${selectedRoom.number} · ` +
+        `Up to ${selectedRoom.capacity} guests`;
 
 
     document.getElementById(
         "selectedRoomPrice"
     ).textContent =
-        formatMoney(selectedRoom.price) +
+
+        formatMoney(
+            selectedRoom.price
+        ) +
         " / night";
 
 
     numberOfGuests.max =
         selectedRoom.capacity;
 
+
     numberOfGuests.value = 1;
 
 
     checkInDate.value = "";
+
     checkOutDate.value = "";
 
 
@@ -348,13 +744,14 @@ function openBookingModal(roomId) {
         formatMoney(0);
 
 
-    document.getElementById(
-        "roomBookingError"
-    ).textContent = "";
+    if (roomBookingError) {
+
+        roomBookingError.textContent = "";
+
+    }
 
 
     roomBookingModal.classList.add("show");
-
 }
 
 
@@ -364,10 +761,16 @@ function openBookingModal(roomId) {
 
 function closeBookingModal() {
 
-    roomBookingModal.classList.remove("show");
+    if (roomBookingModal) {
+
+        roomBookingModal.classList.remove(
+            "show"
+        );
+
+    }
+
 
     selectedRoom = null;
-
 }
 
 
@@ -397,6 +800,7 @@ function calculateTotal() {
     const start =
         new Date(checkInDate.value);
 
+
     const end =
         new Date(checkOutDate.value);
 
@@ -422,12 +826,12 @@ function calculateTotal() {
 
 
     const total =
-        nights * selectedRoom.price;
+        nights *
+        selectedRoom.price;
 
 
     bookingTotal.textContent =
         formatMoney(total);
-
 }
 
 
@@ -441,7 +845,7 @@ roomGrid.addEventListener(
 
         const button =
             event.target.closest(
-                "[data-room-id]"
+                "[data-category]"
             );
 
 
@@ -450,13 +854,16 @@ roomGrid.addEventListener(
         }
 
 
-        const roomId =
-            Number(
-                button.dataset.roomId
-            );
+        if (button.disabled) {
+            return;
+        }
 
 
-        openBookingModal(roomId);
+        const category =
+            button.dataset.category;
+
+
+        openBookingModal(category);
 
     }
 );
@@ -466,172 +873,389 @@ roomGrid.addEventListener(
    SEARCH
 ========================================= */
 
-roomSearchInput.addEventListener(
-    "input",
-    renderRooms
-);
+if (roomSearchInput) {
+
+    roomSearchInput.addEventListener(
+        "input",
+        renderRooms
+    );
+
+}
 
 
 /* =========================================
    CATEGORY FILTER
 ========================================= */
 
-roomCategoryFilter.addEventListener(
-    "change",
-    renderRooms
-);
+if (roomCategoryFilter) {
+
+    roomCategoryFilter.addEventListener(
+        "change",
+        renderRooms
+    );
+
+}
 
 
 /* =========================================
    DATE CHANGES
 ========================================= */
 
-checkInDate.addEventListener(
-    "change",
-    calculateTotal
-);
+if (checkInDate) {
+
+    checkInDate.addEventListener(
+        "change",
+        calculateTotal
+    );
+
+}
 
 
-checkOutDate.addEventListener(
-    "change",
-    calculateTotal
-);
+if (checkOutDate) {
+
+    checkOutDate.addEventListener(
+        "change",
+        calculateTotal
+    );
+
+}
 
 
 /* =========================================
    CLOSE BUTTON
 ========================================= */
 
-document
-    .getElementById("closeRoomBookingModal")
-    .addEventListener(
+const closeButton =
+    document.getElementById(
+        "closeRoomBookingModal"
+    );
+
+
+if (closeButton) {
+
+    closeButton.addEventListener(
         "click",
         closeBookingModal
     );
+
+}
 
 
 /* =========================================
    CANCEL BUTTON
 ========================================= */
 
-document
-    .getElementById("cancelRoomBooking")
-    .addEventListener(
+const cancelButton =
+    document.getElementById(
+        "cancelRoomBooking"
+    );
+
+
+if (cancelButton) {
+
+    cancelButton.addEventListener(
         "click",
         closeBookingModal
     );
 
+}
+
 
 /* =========================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
+   CLOSE MODAL OUTSIDE
 ========================================= */
 
-roomBookingModal.addEventListener(
-    "click",
-    function (event) {
+if (roomBookingModal) {
 
-        if (
-            event.target ===
-            roomBookingModal
-        ) {
+    roomBookingModal.addEventListener(
+        "click",
+        function (event) {
 
-            closeBookingModal();
+            if (
+                event.target ===
+                roomBookingModal
+            ) {
+
+                closeBookingModal();
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 /* =========================================
    BOOKING SUBMISSION
 ========================================= */
 
-roomBookingForm.addEventListener(
-    "submit",
-    function (event) {
+if (roomBookingForm) {
 
-        event.preventDefault();
+    roomBookingForm.addEventListener(
+        "submit",
+        async function (event) {
 
-
-        const error =
-            document.getElementById(
-                "roomBookingError"
-            );
+            event.preventDefault();
 
 
-        error.textContent = "";
+            const error =
+                roomBookingError ||
+                document.getElementById(
+                    "roomBookingError"
+                );
 
 
-        if (!selectedRoom) {
-            return;
+            if (error) {
+
+                error.textContent = "";
+
+            }
+
+
+            /* -------------------------------
+               ROOM CHECK
+            -------------------------------- */
+
+            if (!selectedRoom) {
+
+                if (error) {
+
+                    error.textContent =
+                        "Please select a room.";
+
+                }
+
+                return;
+            }
+
+
+            /* -------------------------------
+               DATE VALIDATION
+            -------------------------------- */
+
+            if (
+                !checkInDate.value ||
+                !checkOutDate.value
+            ) {
+
+                if (error) {
+
+                    error.textContent =
+                        "Please select your check-in and check-out dates.";
+
+                }
+
+                return;
+            }
+
+
+            const start =
+                new Date(
+                    checkInDate.value
+                );
+
+
+            const end =
+                new Date(
+                    checkOutDate.value
+                );
+
+
+            if (end <= start) {
+
+                if (error) {
+
+                    error.textContent =
+                        "Check-out date must be after check-in date.";
+
+                }
+
+                return;
+            }
+
+
+            /* -------------------------------
+               GUEST VALIDATION
+            -------------------------------- */
+
+            const guests =
+                Number(
+                    numberOfGuests.value
+                );
+
+
+            if (
+                !Number.isInteger(guests) ||
+                guests < 1 ||
+                guests > selectedRoom.capacity
+            ) {
+
+                if (error) {
+
+                    error.textContent =
+                        `This room allows a maximum of ${selectedRoom.capacity} guests.`;
+
+                }
+
+                return;
+            }
+
+
+            /* -------------------------------
+               AUTHENTICATION
+            -------------------------------- */
+
+            const token =
+                localStorage.getItem("token");
+
+
+            if (!token) {
+
+                if (error) {
+
+                    error.textContent =
+                        "You are not logged in. Please log in again.";
+
+                }
+
+                return;
+            }
+
+
+            /* -------------------------------
+               DISABLE SUBMIT
+            -------------------------------- */
+
+            const submitButton =
+                roomBookingForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Booking...";
+
+            }
+
+
+            /* -------------------------------
+               SEND RESERVATION
+            -------------------------------- */
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API}/reservations`,
+                        {
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${token}`
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    RoomNumber:
+                                        selectedRoom.number,
+
+                                    CheckInDate:
+                                        checkInDate.value,
+
+                                    CheckOutDate:
+                                        checkOutDate.value,
+
+                                    NumOccupants:
+                                        guests
+
+                                })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Unable to complete the reservation."
+                    );
+
+                }
+
+
+                /* -------------------------------
+                   SUCCESS
+                -------------------------------- */
+
+                alert(
+                    data.message ||
+                    "Reservation created successfully!"
+                );
+
+
+                closeBookingModal();
+
+
+                /*
+                 * Reload rooms so the
+                 * latest availability is shown.
+                 */
+
+                await loadCustomerRooms();
+
+
+            } catch (errorObject) {
+
+                console.error(
+                    "Booking error:",
+                    errorObject
+                );
+
+
+                if (error) {
+
+                    error.textContent =
+                        errorObject.message ||
+                        "Could not complete the booking.";
+
+                }
+
+            } finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
+                        "Confirm Booking";
+
+                }
+
+            }
+
         }
+    );
 
-
-        if (
-            !checkInDate.value ||
-            !checkOutDate.value
-        ) {
-
-            error.textContent =
-                "Please select your check-in and check-out dates.";
-
-            return;
-        }
-
-
-        const start =
-            new Date(checkInDate.value);
-
-        const end =
-            new Date(checkOutDate.value);
-
-
-        if (end <= start) {
-
-            error.textContent =
-                "Check-out date must be after check-in date.";
-
-            return;
-        }
-
-
-        const guests =
-            Number(numberOfGuests.value);
-
-
-        if (
-            guests < 1 ||
-            guests > selectedRoom.capacity
-        ) {
-
-            error.textContent =
-                "The number of guests exceeds this room's capacity.";
-
-            return;
-        }
-
-
-        /*
-         * MOCK SUBMISSION
-         *
-         * The backend team will eventually
-         * replace this with POST /api/reservations.
-         */
-
-        alert(
-            "Reservation request submitted successfully!"
-        );
-
-
-        closeBookingModal();
-
-    }
-);
+}
 
 
 /* =========================================
-   INITIAL RENDER
+   INITIAL LOAD
 ========================================= */
 
-renderRooms();
+loadCustomerRooms();

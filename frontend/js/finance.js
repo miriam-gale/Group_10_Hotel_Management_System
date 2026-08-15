@@ -1,140 +1,137 @@
-/* =========================================
-   FINANCE / BILLING
-   TEMPORARY MOCK DATA
+const API = "http://localhost:3000/api";
 
-   This will later be replaced with API calls
-   when the backend team's finance endpoints
-   are ready.
-========================================= */
 
-let invoices = [
-    {
-        id: 1,
-        customer: "Kwame Mensah",
-        source: "Room Reservation",
-        reference: "RES-1001",
-        roomCharges: 2400,
-        eventCharges: 0,
-        additionalCharges: 150,
-        totalAmount: 2550,
-        paymentStatus: "Paid",
-        amountPaid: 2550,
-        issuedDate: "2026-08-10"
-    },
+/* -----------AUTHENTICATION / API---------------- */
 
-    {
-        id: 2,
-        customer: "Akosua Boateng",
-        source: "Event Booking",
-        reference: "EVT-1002",
-        roomCharges: 0,
-        eventCharges: 2800,
-        additionalCharges: 200,
-        totalAmount: 3000,
-        paymentStatus: "Unpaid",
-        amountPaid: 0,
-        issuedDate: "2026-08-11"
-    },
+function getStaffToken() {
 
-    {
-        id: 3,
-        customer: "James Anderson",
-        source: "Room Reservation",
-        reference: "RES-1003",
-        roomCharges: 4000,
-        eventCharges: 0,
-        additionalCharges: 0,
-        totalAmount: 4000,
-        paymentStatus: "Paid",
-        amountPaid: 4000,
-        issuedDate: "2026-08-12"
-    },
+    return (
+        localStorage.getItem("token") ||
+        localStorage.getItem("staffToken") ||
+        localStorage.getItem("accessToken")
+    );
+}
 
-    {
-        id: 4,
-        customer: "Ama Serwaa",
-        source: "Event Booking",
-        reference: "EVT-1004",
-        roomCharges: 0,
-        eventCharges: 6400,
-        additionalCharges: 500,
-        totalAmount: 6900,
-        paymentStatus: "Overdue",
-        amountPaid: 0,
-        issuedDate: "2026-08-01"
-    },
 
-    {
-        id: 5,
-        customer: "Michael Owusu",
-        source: "Room + Event",
-        reference: "RES-1005",
-        roomCharges: 1200,
-        eventCharges: 1800,
-        additionalCharges: 80,
-        totalAmount: 3080,
-        paymentStatus: "Partially Paid",
-        amountPaid: 1500,
-        issuedDate: "2026-08-13"
+async function apiFetch(endpoint, options = {}) {
+
+    const token = getStaffToken();
+
+    if (!token) {
+        window.location.href = "login.html";
+        return null;
     }
-];
+
+    const response = await fetch(
+        `${API}${endpoint}`,
+        {
+            ...options,
+
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {}),
+                "Authorization": `Bearer ${token}`
+            }
+        }
+    );
+
+    let data = {};
+
+    try {
+        data = await response.json();
+    } catch {
+        data = {};
+    }
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            data.message ||
+            `Request failed (${response.status})`
+        );
+    }
+
+    return data;
+}
 
 
-const customers = [
-    "Kwame Mensah",
-    "Akosua Boateng",
-    "James Anderson",
-    "Ama Serwaa",
-    "Michael Owusu"
-];
+/* --------DATA------------------- */
 
+let invoices = [];
 
-let nextInvoiceId = 6;
 let viewingInvoiceId = null;
 
 
-/* =========================================
-   DOM ELEMENTS
-========================================= */
+/*-------------------DOM ELEMENTS----------- */
 
 const invoiceTableBody =
-    document.getElementById("invoiceTableBody");
+    document.getElementById(
+        "invoiceTableBody"
+    );
+
 
 const invoiceSearch =
-    document.getElementById("invoiceSearch");
+    document.getElementById(
+        "invoiceSearch"
+    );
+
 
 const paymentStatusFilter =
-    document.getElementById("paymentStatusFilter");
+    document.getElementById(
+        "paymentStatusFilter"
+    );
+
 
 const invoiceModal =
-    document.getElementById("invoiceModal");
+    document.getElementById(
+        "invoiceModal"
+    );
+
 
 const invoiceDetails =
-    document.getElementById("invoiceDetails");
+    document.getElementById(
+        "invoiceDetails"
+    );
+
 
 const paymentAmount =
-    document.getElementById("paymentAmount");
+    document.getElementById(
+        "paymentAmount"
+    );
+
 
 const paymentStatus =
-    document.getElementById("paymentStatus");
-
-const generateInvoiceModal =
-    document.getElementById("generateInvoiceModal");
-
-const generateInvoiceForm =
-    document.getElementById("generateInvoiceForm");
-
-const invoiceFormError =
-    document.getElementById("invoiceFormError");
+    document.getElementById(
+        "paymentStatus"
+    );
 
 
-/* =========================================
-   FORMATTING
-========================================= */
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 
 function formatMoney(amount) {
 
-    return `GHS ${Number(amount).toLocaleString(
+    return `GHS ${Number(amount || 0).toLocaleString(
         "en-GH",
         {
             minimumFractionDigits: 2,
@@ -146,8 +143,19 @@ function formatMoney(amount) {
 
 function formatDate(dateString) {
 
+    if (!dateString) {
+        return "—";
+    }
+
+    const value =
+        String(dateString).split("T")[0];
+
     const date =
-        new Date(dateString + "T00:00:00");
+        new Date(`${value}T00:00:00`);
+
+    if (Number.isNaN(date.getTime())) {
+        return "—";
+    }
 
     return date.toLocaleDateString(
         "en-GB",
@@ -162,22 +170,152 @@ function formatDate(dateString) {
 
 function getStatusClass(status) {
 
-    return status
+    if (!status) {
+        return "";
+    }
+
+    return String(status)
         .toLowerCase()
         .replace(/\s+/g, "-");
 }
 
 
-/* =========================================
-   SUMMARY CALCULATIONS
-========================================= */
+/* -------------LOAD REAL INVOICES-------------*/
+
+async function loadInvoicesFromAPI() {
+
+    try {
+
+        const data =
+            await apiFetch(
+                "/invoices"
+            );
+
+        if (!Array.isArray(data)) {
+
+            throw new Error(
+                "Invalid invoice data received from server."
+            );
+        }
+
+
+        invoices =
+            data.map(invoice => ({
+
+                id:
+                    Number(
+                        invoice.InvoiceID
+                    ),
+
+
+                customer:
+                    invoice.CustomerName ||
+                    "Unknown Customer",
+
+
+                source:
+                    invoice.ReservationID
+                        ? "Room Reservation"
+                        : "Event Booking",
+
+
+                reference:
+                    invoice.Reference ||
+                    (
+                        invoice.ReservationID
+                            ? `RES-${invoice.ReservationID}`
+                            : `EVT-${invoice.EventID}`
+                    ),
+
+
+                roomCharges:
+                    Number(
+                        invoice.RoomCharges || 0
+                    ),
+
+
+                eventCharges:
+                    Number(
+                        invoice.EventCharges || 0
+                    ),
+
+
+                additionalCharges:
+                    Number(
+                        invoice.AdditionalCharges || 0
+                    ),
+
+
+                totalAmount:
+                    Number(
+                        invoice.TotalAmount || 0
+                    ),
+
+                    paymentStatus:
+    invoice.PaymentStatus || "Unpaid",
+
+amountPaid:
+    Number(
+        invoice.AmountPaid || 0
+    ),
+
+
+                issuedDate:
+                    invoice.IssuedDate,
+
+
+                reservationId:
+                    invoice.ReservationID || null,
+
+
+                eventId:
+                    invoice.EventID || null
+
+            }));
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load invoices:",
+            error
+        );
+
+
+        if (invoiceTableBody) {
+
+            invoiceTableBody.innerHTML = `
+                <tr>
+                    <td
+                        colspan="7"
+                        class="empty-row"
+                    >
+                        Unable to load invoices.
+                        Please refresh the page.
+                    </td>
+                </tr>
+            `;
+        }
+
+
+        return false;
+    }
+}
+
+
+/* ---------FINANCIAL TOTALS------------- */
 
 function calculateTotals() {
 
     const totalBilled =
         invoices.reduce(
             (sum, invoice) =>
-                sum + invoice.totalAmount,
+                sum +
+                Number(
+                    invoice.totalAmount || 0
+                ),
             0
         );
 
@@ -185,7 +323,10 @@ function calculateTotals() {
     const totalPaid =
         invoices.reduce(
             (sum, invoice) =>
-                sum + invoice.amountPaid,
+                sum +
+                Number(
+                    invoice.amountPaid || 0
+                ),
             0
         );
 
@@ -195,8 +336,12 @@ function calculateTotals() {
             (sum, invoice) =>
                 sum +
                 Math.max(
-                    invoice.totalAmount -
-                    invoice.amountPaid,
+                    Number(
+                        invoice.totalAmount || 0
+                    ) -
+                    Number(
+                        invoice.amountPaid || 0
+                    ),
                     0
                 ),
             0
@@ -206,7 +351,10 @@ function calculateTotals() {
     const roomCharges =
         invoices.reduce(
             (sum, invoice) =>
-                sum + invoice.roomCharges,
+                sum +
+                Number(
+                    invoice.roomCharges || 0
+                ),
             0
         );
 
@@ -214,7 +362,10 @@ function calculateTotals() {
     const eventCharges =
         invoices.reduce(
             (sum, invoice) =>
-                sum + invoice.eventCharges,
+                sum +
+                Number(
+                    invoice.eventCharges || 0
+                ),
             0
         );
 
@@ -222,74 +373,108 @@ function calculateTotals() {
     const additionalCharges =
         invoices.reduce(
             (sum, invoice) =>
-                sum + invoice.additionalCharges,
+                sum +
+                Number(
+                    invoice.additionalCharges || 0
+                ),
             0
         );
 
 
-    document.getElementById(
-        "totalBilled"
-    ).textContent =
-        formatMoney(totalBilled);
+    const totalBilledElement =
+        document.getElementById(
+            "totalBilled"
+        );
+
+    const totalPaidElement =
+        document.getElementById(
+            "totalPaid"
+        );
+
+    const outstandingElement =
+        document.getElementById(
+            "totalOutstanding"
+        );
+
+    const totalInvoicesElement =
+        document.getElementById(
+            "totalInvoices"
+        );
 
 
-    document.getElementById(
-        "totalPaid"
-    ).textContent =
-        formatMoney(totalPaid);
+    if (totalBilledElement) {
+        totalBilledElement.textContent =
+            formatMoney(totalBilled);
+    }
 
 
-    document.getElementById(
-        "totalOutstanding"
-    ).textContent =
-        formatMoney(totalOutstanding);
+    if (totalPaidElement) {
+        totalPaidElement.textContent =
+            formatMoney(totalPaid);
+    }
 
 
-    document.getElementById(
-        "totalInvoices"
-    ).textContent =
-        invoices.length;
+    if (outstandingElement) {
+        outstandingElement.textContent =
+            formatMoney(totalOutstanding);
+    }
 
 
-    document.getElementById(
-        "roomChargesTotal"
-    ).textContent =
-        formatMoney(roomCharges);
+    if (totalInvoicesElement) {
+        totalInvoicesElement.textContent =
+            invoices.length;
+    }
 
 
-    document.getElementById(
-        "eventChargesTotal"
-    ).textContent =
-        formatMoney(eventCharges);
+    const roomChargesElement =
+        document.getElementById(
+            "roomChargesTotal"
+        );
+
+    const eventChargesElement =
+        document.getElementById(
+            "eventChargesTotal"
+        );
+
+    const additionalChargesElement =
+        document.getElementById(
+            "additionalChargesTotal"
+        );
 
 
-    document.getElementById(
-        "additionalChargesTotal"
-    ).textContent =
-        formatMoney(additionalCharges);
+    if (roomChargesElement) {
+        roomChargesElement.textContent =
+            formatMoney(roomCharges);
+    }
 
 
-    document.getElementById(
-        "paidInvoiceCount"
-    ).textContent =
+    if (eventChargesElement) {
+        eventChargesElement.textContent =
+            formatMoney(eventCharges);
+    }
+
+
+    if (additionalChargesElement) {
+        additionalChargesElement.textContent =
+            formatMoney(additionalCharges);
+    }
+
+
+    const paidCount =
         invoices.filter(
             invoice =>
                 invoice.paymentStatus === "Paid"
         ).length;
 
 
-    document.getElementById(
-        "unpaidInvoiceCount"
-    ).textContent =
+    const unpaidCount =
         invoices.filter(
             invoice =>
                 invoice.paymentStatus === "Unpaid"
         ).length;
 
 
-    document.getElementById(
-        "partialInvoiceCount"
-    ).textContent =
+    const partialCount =
         invoices.filter(
             invoice =>
                 invoice.paymentStatus ===
@@ -297,75 +482,132 @@ function calculateTotals() {
         ).length;
 
 
-    document.getElementById(
-        "overdueInvoiceCount"
-    ).textContent =
-        invoices.filter(
-            invoice =>
-                invoice.paymentStatus ===
-                "Overdue"
-        ).length;
+    const paidInvoiceCount =
+        document.getElementById(
+            "paidInvoiceCount"
+        );
+
+    const unpaidInvoiceCount =
+        document.getElementById(
+            "unpaidInvoiceCount"
+        );
+
+    const partialInvoiceCount =
+        document.getElementById(
+            "partialInvoiceCount"
+        );
+
+    const overdueInvoiceCount =
+        document.getElementById(
+            "overdueInvoiceCount"
+        );
+
+
+    if (paidInvoiceCount) {
+        paidInvoiceCount.textContent =
+            paidCount;
+    }
+
+
+    if (unpaidInvoiceCount) {
+        unpaidInvoiceCount.textContent =
+            unpaidCount;
+    }
+
+
+    if (partialInvoiceCount) {
+        partialInvoiceCount.textContent =
+            partialCount;
+    }
+
+    if (overdueInvoiceCount) {
+        overdueInvoiceCount.textContent = "0";
+    }
 }
 
 
-/* =========================================
-   FILTERING
-========================================= */
+/* -------------FILTERING---------------- */
 
 function getFilteredInvoices() {
 
     const search =
-        invoiceSearch.value
-            .trim()
-            .toLowerCase();
+        invoiceSearch
+            ? invoiceSearch.value
+                .trim()
+                .toLowerCase()
+            : "";
+
 
     const status =
-        paymentStatusFilter.value;
+        paymentStatusFilter
+            ? paymentStatusFilter.value
+            : "all";
 
 
-    return invoices.filter(invoice => {
+    return invoices.filter(
+        invoice => {
 
-        const matchesStatus =
-            status === "all" ||
-            invoice.paymentStatus === status;
-
-
-        const matchesSearch =
-            invoice.customer
-                .toLowerCase()
-                .includes(search) ||
-
-            invoice.source
-                .toLowerCase()
-                .includes(search) ||
-
-            invoice.reference
-                .toLowerCase()
-                .includes(search) ||
-
-            `inv-${invoice.id}`
-                .includes(search);
+            const matchesStatus =
+                status === "all" ||
+                invoice.paymentStatus ===
+                    status;
 
 
-        return matchesStatus &&
-               matchesSearch;
-    });
+            const customer =
+                String(
+                    invoice.customer || ""
+                ).toLowerCase();
+
+
+            const source =
+                String(
+                    invoice.source || ""
+                ).toLowerCase();
+
+
+            const reference =
+                String(
+                    invoice.reference || ""
+                ).toLowerCase();
+
+
+            const invoiceNumber =
+                `inv-${invoice.id}`;
+
+
+            const matchesSearch =
+                customer.includes(search) ||
+                source.includes(search) ||
+                reference.includes(search) ||
+                invoiceNumber.includes(search);
+
+
+            return (
+                matchesStatus &&
+                matchesSearch
+            );
+        }
+    );
 }
 
 
-/* =========================================
-   RENDER INVOICES
-========================================= */
+/* ----------RENDER INVOICES----------- */
 
 function renderInvoices() {
 
+    if (!invoiceTableBody) {
+        return;
+    }
+
+
     invoiceTableBody.innerHTML = "";
+
 
     const filtered =
         getFilteredInvoices();
 
 
-    if (filtered.length === 0) {
+    if (!filtered.length) {
 
         invoiceTableBody.innerHTML = `
             <tr>
@@ -382,81 +624,109 @@ function renderInvoices() {
     }
 
 
-    filtered.forEach(invoice => {
+    filtered.forEach(
+        invoice => {
 
-        const row =
-            document.createElement("tr");
-
-
-        row.innerHTML = `
-
-            <td>
-                <strong>
-                    INV-${invoice.id}
-                </strong>
-            </td>
-
-            <td>
-                <strong>
-                    ${invoice.source}
-                </strong>
-
-                <small class="finance-reference">
-                    ${invoice.reference}
-                </small>
-            </td>
-
-            <td>
-                ${invoice.customer}
-            </td>
-
-            <td>
-                ${formatMoney(invoice.totalAmount)}
-            </td>
-
-            <td>
-                <span
-                    class="status-badge ${getStatusClass(
-                        invoice.paymentStatus
-                    )}"
-                >
-                    ${invoice.paymentStatus}
-                </span>
-            </td>
-
-            <td>
-                ${formatDate(invoice.issuedDate)}
-            </td>
-
-            <td>
-
-                <button
-                    type="button"
-                    class="action-button"
-                    data-action="view"
-                    data-id="${invoice.id}"
-                >
-                    View
-                </button>
-
-            </td>
-        `;
+            const row =
+                document.createElement("tr");
 
 
-        invoiceTableBody.appendChild(row);
-    });
+            row.innerHTML = `
+
+                <td>
+                    <strong>
+                        INV-${escapeHTML(
+                            invoice.id
+                        )}
+                    </strong>
+                </td>
+
+
+                <td>
+
+                    <strong>
+                        ${escapeHTML(
+                            invoice.source
+                        )}
+                    </strong>
+
+                    <small class="finance-reference">
+                        ${escapeHTML(
+                            invoice.reference
+                        )}
+                    </small>
+
+                </td>
+
+
+                <td>
+                    ${escapeHTML(
+                        invoice.customer
+                    )}
+                </td>
+
+
+                <td>
+                    ${formatMoney(
+                        invoice.totalAmount
+                    )}
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="status-badge
+                        ${getStatusClass(
+                            invoice.paymentStatus
+                        )}"
+                    >
+                        ${escapeHTML(
+                            invoice.paymentStatus
+                        )}
+                    </span>
+
+                </td>
+
+
+                <td>
+                    ${formatDate(
+                        invoice.issuedDate
+                    )}
+                </td>
+
+
+                <td>
+
+                    <button
+                        type="button"
+                        class="action-button"
+                        data-action="view"
+                        data-id="${invoice.id}"
+                    >
+                        View
+                    </button>
+
+                </td>
+
+            `;
+
+
+            invoiceTableBody.appendChild(row);
+        }
+    );
 }
 
 
-/* =========================================
-   OPEN INVOICE DETAILS
-========================================= */
+/* --------------VIEW INVOICE------------- */
 
 function openInvoiceModal(id) {
 
     const invoice =
         invoices.find(
-            item => item.id === id
+            item =>
+                Number(item.id) ===
+                Number(id)
         );
 
 
@@ -465,122 +735,193 @@ function openInvoiceModal(id) {
     }
 
 
-    viewingInvoiceId = id;
+    viewingInvoiceId =
+        Number(id);
 
 
     const outstanding =
         Math.max(
-            invoice.totalAmount -
-            invoice.amountPaid,
+            Number(
+                invoice.totalAmount || 0
+            ) -
+            Number(
+                invoice.amountPaid || 0
+            ),
             0
         );
 
 
-    invoiceDetails.innerHTML = `
+    if (invoiceDetails) {
 
-        <div class="detail-row">
-            <span>Invoice</span>
-            <strong>
-                INV-${invoice.id}
-            </strong>
-        </div>
+        invoiceDetails.innerHTML = `
 
-        <div class="detail-row">
-            <span>Customer</span>
-            <strong>
-                ${invoice.customer}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Source</span>
-            <strong>
-                ${invoice.source}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Reference</span>
-            <strong>
-                ${invoice.reference}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Room Charges</span>
-            <strong>
-                ${formatMoney(invoice.roomCharges)}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Event Charges</span>
-            <strong>
-                ${formatMoney(invoice.eventCharges)}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Additional Charges</span>
-            <strong>
-                ${formatMoney(invoice.additionalCharges)}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Total Amount</span>
-            <strong>
-                ${formatMoney(invoice.totalAmount)}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Amount Paid</span>
-            <strong>
-                ${formatMoney(invoice.amountPaid)}
-            </strong>
-        </div>
-
-        <div class="detail-row total">
-            <span>Outstanding</span>
-            <strong>
-                ${formatMoney(outstanding)}
-            </strong>
-        </div>
-
-        <div class="detail-row">
-            <span>Issued Date</span>
-            <strong>
-                ${formatDate(invoice.issuedDate)}
-            </strong>
-        </div>
-    `;
+            <div class="detail-row">
+                <span>Invoice</span>
+                <strong>
+                    INV-${escapeHTML(
+                        invoice.id
+                    )}
+                </strong>
+            </div>
 
 
-    paymentAmount.value =
-        invoice.amountPaid;
+            <div class="detail-row">
+                <span>Customer</span>
+                <strong>
+                    ${escapeHTML(
+                        invoice.customer
+                    )}
+                </strong>
+            </div>
 
 
-    paymentStatus.value =
-        invoice.paymentStatus;
+            <div class="detail-row">
+                <span>Source</span>
+                <strong>
+                    ${escapeHTML(
+                        invoice.source
+                    )}
+                </strong>
+            </div>
 
 
-    invoiceModal.classList.add("show");
+            <div class="detail-row">
+                <span>Reference</span>
+                <strong>
+                    ${escapeHTML(
+                        invoice.reference
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Room Charges</span>
+                <strong>
+                    ${formatMoney(
+                        invoice.roomCharges
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Event Charges</span>
+                <strong>
+                    ${formatMoney(
+                        invoice.eventCharges
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Additional Charges</span>
+                <strong>
+                    ${formatMoney(
+                        invoice.additionalCharges
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Total Amount</span>
+                <strong>
+                    ${formatMoney(
+                        invoice.totalAmount
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Amount Paid</span>
+                <strong>
+                    ${formatMoney(
+                        invoice.amountPaid
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row total">
+                <span>Outstanding</span>
+                <strong>
+                    ${formatMoney(
+                        outstanding
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Payment Status</span>
+                <strong>
+                    ${escapeHTML(
+                        invoice.paymentStatus
+                    )}
+                </strong>
+            </div>
+
+
+            <div class="detail-row">
+                <span>Issued Date</span>
+                <strong>
+                    ${formatDate(
+                        invoice.issuedDate
+                    )}
+                </strong>
+            </div>
+
+        `;
+    }
+
+    if (paymentAmount) {
+
+        paymentAmount.value = "";
+
+        paymentAmount.max =
+            Math.max(
+                Number(
+                    invoice.totalAmount || 0
+                ) -
+                Number(
+                    invoice.amountPaid || 0
+                ),
+                0
+            );
+    }
+
+
+    if (paymentStatus) {
+
+        paymentStatus.value =
+            invoice.paymentStatus;
+    }
+
+
+    if (invoiceModal) {
+        invoiceModal.classList.add("show");
+    }
 }
 
 
+/* ----------CLOSE INVOICE MODAL---------------*/
+
 function closeInvoiceModal() {
 
-   invoiceModal.classList.remove("show");
+    if (invoiceModal) {
+        invoiceModal.classList.remove("show");
+    }
+
     viewingInvoiceId = null;
 }
 
 
-/* =========================================
-   RECORD PAYMENT
-========================================= */
+/* -------------RECORD PAYMENT----------- */
 
-function recordPayment() {
+async function recordPayment() {
 
     if (!viewingInvoiceId) {
         return;
@@ -590,8 +931,8 @@ function recordPayment() {
     const invoice =
         invoices.find(
             item =>
-                item.id ===
-                viewingInvoiceId
+                Number(item.id) ===
+                Number(viewingInvoiceId)
         );
 
 
@@ -601,12 +942,16 @@ function recordPayment() {
 
 
     const amount =
-        Number(paymentAmount.value);
+        Number(
+            paymentAmount
+                ? paymentAmount.value
+                : 0
+        );
 
 
     if (
         Number.isNaN(amount) ||
-        amount < 0
+        amount <= 0
     ) {
 
         alert(
@@ -617,428 +962,199 @@ function recordPayment() {
     }
 
 
-    if (amount > invoice.totalAmount) {
+    const outstanding =
+        Math.max(
+            Number(
+                invoice.totalAmount || 0
+            ) -
+            Number(
+                invoice.amountPaid || 0
+            ),
+            0
+        );
+
+
+    if (amount > outstanding) {
 
         alert(
-            "Payment cannot exceed the invoice total."
+            `Payment cannot exceed the outstanding amount of ${formatMoney(outstanding)}.`
         );
 
         return;
     }
 
 
-    invoice.amountPaid =
-        amount;
+    try {
 
+        await apiFetch(
+            `/invoices/${invoice.id}/pay`,
+            {
+                method: "POST",
 
-    if (amount === 0) {
-
-        invoice.paymentStatus =
-            "Unpaid";
-
-    } else if (
-        amount >= invoice.totalAmount
-    ) {
-
-        invoice.paymentStatus =
-            "Paid";
-
-    } else {
-
-        invoice.paymentStatus =
-            "Partially Paid";
-    }
-
-
-    closeInvoiceModal();
-
-    renderAll();
-}
-
-
-/* =========================================
-   CUSTOMER OPTIONS
-========================================= */
-
-function populateCustomers() {
-
-    const select =
-        document.getElementById(
-            "invoiceCustomer"
+                body:
+                    JSON.stringify({
+                        AmountPaid:
+                            amount
+                    })
+            }
         );
 
 
-    customers.forEach(customer => {
+        closeInvoiceModal();
 
-        const option =
-            document.createElement("option");
+        const loaded =
+            await loadInvoicesFromAPI();
 
-        option.value =
-            customer;
 
-        option.textContent =
-            customer;
+        if (loaded) {
+            renderAll();
+        }
 
-        select.appendChild(option);
-    });
+
+    } catch (error) {
+
+        console.error(
+            "Record payment error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to record payment."
+        );
+    }
 }
 
 
-/* =========================================
-   GENERATE INVOICE MODAL
-========================================= */
+/* ---------TABLE ACTIONS-----------*/
 
-function openGenerateInvoiceModal() {
+if (invoiceTableBody) {
 
-    generateInvoiceForm.reset();
+    invoiceTableBody.addEventListener(
+        "click",
+        event => {
 
-    invoiceFormError.textContent = "";
+            const button =
+                event.target.closest(
+                    "button"
+                );
 
-    updateInvoiceTotalPreview();
 
-   generateInvoiceModal.classList.add("show");
+            if (!button) {
+                return;
+            }
+
+
+            const id =
+                Number(
+                    button.dataset.id
+                );
+
+
+            if (
+                button.dataset.action ===
+                "view"
+            ) {
+
+                openInvoiceModal(id);
+            }
+
+        }
+    );
 }
 
 
-function closeGenerateInvoiceModal() {
+/* -----------SEARCH---------- */
 
-    generateInvoiceModal.classList.remove("show");
+if (invoiceSearch) {
+
+    invoiceSearch.addEventListener(
+        "input",
+        renderInvoices
+    );
 }
 
 
-/* =========================================
-   INVOICE TOTAL PREVIEW
-========================================= */
+/* -------PAYMENT STATUS FILTER---------- */
 
-function updateInvoiceTotalPreview() {
+if (paymentStatusFilter) {
 
-    const room =
-        Number(
-            document.getElementById(
-                "newRoomCharges"
-            ).value
-        ) || 0;
+    paymentStatusFilter.addEventListener(
+        "change",
+        renderInvoices
+    );
+}
 
 
-    const event =
-        Number(
-            document.getElementById(
-                "newEventCharges"
-            ).value
-        ) || 0;
+/* -----INVOICE MODAL------------ */
 
-
-    const additional =
-        Number(
-            document.getElementById(
-                "newAdditionalCharges"
-            ).value
-        ) || 0;
-
-
-    const total =
-        room +
-        event +
-        additional;
-
-
+const closeInvoiceButton =
     document.getElementById(
-        "newInvoiceTotal"
-    ).textContent =
-        formatMoney(total);
-}
-
-
-/* =========================================
-   GENERATE INVOICE
-========================================= */
-
-function generateInvoice() {
-
-    const customer =
-        document.getElementById(
-            "invoiceCustomer"
-        ).value;
-
-
-    const source =
-        document.getElementById(
-            "invoiceSource"
-        ).value;
-
-
-    const reference =
-        document.getElementById(
-            "reservationReference"
-        ).value.trim();
-
-
-    const roomCharges =
-        Number(
-            document.getElementById(
-                "newRoomCharges"
-            ).value
-        ) || 0;
-
-
-    const eventCharges =
-        Number(
-            document.getElementById(
-                "newEventCharges"
-            ).value
-        ) || 0;
-
-
-    const additionalCharges =
-        Number(
-            document.getElementById(
-                "newAdditionalCharges"
-            ).value
-        ) || 0;
-
-
-    if (!customer) {
-
-        invoiceFormError.textContent =
-            "Please select a customer.";
-
-        return;
-    }
-
-
-    if (!reference) {
-
-        invoiceFormError.textContent =
-            "Please enter a reservation or booking reference.";
-
-        return;
-    }
-
-
-    if (
-        roomCharges === 0 &&
-        eventCharges === 0 &&
-        additionalCharges === 0
-    ) {
-
-        invoiceFormError.textContent =
-            "At least one charge must be greater than zero.";
-
-        return;
-    }
-
-
-    const totalAmount =
-        roomCharges +
-        eventCharges +
-        additionalCharges;
-
-
-    invoices.push({
-
-        id: nextInvoiceId++,
-
-        customer,
-
-        source,
-
-        reference,
-
-        roomCharges,
-
-        eventCharges,
-
-        additionalCharges,
-
-        totalAmount,
-
-        paymentStatus: "Unpaid",
-
-        amountPaid: 0,
-
-        issuedDate:
-            new Date()
-                .toISOString()
-                .split("T")[0]
-    });
-
-
-    closeGenerateInvoiceModal();
-
-    renderAll();
-}
-
-
-/* =========================================
-   TABLE ACTIONS
-========================================= */
-
-invoiceTableBody.addEventListener(
-    "click",
-    event => {
-
-        const button =
-            event.target.closest("button");
-
-        if (!button) {
-            return;
-        }
-
-
-        const id =
-            Number(
-                button.dataset.id
-            );
-
-
-        if (
-            button.dataset.action ===
-            "view"
-        ) {
-
-            openInvoiceModal(id);
-        }
-    }
-);
-
-
-/* =========================================
-   EVENT LISTENERS
-========================================= */
-
-invoiceSearch.addEventListener(
-    "input",
-    renderInvoices
-);
-
-
-paymentStatusFilter.addEventListener(
-    "change",
-    renderInvoices
-);
-
-
-document
-    .getElementById(
         "closeInvoiceModal"
-    )
-    .addEventListener(
-        "click",
-        closeInvoiceModal
     );
 
 
-document
-    .getElementById(
+if (closeInvoiceButton) {
+
+    closeInvoiceButton.addEventListener(
+        "click",
+        closeInvoiceModal
+    );
+}
+
+
+const cancelInvoiceButton =
+    document.getElementById(
         "cancelInvoiceModal"
-    )
-    .addEventListener(
-        "click",
-        closeInvoiceModal
     );
 
 
-invoiceModal.addEventListener(
-    "click",
-    event => {
+if (cancelInvoiceButton) {
 
-        if (
-            event.target ===
-            invoiceModal
-        ) {
+    cancelInvoiceButton.addEventListener(
+        "click",
+        closeInvoiceModal
+    );
+}
 
-            closeInvoiceModal();
+
+if (invoiceModal) {
+
+    invoiceModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                invoiceModal
+            ) {
+
+                closeInvoiceModal();
+            }
         }
-    }
-);
+    );
+}
 
 
-document
-    .getElementById(
+/* -----------RECORD PAYMENT BUTTON------------= */
+
+const savePaymentButton =
+    document.getElementById(
         "savePaymentButton"
-    )
-    .addEventListener(
+    );
+
+
+if (savePaymentButton) {
+
+    savePaymentButton.addEventListener(
         "click",
         recordPayment
     );
+}
 
 
-document
-    .getElementById(
-        "generateInvoiceButton"
-    )
-    .addEventListener(
-        "click",
-        openGenerateInvoiceModal
-    );
-
-
-document
-    .getElementById(
-        "closeGenerateInvoiceModal"
-    )
-    .addEventListener(
-        "click",
-        closeGenerateInvoiceModal
-    );
-
-
-document
-    .getElementById(
-        "cancelGenerateInvoice"
-    )
-    .addEventListener(
-        "click",
-        closeGenerateInvoiceModal
-    );
-
-
-generateInvoiceModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            generateInvoiceModal
-        ) {
-
-            closeGenerateInvoiceModal();
-        }
-    }
-);
-
-
-generateInvoiceForm.addEventListener(
-    "submit",
-    event => {
-
-        event.preventDefault();
-
-        generateInvoice();
-    }
-);
-
-
-/* Charge preview */
-
-[
-    "newRoomCharges",
-    "newEventCharges",
-    "newAdditionalCharges"
-].forEach(id => {
-
-    document
-        .getElementById(id)
-        .addEventListener(
-            "input",
-            updateInvoiceTotalPreview
-        );
-});
-
-
-/* =========================================
-   RENDER ALL
-========================================= */
+/* ------------RENDER -------*/
 
 function renderAll() {
 
@@ -1048,10 +1164,21 @@ function renderAll() {
 }
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+/* ------INITIALIZE-------- */
 
-populateCustomers();
+async function initializeFinance() {
 
-renderAll();
+    const loaded =
+        await loadInvoicesFromAPI();
+
+
+    if (!loaded) {
+        return;
+    }
+
+
+    renderAll();
+}
+
+
+initializeFinance();
