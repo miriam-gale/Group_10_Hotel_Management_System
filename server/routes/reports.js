@@ -27,21 +27,47 @@ router.get('/dashboard', verifyToken, requireStaff, async (req, res) => {
     `);
 
     const [[todayActivity]] = await pool.query(`
-      SELECT
-        SUM(DATE(CheckInDate)  = CURDATE()) AS TodayCheckIns,
-        SUM(DATE(CheckOutDate) = CURDATE()) AS TodayCheckOuts
-      FROM RESERVATION WHERE Status IN ('Confirmed','Checked-In','Checked-Out')
-    `);
+  SELECT
+    SUM(DATE(CheckInDate) = CURDATE()) AS TodayBookings,
+    SUM(
+      DATE(CheckInDate) = CURDATE()
+      AND Status IN ('Confirmed', 'Checked-In')
+    ) AS TodayCheckIns,
+    SUM(DATE(CheckOutDate) = CURDATE()) AS TodayCheckOuts
+  FROM RESERVATION
+  WHERE Status IN ('Confirmed', 'Checked-In', 'Checked-Out')
+`);
 
     const [[revenue]] = await pool.query(`
-      SELECT
-        COALESCE(SUM(RoomCharges),       0)                                              AS TotalRoomRevenue,
-        COALESCE(SUM(EventCharges),      0)                                              AS TotalEventRevenue,
-        COALESCE(SUM(AdditionalCharges), 0)                                              AS TotalAdditionalRevenue,
-        COALESCE(SUM(TotalAmount),       0)                                              AS TotalRevenue,
-        COALESCE(SUM(TotalAmount - AmountPaid), 0) AS OutstandingBalance
-      FROM INVOICE
-    `);
+  SELECT
+    COALESCE(SUM(CASE
+      WHEN PaymentStatus = 'Paid' THEN RoomCharges
+      ELSE 0
+    END), 0) AS TotalRoomRevenue,
+
+    COALESCE(SUM(CASE
+      WHEN PaymentStatus = 'Paid' THEN EventCharges
+      ELSE 0
+    END), 0) AS TotalEventRevenue,
+
+    COALESCE(SUM(CASE
+      WHEN PaymentStatus = 'Paid' THEN AdditionalCharges
+      ELSE 0
+    END), 0) AS TotalAdditionalRevenue,
+
+    COALESCE(SUM(CASE
+      WHEN PaymentStatus = 'Paid'
+       AND DATE(IssuedDate) = CURDATE()
+      THEN TotalAmount
+      ELSE 0
+    END), 0) AS TodayRevenue,
+
+    COALESCE(SUM(TotalAmount), 0) AS TotalRevenue,
+
+    COALESCE(SUM(TotalAmount - AmountPaid), 0) AS OutstandingBalance
+
+  FROM INVOICE
+`);
 
     const [[upcomingEvents]] = await pool.query(`
       SELECT COUNT(*) AS UpcomingEvents

@@ -26,118 +26,294 @@
             </div>
 
 
-            <!-- HEADING -->
-            <div class="login-heading">
-                <h2>Welcome Back</h2>
+            <!-- ================================
+                 LOGIN VIEW
+            ================================= -->
 
-                <p>
-                    Sign in to access your Grand Horizon account.
-                </p>
-            </div>
+            <div id="loginView">
 
+                <!-- HEADING -->
+                <div class="login-heading">
+                    <h2>Welcome Back</h2>
 
-            <!-- ACCOUNT TYPE -->
-            <div class="form-group">
-
-                <label for="userType">
-                    Sign in as
-                </label>
-
-                <select id="userType">
-
-                    <option value="customer">
-                        Customer
-                    </option>
-
-                    <option value="event-staff">
-                        Event Staff
-                    </option>
-
-                    <option value="administrator">
-                        Administrator
-                    </option>
-
-                    <option value="finance">
-                        Finance/Billing Staff
-                    </option>
-
-                </select>
-
-            </div>
+                    <p>
+                        Sign in to access your Grand Horizon account.
+                    </p>
+                </div>
 
 
-            <!-- LOGIN FORM -->
-            <form id="loginForm">
-
-                <!-- EMAIL -->
+                <!-- ACCOUNT TYPE -->
                 <div class="form-group">
 
-                    <label for="email">
-                        Email
+                    <label for="userType">
+                        Sign in as
                     </label>
 
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                        autocomplete="email"
-                        required
-                    >
+                    <select id="userType">
+
+                        <option value="customer">
+                            Customer
+                        </option>
+
+                        <option value="event-staff">
+                            Event Staff
+                        </option>
+
+                        <option value="administrator">
+                            Administrator
+                        </option>
+
+                        <option value="finance">
+                            Finance/Billing Staff
+                        </option>
+
+                    </select>
 
                 </div>
 
 
-                <!-- PASSWORD -->
-                <div class="form-group">
+                <!-- LOGIN FORM -->
+                <form id="loginForm">
 
-                    <label for="password">
-                        Password
-                    </label>
+                    <!-- EMAIL -->
+                    <div class="form-group">
 
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LOGIN ERROR -->
+                    <p
+                        id="loginError"
+                        class="login-error"
+                        aria-live="polite"
+                    ></p>
+
+
+                    <!-- SIGN IN BUTTON -->
+                    <button
+                        type="submit"
+                        class="primary-button login-button"
+                        id="loginButton"
                     >
+                        Sign In
+                    </button>
 
-                </div>
+                </form>
 
 
-                <!-- LOGIN ERROR -->
+                <!-- CUSTOMER REGISTRATION LINK -->
                 <p
-                    id="loginError"
-                    class="login-error"
-                    aria-live="polite"
-                ></p>
-
-
-                <!-- SIGN IN BUTTON -->
-                <button
-                    type="submit"
-                    class="primary-button login-button"
-                    id="loginButton"
+                    id="customerRegister"
+                    class="login-note"
                 >
-                    Sign In
-                </button>
+                    Don't have an account?
 
-            </form>
+                    <a
+                        href="#"
+                        id="registerLink"
+                    >
+                        Create an account
+                    </a>
+                </p>
+
+            </div>
 
 
-            <!-- CUSTOMER REGISTRATION -->
-            <p
-                id="customerRegister"
-                class="login-note"
+            <!-- ================================
+                 REGISTRATION VIEW
+            ================================= -->
+
+            <div
+                id="registerView"
+                style="display: none;"
             >
-                Don't have an account?
-                <a
-                    href="#"
-                    id="registerLink"
-                >
-                    Create an account
-                </a>
-            </p>
+
+                <div class="login-heading">
+
+                    <h2>Create Account</h2>
+
+                    <p>
+                        Create your Grand Horizon customer account.
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <!-- FIRST NAME -->
+                    <div class="form-group">
+
+                        <label for="registerFirstName">
+                            First Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerFirstName"
+                            placeholder="Enter your first name"
+                            autocomplete="given-name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LAST NAME -->
+                    <div class="form-group">
+
+                        <label for="registerLastName">
+                            Last Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="registerLastName"
+                            placeholder="Enter your last name"
+                            autocomplete="family-name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CONTACT NUMBER -->
+                    <div class="form-group">
+
+                        <label for="registerContact">
+                            Contact Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="registerContact"
+                            placeholder="Enter your contact number"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="registerConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="registerConfirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- REGISTRATION ERROR -->
+                    <p
+                        id="registerError"
+                        class="login-error"
+                        aria-live="polite"
+                    ></p>
+
+
+                    <!-- CREATE ACCOUNT -->
+                    <button
+                        type="submit"
+                        class="primary-button login-button"
+                        id="registerButton"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <!-- BACK TO LOGIN -->
+                <p class="login-note">
+
+                    Already have an account?
+
+                    <a
+                        href="#"
+                        id="backToLogin"
+                    >
+                        Sign in
+                    </a>
+
+                </p>
+
+            </div>
 
         </section>
 
