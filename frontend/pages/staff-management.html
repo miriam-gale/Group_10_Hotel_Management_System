@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Management | Grand Horizon Hotel</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">★</div>
+
+            <div class="brand-name">
+                GRAND HORIZON
+            </div>
+
+            <div class="brand-subtitle">
+                HOTEL
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="../index.html" class="nav-item">
+                <span>Dashboard</span>
+            </a>
+
+            <a href="rooms.html" class="nav-item">
+                <span>Rooms</span>
+            </a>
+
+            <a href="reservations.html" class="nav-item">
+                <span>Reservations</span>
+            </a>
+
+            <a href="checkin.html" class="nav-item">
+                <span>Check-in / Check-out</span>
+            </a>
+
+            <a href="reports.html" class="nav-item">
+                <span>Reports</span>
+            </a>
+
+            <a href="staff-management.html" class="nav-item active">
+                <span>Staff Management</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar" id="sidebarAvatar">
+                SA
+            </div>
+
+            <div class="user-info">
+
+                <strong id="sidebarStaffName">
+                    System Admin
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+                <a
+                    href="login.html"
+                    id="logoutButton"
+                    class="logout-link"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="hotel-name">
+                Grand Horizon Hotel
+            </div>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search anything..."
+                >
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button class="notification">
+                    ♧
+                    <span class="notification-count">
+                        3
+                    </span>
+                </button>
+
+
+                <div class="profile">
+
+                    <div
+                        class="profile-avatar"
+                        id="profileAvatar"
+                    >
+                        SA
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong id="profileStaffName">
+                            System Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>
+                        Staff Management
+                    </h1>
+
+                    <p>
+                        Manage authorized Grand Horizon Hotel staff accounts.
+                    </p>
+
+                </div>
+
+
+                <div class="page-actions">
+
+                    <button
+                        class="primary-button"
+                        id="openCreateStaff"
+                    >
+                        + Create Staff Account
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STAFF TABLE -->
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Staff Accounts
+                        </h2>
+
+                        <p>
+                            View and manage hotel staff.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table class="report-table">
+
+                        <thead>
+
+                           <tr>
+    <th>Staff Name</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+                        </thead>
+
+
+                        <tbody id="staffTableBody">
+
+                            <tr>
+
+                                <td colspan="5">
+                                    Loading staff accounts...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- CREATE STAFF MODAL -->
+
+<div
+    class="modal-overlay"
+    id="createStaffModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Create Staff Account
+                </h2>
+
+                <p>
+                    Create an authorized hotel staff account.
+                </p>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                id="closeCreateStaff"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="createStaffForm">
+
+            <div class="form-group">
+
+                <label for="staffFirstName">
+                    First Name
+                </label>
+
+                <input
+                    type="text"
+                    id="staffFirstName"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="staffLastName">
+                    Last Name
+                </label>
+
+                <input
+                    type="text"
+                    id="staffLastName"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group full-width">
+
+                <label for="staffEmail">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="staffEmail"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="staffPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="staffPassword"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="staffRole">
+                    Role
+                </label>
+
+                <select id="staffRole" required>
+
+                    <option value="">
+                        Select role
+                    </option>
+
+                    <option value="Administrator">
+                        Administrator
+                    </option>
+
+                    <option value="Event Staff">
+                        Event Staff
+                    </option>
+
+                    <option value="Finance/Billing Staff">
+                        Finance/Billing Staff
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <p
+                id="staffFormMessage"
+                class="login-error"
+                aria-live="polite"
+            ></p>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="date-button"
+                    id="cancelCreateStaff"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="createStaffButton"
+                >
+                    Create Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="../js/staff-management.js"></script>
+
+</body>
+
+</html>
