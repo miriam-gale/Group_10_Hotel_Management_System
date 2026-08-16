@@ -131,7 +131,7 @@ function escapeHTML(value) {
 
 function formatMoney(amount) {
 
-    return `GHS ${Number(amount || 0).toLocaleString(
+    return `$ ${Number(amount || 0).toLocaleString(
         "en-GH",
         {
             minimumFractionDigits: 2,

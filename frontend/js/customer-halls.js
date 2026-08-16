@@ -50,7 +50,7 @@ function getToken() {
 
 
 function formatMoney(amount) {
-    return `GHS ${Number(amount || 0).toLocaleString("en-GH", {
+    return `$ ${Number(amount || 0).toLocaleString("en-GH", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     })}`;

@@ -213,7 +213,7 @@ async function viewRoom(roomNumber) {
             `Description: ${room.Description || "N/A"}\n` +
             `Floor: ${room.Floor}\n` +
             `Maximum Occupants: ${room.MaxOccupants}\n` +
-            `Price Per Night: GHS ${room.PricePerNight}\n` +
+            `Price Per Night: $ ${room.PricePerNight}\n` +
             `Status: ${room.Status}`
         );
 

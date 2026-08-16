@@ -578,7 +578,7 @@ async function checkOutGuest(
 
     const feeInput =
         prompt(
-            "Enter late checkout fee (GHS).\n\nEnter 0 if there is no fee.",
+            "Enter late checkout fee ($).\n\nEnter 0 if there is no fee.",
             "0"
         );
 

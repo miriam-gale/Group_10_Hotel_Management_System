@@ -36,7 +36,7 @@ function checkAuthentication() {
 
 function formatMoney(amount) {
 
-    return "GHS " +
+    return "$ " +
         Number(amount || 0).toLocaleString(
             "en-GH",
             {
@@ -775,7 +775,7 @@ async function openInvoiceModal(
                     </label>
 
                     <div class="payment-input-wrapper">
-                        <span>GHS</span>
+                        <span>$</span>
 
                         <input
                             type="number"

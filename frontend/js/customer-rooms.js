@@ -74,7 +74,7 @@ const categoryImages = {
 
 function formatMoney(amount) {
 
-    return "GHS " +
+    return "$ " +
         Number(amount || 0).toLocaleString(
             "en-GH",
             {

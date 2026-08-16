@@ -161,7 +161,7 @@ function formatCurrency(amount) {
         return "—";
     }
 
-    return `GHS ${Number(amount).toFixed(2)}`;
+    return `$ ${Number(amount).toFixed(2)}`;
 }
 
 
