@@ -68,23 +68,26 @@ Node.js
 npm
 MariaDB/MySQL
 Git
-Installation
-1. Clone the repository
 
-Use the finalized branch:
+Installation
+## Clone the repository
+
+## Use the finalized branch:
 
 git clone -b miriam-frontend https://github.com/miriam-gale/Group_10_Hotel_Management_System.git
 
+##
 Then:
-
 cd Group_10_Hotel_Management_System
-2. Install Node dependencies
+
+## Install Node dependencies
 npm install
-3. Set up the database
+
+## Set up the database
 
 Create/import the database using the SQL files in the database folder.
 
-Run:
+## Run:
 
 database/hotel_db_ddl.sql
 
@@ -96,7 +99,7 @@ The DDL creates the database structure and the DML populates it with data.
 
 hotel_db_queries.sql contains additional queries used for database operations/testing.
 
-4. Configure environment variables
+## Configure environment variables
 
 Create a .env file in the project root based on .env.example.
 
@@ -111,18 +114,18 @@ JWT_SECRET=your_secret_key
 MANAGER_USER=manager
 MANAGER_PASS=manager123
 
-Use your own local database credentials.
+## Use your own local database credentials.
 
-Do not commit the .env file to GitHub.
+## Do not commit the .env file to GitHub.
 
-5. Start the application
+## Start the application
 npm start
 
-The server will run on:
+## The server will run on:
 
 http://localhost:3000
 
-Open:
+## Open:
 
 http://localhost:3000
 
@@ -158,24 +161,25 @@ Feedback
 Reports
 Development
 
-To start the application:
+## To start the application:
 
 npm start
 
-For development with automatic server restart:
+##For development with automatic server restart:
 
 npm run dev
-Important Git Instructions
+
+## Important Git Instructions
 
 The miriam-frontend branch contains the current integrated version of the project.
 
-Team members should clone/use:
+## Team members should clone/use:
 
 git clone -b miriam-frontend https://github.com/miriam-gale/Group_10_Hotel_Management_System.git
 
 Do not merge the old peter-frontend branch into miriam-frontend unless the team agrees on specific changes that need to be transferred.
 
-Notes
+## Notes
 
 Each team member should create their own .env file using .env.example.
 
