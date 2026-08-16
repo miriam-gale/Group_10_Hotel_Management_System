@@ -2,220 +2,341 @@ const API = "http://localhost:3000/api";
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    // ============================================================
+    // SET TODAY'S DATE
+    // ============================================================
+
     const dateElement = document.getElementById("dashboardDate");
 
-if (dateElement) {
-    dateElement.textContent = new Date().toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-    });
-}
+    if (dateElement) {
+        dateElement.textContent = new Date().toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+    }
 
-await loadDashboardData();
-loadOccupancyChart();
 
-    
+    // ============================================================
+    // LOAD LIVE DASHBOARD DATA
+    // ============================================================
+
+    await loadDashboardData();
+
+
+    // ============================================================
+    // LOAD OCCUPANCY CHART
+    // ============================================================
+
+    loadOccupancyChart();
+
 });
 
 
+// ============================================================
+// LOAD DASHBOARD DATA
+// ============================================================
+
 async function loadDashboardData() {
+
     const token =
         sessionStorage.getItem("mgr_token") ||
         localStorage.getItem("token");
+
+    console.log(
+        "Dashboard token:",
+        token ? "FOUND" : "NOT FOUND"
+    );
+
 
     if (!token) {
         console.error("No authentication token found.");
         return;
     }
 
-    try {
-        const response = await fetch(`${API}/reports/dashboard`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
 
-        if (!response.ok) {
-            throw new Error(`Dashboard request failed: ${response.status}`);
-        }
+    try {
+
+        const response = await fetch(
+            `${API}/reports/dashboard`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+
+        console.log(
+            "Dashboard API response status:",
+            response.status
+        );
+
 
         const data = await response.json();
 
-        const occupancy = data.occupancy || {};
-        const guests = data.guests || {};
-        const todayActivity = data.todayActivity || {};
-        const revenue = data.revenue || {};
 
-        // -----------------------------
-        // Statistic cards
-        // -----------------------------
+        console.log(
+            "Dashboard API data:",
+            data
+        );
 
+
+        if (!response.ok) {
+            throw new Error(
+                data.error ||
+                `Dashboard request failed: ${response.status}`
+            );
+        }
+
+
+        // ========================================================
+        // MAIN DASHBOARD CARDS
+        // ========================================================
+
+        // Total number of rooms in the hotel
         setText(
             "totalRooms",
-            occupancy.TotalRooms || 0
+            Number(data.totalRooms || 0)
         );
 
-        setText(
-            "todayBookings",
-            todayActivity.TodayBookings || 0
-        );
 
+        // Number of rooms currently occupied by checked-in guests
         setText(
             "checkedIn",
-            guests.CurrentGuests || 0
+            Number(data.checkedInRooms || 0)
         );
 
+
+        // Revenue made today
         setText(
             "todayRevenue",
-            formatCurrency(revenue.TodayRevenue || 0)
+            formatCurrency(data.todayRevenue || 0)
         );
 
-        // -----------------------------
-        // Room status
-        // -----------------------------
+
+        // ========================================================
+        // ROOM STATUS
+        // ========================================================
+
+        const roomStatus =
+            data.roomStatus || {};
+
 
         setText(
             "statusTotalRooms",
-            occupancy.TotalRooms || 0
+            Number(data.totalRooms || 0)
         );
+
 
         setText(
             "availableRooms",
-            occupancy.Available || 0
+            Number(roomStatus.available || 0)
         );
+
 
         setText(
             "occupiedRooms",
-            occupancy.Occupied || 0
+            Number(roomStatus.occupied || 0)
         );
+
 
         setText(
             "reservedRooms",
-            occupancy.Reserved || 0
+            Number(roomStatus.reserved || 0)
         );
+
 
         setText(
             "maintenanceRooms",
-            occupancy.UnderMaintenance || 0
+            Number(roomStatus.underMaintenance || 0)
+        );
+
+
+        console.log(
+            "Dashboard updated successfully."
         );
 
     } catch (error) {
-        console.error("Unable to load dashboard data:", error);
+
+        console.error(
+            "Unable to load dashboard data:",
+            error
+        );
+
     }
+
 }
 
 
-// ----------------------------------------
-// Helper: safely update an element
-// ----------------------------------------
+// ============================================================
+// SAFELY UPDATE DASHBOARD ELEMENT
+// ============================================================
 
 function setText(id, value) {
-    const element = document.getElementById(id);
+
+    const element =
+        document.getElementById(id);
+
 
     if (element) {
+
         element.textContent = value;
+
+    } else {
+
+        console.warn(
+            `Dashboard element #${id} was not found.`
+        );
+
     }
+
 }
 
 
-// ----------------------------------------
-// Currency formatting
-// ----------------------------------------
+// ============================================================
+// FORMAT CURRENCY
+// ============================================================
 
 function formatCurrency(amount) {
-    return `$ ${Number(amount || 0).toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    })}`;
+
+    return `$ ${Number(amount || 0).toLocaleString(
+        "en-US",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    )}`;
+
 }
 
 
-// ----------------------------------------
-// Occupancy Chart
-// ----------------------------------------
+// ============================================================
+// OCCUPANCY CHART
+// ============================================================
 
 function loadOccupancyChart() {
+
     const occupancyCanvas =
         document.getElementById("occupancyChart");
+
 
     if (!occupancyCanvas) {
         return;
     }
 
-    new Chart(occupancyCanvas, {
-        type: "line",
 
-        data: {
-            labels: [
-                "Mon",
-                "Tue",
-                "Wed",
-                "Thu",
-                "Fri",
-                "Sat",
-                "Sun"
-            ],
+    new Chart(
+        occupancyCanvas,
+        {
+            type: "line",
 
-            datasets: [
-                {
-                    label: "Occupancy",
+            data: {
 
-                    data: [
-                        62,
-                        68,
-                        74,
-                        70,
-                        78,
-                        85,
-                        72
-                    ],
+                labels: [
+                    "Mon",
+                    "Tue",
+                    "Wed",
+                    "Thu",
+                    "Fri",
+                    "Sat",
+                    "Sun"
+                ],
 
-                    borderWidth: 2,
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 4,
-                    pointHoverRadius: 6
-                }
-            ]
-        },
+                datasets: [
+                    {
+                        label: "Occupancy",
 
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
+                        data: [
+                            62,
+                            68,
+                            74,
+                            70,
+                            78,
+                            85,
+                            72
+                        ],
 
-            plugins: {
-                legend: {
-                    display: false
-                },
-
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return context.parsed.y + "% occupancy";
-                        }
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
                     }
-                }
+                ]
+
             },
 
-            scales: {
-                y: {
-                    min: 0,
-                    max: 100,
+            options: {
 
-                    ticks: {
-                        callback: function(value) {
-                            return value + "%";
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    },
+
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label: function(context) {
+
+                                return (
+                                    context.parsed.y +
+                                    "% occupancy"
+                                );
+
+                            }
+
                         }
+
                     }
+
                 },
 
-                x: {
-                    grid: {
-                        display: false
+
+                scales: {
+
+                    y: {
+
+                        min: 0,
+                        max: 100,
+
+                        ticks: {
+
+                            callback: function(value) {
+
+                                return value + "%";
+
+                            }
+
+                        }
+
+                    },
+
+
+                    x: {
+
+                        grid: {
+                            display: false
+                        }
+
                     }
+
                 }
+
             }
+
         }
-    });
+    );
+
 }
