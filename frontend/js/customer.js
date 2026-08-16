@@ -2,6 +2,24 @@
    CUSTOMER NAME / PROFILE DISPLAY
 ========================================= */
 
+function getUserInitials() {
+    const firstName = localStorage.getItem("FirstName") || "";
+    const lastName = localStorage.getItem("LastName") || "";
+
+    if (firstName || lastName) {
+        return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+    }
+
+    const customerName = localStorage.getItem("customerName") || "";
+    const parts = customerName.trim().split(/\s+/);
+
+    if (parts.length >= 2) {
+        return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
+    }
+
+    return customerName.substring(0, 2).toUpperCase() || "CU";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const firstName =
@@ -54,6 +72,15 @@ document.addEventListener("DOMContentLoaded", function () {
         .querySelectorAll("#welcomeCustomerName")
         .forEach(element => {
             element.textContent = displayFirstName;
+        });
+
+        // Customer profile initials
+    const initials = getUserInitials();
+
+    document
+        .querySelectorAll(".user-avatar, .profile-avatar")
+        .forEach(element => {
+            element.textContent = initials;
         });
 
 });
