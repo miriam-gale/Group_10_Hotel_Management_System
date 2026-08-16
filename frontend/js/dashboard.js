@@ -1,3 +1,5 @@
+const API = "http://localhost:3000/api";
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const dateElement = document.getElementById("dashboardDate");
@@ -28,7 +30,7 @@ async function loadDashboardData() {
     }
 
     try {
-        const response = await fetch("/api/reports/dashboard", {
+        const response = await fetch(`${API}/reports/dashboard`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
