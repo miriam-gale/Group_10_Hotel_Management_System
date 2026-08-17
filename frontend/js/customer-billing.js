@@ -240,49 +240,78 @@ function updateSummary() {
 
     invoices.forEach(function (invoice) {
 
-        const amount =
-            Number(
-                invoice.TotalAmount || 0
-            );
+        const totalAmount =
+            Number(invoice.TotalAmount || 0);
 
+        const amountPaid =
+            Number(invoice.AmountPaid || 0);
 
         const status =
-            String(
-                invoice.PaymentStatus || ""
-            ).toLowerCase();
+            String(invoice.PaymentStatus || "")
+                .toLowerCase();
 
 
+        /*
+         * Fully paid invoice
+         */
         if (status === "paid") {
 
-            paid += amount;
+            paid += amountPaid || totalAmount;
 
-        } else {
+        }
 
-            outstanding += amount;
+        /*
+         * Unpaid or partially paid invoice
+         */
+        else {
 
+            outstanding += Math.max(
+                totalAmount - amountPaid,
+                0
+            );
+
+            paid += amountPaid;
         }
 
     });
 
 
-    document.getElementById(
-        "totalOutstanding"
-    ).textContent =
-        formatMoney(outstanding);
+    const totalOutstanding =
+        document.getElementById("totalOutstanding");
+
+    if (totalOutstanding) {
+
+        totalOutstanding.textContent =
+            formatMoney(outstanding);
+
+    }
 
 
-    document.getElementById(
-        "totalPaid"
-    ).textContent =
-        formatMoney(paid);
+    const totalPaid =
+        document.getElementById("totalPaid");
+
+    if (totalPaid) {
+
+        totalPaid.textContent =
+            formatMoney(paid);
+
+    }
 
 
-    document.getElementById(
-        "totalInvoices"
-    ).textContent =
-        invoices.length;
+    const totalInvoices =
+        document.getElementById("totalInvoices");
+
+    if (totalInvoices) {
+
+        totalInvoices.textContent =
+            invoices.length;
+
+    }
 
 }
+
+
+      
 
 
 /* =========================================

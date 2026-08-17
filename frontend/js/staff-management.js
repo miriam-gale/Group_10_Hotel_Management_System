@@ -25,9 +25,9 @@ const staffFormMessage =
     document.getElementById("staffFormMessage");
 
 
-// ============================================================
+
 // AUTHENTICATION
-// ============================================================
+
 
 function getToken() {
 
@@ -39,9 +39,9 @@ function getToken() {
 }
 
 
-// ============================================================
+
 // LOAD STAFF
-// ============================================================
+
 
 async function loadStaff() {
 
@@ -105,9 +105,9 @@ async function loadStaff() {
 }
 
 
-// ============================================================
+
 // DISPLAY STAFF
-// ============================================================
+
 
 function renderStaff(staff) {
 
@@ -184,9 +184,8 @@ function renderStaff(staff) {
 }
 
 
-// ============================================================
 // OPEN MODAL
-// ============================================================
+
 
 openCreateStaff.addEventListener(
     "click",
@@ -203,9 +202,8 @@ openCreateStaff.addEventListener(
 );
 
 
-// ============================================================
 // CLOSE MODAL
-// ============================================================
+
 
 function closeModal() {
 
@@ -231,9 +229,9 @@ cancelCreateStaff.addEventListener(
 );
 
 
-// ============================================================
+
 // CREATE STAFF ACCOUNT
-// ============================================================
+
 
 createStaffForm.addEventListener(
     "submit",
@@ -394,9 +392,9 @@ createStaffForm.addEventListener(
 );
 
 
-// ============================================================
+
 // MESSAGE
-// ============================================================
+
 
 function showStaffMessage(message) {
 
@@ -408,13 +406,12 @@ function showStaffMessage(message) {
 }
 
 
-// ============================================================
 // BASIC HTML ESCAPING
-// ============================================================
 
-// ============================================================
+
+
 // DEACTIVATE STAFF
-// ============================================================
+
 
 async function deactivateStaff(staffId, staffName) {
 

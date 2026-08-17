@@ -161,61 +161,117 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+  
+
     /* ----------SAVE PROFILE--------------- */
 
-    profileForm.addEventListener(
-        "submit",
-        function (event) {
+profileForm.addEventListener(
+    "submit",
+    async function (event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
+        const firstName =
+            firstNameInput.value.trim();
 
-            const firstName =
-                firstNameInput.value.trim();
+        const lastName =
+            lastNameInput.value.trim();
 
-            const lastName =
-                lastNameInput.value.trim();
+        const phone =
+            phoneInput.value.trim();
 
-            const phone =
-                phoneInput.value.trim();
+        if (!firstName || !lastName) {
 
+            showMessage(
+                "First name and last name are required.",
+                "error"
+            );
 
-            if (!firstName || !lastName) {
+            return;
+        }
 
-                showMessage(
-                    "First name and last name are required.",
-                    "error"
+        const token =
+            localStorage.getItem("token");
+
+        if (!token) {
+
+            showMessage(
+                "Your session has expired. Please log in again.",
+                "error"
+            );
+
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                "http://localhost:3000/api/auth/profile",
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        FirstName: firstName,
+                        LastName: lastName,
+                        ContactNumber: phone
+                    })
+                }
+            );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to update profile."
                 );
-
-                return;
-
             }
 
 
+            /* =====================================
+               UPDATE LOCAL STORAGE
+            ===================================== */
+
             localStorage.setItem(
                 "FirstName",
-                firstName
+                data.FirstName
             );
 
             localStorage.setItem(
                 "LastName",
-                lastName
+                data.LastName
             );
 
             localStorage.setItem(
                 "ContactNumber",
-                phone
+                data.ContactNumber || ""
+            );
+
+            localStorage.setItem(
+                "customerName",
+                `${data.FirstName} ${data.LastName}`.trim()
             );
 
 
+            /* =====================================
+               UPDATE CURRENT PAGE
+            ===================================== */
+
             customerData.firstName =
-                firstName;
+                data.FirstName;
 
             customerData.lastName =
-                lastName;
+                data.LastName;
 
             customerData.phone =
-                phone;
+                data.ContactNumber || "";
 
 
             updateUserDisplay();
@@ -226,10 +282,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 "success"
             );
 
+        } catch (error) {
+
+            console.error(
+                "Profile update error:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "Unable to update profile.",
+                "error"
+            );
         }
-    );
-
-
+    }
+);
     /* ---------CANCEL CHANGES---------- */
 
     cancelButton.addEventListener(

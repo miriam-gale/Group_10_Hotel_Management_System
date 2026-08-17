@@ -27,6 +27,7 @@ app.use('/api/reservations', require('./routes/reservations'));
 app.use('/api/events',       require('./routes/events'));
 app.use('/api/invoices',     require('./routes/invoices'));
 app.use('/api/feedback',     require('./routes/feedback'));
+app.use('/api/customer',     require('./routes/customer-dashboard'));
 app.use('/api/reports',      require('./routes/reports'));
 
 // ============================================================

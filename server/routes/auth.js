@@ -277,4 +277,110 @@ router.delete('/staff/:id', verifyToken, requireAdmin, async (req, res) => {
   }
 });
 
+// ============================================================
+// PUT /api/auth/profile — Customer updates their own profile
+// ============================================================
+router.put('/profile', verifyToken, async (req, res) => {
+
+  const { FirstName, LastName, ContactNumber } = req.body;
+
+  if (req.user.type !== 'customer') {
+    return res.status(403).json({
+      error: 'Only customers can update their profile.'
+    });
+  }
+
+  if (!FirstName || !LastName) {
+    return res.status(400).json({
+      error: 'First name and last name are required.'
+    });
+  }
+
+  try {
+
+    const [existingRows] = await pool.query(
+      `
+      SELECT ContactNumber
+      FROM CUSTOMER
+      WHERE CustomerID = ?
+      `,
+      [req.user.id]
+    );
+
+    if (!existingRows.length) {
+      return res.status(404).json({
+        error: 'Customer not found.'
+      });
+    }
+
+    const existingContactNumber =
+      existingRows[0].ContactNumber;
+
+    const updatedContactNumber =
+      ContactNumber && ContactNumber.trim()
+        ? ContactNumber.trim()
+        : existingContactNumber;
+
+    await pool.query(
+      `
+      UPDATE CUSTOMER
+      SET
+        FirstName = ?,
+        LastName = ?,
+        ContactNumber = ?
+      WHERE CustomerID = ?
+      `,
+      [
+        FirstName.trim(),
+        LastName.trim(),
+        updatedContactNumber,
+        req.user.id
+      ]
+    );
+
+    const [rows] = await pool.query(
+      `
+      SELECT
+        CustomerID,
+        FirstName,
+        LastName,
+        Email,
+        ContactNumber
+      FROM CUSTOMER
+      WHERE CustomerID = ?
+      `,
+      [req.user.id]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({
+        error: 'Customer not found.'
+      });
+    }
+
+    const customer = rows[0];
+
+    res.json({
+      message: 'Profile updated successfully.',
+      CustomerID: customer.CustomerID,
+      FirstName: customer.FirstName,
+      LastName: customer.LastName,
+      Email: customer.Email,
+      ContactNumber: customer.ContactNumber
+    });
+
+  } catch (err) {
+
+    console.error(
+      'Customer profile update error:',
+      err
+    );
+
+    res.status(500).json({
+      error: 'Unable to update profile.'
+    });
+  }
+});
 module.exports = router;
+
+
